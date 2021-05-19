@@ -21,7 +21,7 @@ npm i
 ### Running the Application
 
 Clone and run the *sTUMatch Backend* repository (follow the instructions in its README for details).
-Once the backend is running locally, you can start the frontend using your terminal:
+Once the backend is running locally, you can start the frontend part of the application using your terminal:
 
 ```sh
 npm run start
