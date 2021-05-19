@@ -1,0 +1,32 @@
+{
+  "plugins": [
+    "prettier"
+  ],
+  "env": {
+    "es6": true,
+    "node": false,
+    "browser": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "plugin:react/recommended"
+  ],
+  "rules": {
+    "prettier/prettier": "warn",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off"
+  },
+  "settings": {
+    "react": {
+      "version": "17"
+    }
+  },
+  "ignorePatterns": [
+    "webpack.config.js"
+  ]
+}
