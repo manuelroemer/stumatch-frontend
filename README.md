@@ -11,7 +11,7 @@ First of all, ensure that [NodeJS](https://nodejs.org/en/) is installed on your 
 Then, clone the repository and install the packages:
 
 ```sh
-git clone INSERT_GIT_URL_HERE stumatch-frontend
+git clone https://gitlab.lrz.de/seba-master-2021/team-29/frontend.git stumatch-frontend
 
 cd stumatch-frontend
 npm i
@@ -20,7 +20,8 @@ npm i
 
 ### Running the Application
 
-Clone and run the *sTUMatch Backend* repository (follow the instructions in its README for details).
+Clone and run the [sTUMatch Backend](https://gitlab.lrz.de/seba-master-2021/team-29/backend)
+repository (follow the instructions in its README for details).
 Once the backend is running locally, you can start the frontend part of the application using your terminal:
 
 ```sh
