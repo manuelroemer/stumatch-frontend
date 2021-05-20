@@ -1,3 +1,4 @@
+import { useUserStore } from '../../stores/userStore';
 import FeedPage from '../feed/FeedPage';
 import LandingPage from '../landing/LandingPage';
 
@@ -7,7 +8,6 @@ import LandingPage from '../landing/LandingPage';
  * Otherwise displays the app's feed.
  */
 export default function HomePage() {
-  // TODO: Progressively enhance with actual login functionality.
-  const isLoggedIn = false;
-  return isLoggedIn ? <FeedPage /> : <LandingPage />;
+  const user = useUserStore((state) => state.user);
+  return user ? <FeedPage /> : <LandingPage />;
 }

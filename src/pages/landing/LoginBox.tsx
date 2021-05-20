@@ -2,8 +2,8 @@ import { useForm } from 'react-hook-form';
 import { Input } from '@chakra-ui/input';
 import { Button, Divider, FormControl, FormErrorMessage } from '@chakra-ui/react';
 import { Box, Heading } from '@chakra-ui/layout';
-import { postAuthToken } from '../../api/login';
 import { useState } from 'react';
+import { useUserStore } from '../../stores/userStore';
 
 interface LoginFormData {
   email: string;
@@ -12,21 +12,17 @@ interface LoginFormData {
 
 export default function LoginBox() {
   const [hasUnsucessfulLoginAttempt, setHasUnsucessfulLoginAttempt] = useState(false);
+  const store = useUserStore();
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
-    reset,
   } = useForm<LoginFormData>();
 
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      const res = await postAuthToken(data);
-      const token = res.data.token;
-      alert('Signed In! Your token is: ' + token); // TODO: Do sth else. Like navigate, store token, etc.
-      reset();
-    } catch (e) {
+  const onSubmit = handleSubmit(async ({ email, password }) => {
+    const couldLogin = await store.login(email, password);
+    if (!couldLogin) {
       setHasUnsucessfulLoginAttempt(true);
       setValue('password', '');
     }
