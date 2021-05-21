@@ -20,6 +20,7 @@ module.exports = (env, argv = {}) => {
     },
     devServer: {
       contentBase: resolve(__dirname, 'src'),
+      historyApiFallback: true,
     },
     module: {
       rules: [
