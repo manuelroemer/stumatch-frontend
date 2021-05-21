@@ -14,8 +14,8 @@ export default function App() {
     <ChakraProvider theme={appTheme}>
       <BrowserRouter>
         <Switch>
-          <Route exact path="/" render={() => (user ? <Redirect to={routes.feed} /> : <LandingPage />)} />
-          <Route render={() => (user ? <AppShell /> : <Redirect to="/" />)} />
+          <Route exact path={routes.root} render={() => (user ? <Redirect to={routes.feed} /> : <LandingPage />)} />
+          <Route render={() => (user ? <AppShell /> : <Redirect to={routes.root} />)} />
         </Switch>
       </BrowserRouter>
     </ChakraProvider>
