@@ -12,7 +12,7 @@ interface LoginFormData {
 
 export default function LoginBox() {
   const [hasUnsucessfulLoginAttempt, setHasUnsucessfulLoginAttempt] = useState(false);
-  const store = useUserStore();
+  const login = useUserStore((state) => state.login);
   const {
     register,
     handleSubmit,
@@ -21,7 +21,7 @@ export default function LoginBox() {
   } = useForm<LoginFormData>();
 
   const onSubmit = handleSubmit(async ({ email, password }) => {
-    const couldLogin = await store.login(email, password);
+    const couldLogin = await login(email, password);
     if (!couldLogin) {
       setHasUnsucessfulLoginAttempt(true);
       setValue('password', '');
