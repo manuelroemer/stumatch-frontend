@@ -11,6 +11,7 @@ interface LoginFormData {
 }
 
 export default function LoginBox() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasUnsucessfulLoginAttempt, setHasUnsucessfulLoginAttempt] = useState(false);
   const login = useUserStore((state) => state.login);
   const {
@@ -21,7 +22,10 @@ export default function LoginBox() {
   } = useForm<LoginFormData>();
 
   const onSubmit = handleSubmit(async ({ email, password }) => {
+    setIsSubmitting(true);
     const couldLogin = await login(email, password);
+    setIsSubmitting(false);
+
     if (!couldLogin) {
       setHasUnsucessfulLoginAttempt(true);
       setValue('password', '');
@@ -49,7 +53,7 @@ export default function LoginBox() {
         <FormControl mb="3" isInvalid={hasUnsucessfulLoginAttempt}>
           <FormErrorMessage>Your E-Mail address or password was incorrect. Please try again.</FormErrorMessage>
         </FormControl>
-        <Button w="100%" colorScheme="primary" type="submit">
+        <Button w="100%" colorScheme="primary" type="submit" isLoading={isSubmitting}>
           Login
         </Button>
       </form>
