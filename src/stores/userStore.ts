@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import create from 'zustand';
-import { postAuthToken } from '../api/login';
+import { postAuthToken } from '../api/auth';
 
 /**
  * The global state containing information about the current user who is currently logged in.
