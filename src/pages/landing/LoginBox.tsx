@@ -49,7 +49,7 @@ export default function LoginBox() {
         <FormControl mb="3" isInvalid={hasUnsucessfulLoginAttempt}>
           <FormErrorMessage>Your E-Mail address or password was incorrect. Please try again.</FormErrorMessage>
         </FormControl>
-        <Button w="100%" colorScheme="blue" type="submit">
+        <Button w="100%" colorScheme="primary" type="submit">
           Login
         </Button>
       </form>
