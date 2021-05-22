@@ -1,10 +1,11 @@
-import { Box, chakra, HStack, Flex, Button } from '@chakra-ui/react';
+import { Box, chakra, HStack, Flex, Button, Text } from '@chakra-ui/react';
 import { routes } from '../constants';
-import { useUserStore } from '../stores/userStore';
+import { useCurrentUser, useUserStore } from '../stores/userStore';
 import NavBarItem from './NavBarItem';
 
 export default function NavBar() {
   const logout = useUserStore((state) => state.logout);
+  const user = useCurrentUser();
 
   return (
     <Flex
@@ -24,6 +25,7 @@ export default function NavBar() {
         <NavBarItem title="Matching" to={routes.matching} />
       </HStack>
       <HStack spacing="4">
+        <Text>Hello {user.displayName}!</Text>
         <Button onClick={logout}>Logout</Button>
       </HStack>
     </Flex>
