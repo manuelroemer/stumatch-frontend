@@ -1,3 +1,6 @@
+import { useButtonGroup } from '@chakra-ui/button';
+import { useUserStore } from '../stores/userStore';
+
 const apiBaseUrl = API_BASE_URL;
 
 export interface StumatchFetchInit extends Omit<Omit<RequestInit, 'body'>, 'headers'> {
@@ -37,6 +40,7 @@ export class StumatchFetchError extends Error {
  * * Rejects for non-sucessful status codes.
  * * Supports native objects as the body (will be converted to JSON).
  * * Parses JSON responses.
+ * * If a user is signed in, automatically uses the user's token for API requests.
  * @param url The relative URL of the sTUMatch API endpoint to be invoked. Example: `/api/v1/example`.
  * @param init Optional initialization data for the request to be made.
  * @returns The response to the request.
@@ -62,6 +66,11 @@ export async function stumatchFetch<T = unknown>(
     if (init.headers['Content-Type'] === undefined) {
       init.headers['Content-Type'] = 'application/json';
     }
+  }
+
+  const token = useUserStore.getState().userInfo?.token;
+  if (token && init.headers['Authorization'] === undefined) {
+    init.headers['Authorization'] = `Bearer ${token}`;
   }
 
   const fullUrl = getStumatchApiUrl(url).href;

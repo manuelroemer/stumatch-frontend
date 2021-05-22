@@ -1,4 +1,4 @@
-import { stumatchFetch } from './fetch';
+import { stumatchFetch, StumatchFetchInit } from './fetch';
 
 export interface PostAuthTokenRequestBody {
   email: string;
@@ -6,9 +6,10 @@ export interface PostAuthTokenRequestBody {
 }
 
 export interface PostAuthTokenResponseBody {
-  token: string;
+  access_token: string;
+  token_type: string;
 }
 
-export function postAuthToken(body: PostAuthTokenRequestBody) {
-  return stumatchFetch<PostAuthTokenResponseBody>('/api/v1/auth/token', { method: 'POST', body });
+export function postAuthToken(body: PostAuthTokenRequestBody, init?: StumatchFetchInit) {
+  return stumatchFetch<PostAuthTokenResponseBody>('/api/v1/auth/token', { method: 'POST', body, ...init });
 }

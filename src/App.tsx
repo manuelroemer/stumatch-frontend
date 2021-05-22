@@ -7,15 +7,15 @@ import AppShell from './shell/AppShell';
 import { routes } from './constants';
 
 export default function App() {
-  const user = useUserStore((state) => state.user);
+  const userInfo = useUserStore((state) => state.userInfo);
   useAutomaticUserLogin();
 
   return (
     <ChakraProvider theme={appTheme}>
       <BrowserRouter>
         <Switch>
-          <Route exact path={routes.root} render={() => (user ? <Redirect to={routes.feed} /> : <LandingPage />)} />
-          <Route render={() => (user ? <AppShell /> : <Redirect to={routes.root} />)} />
+          <Route exact path={routes.root} render={() => (userInfo ? <Redirect to={routes.feed} /> : <LandingPage />)} />
+          <Route render={() => (userInfo ? <AppShell /> : <Redirect to={routes.root} />)} />
         </Switch>
       </BrowserRouter>
     </ChakraProvider>
