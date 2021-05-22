@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const userInfo = useUserStore((state) => state.userInfo);
+  const hasLoggedInUser = useUserStore((state) => !!state.userInfo);
   const tryLoadRememberedLogin = useUserStore((state) => state.tryLoadRememberedUser);
 
   useEffect(() => {
@@ -25,9 +25,9 @@ export default function App() {
             <Route
               exact
               path={routes.root}
-              render={() => (userInfo ? <Redirect to={routes.feed} /> : <LandingPage />)}
+              render={() => (hasLoggedInUser ? <Redirect to={routes.feed} /> : <LandingPage />)}
             />
-            <Route render={() => (userInfo ? <AppShell /> : <Redirect to={routes.root} />)} />
+            <Route render={() => (hasLoggedInUser ? <AppShell /> : <Redirect to={routes.root} />)} />
           </Switch>
         </BrowserRouter>
       </LoadingOverlay>
