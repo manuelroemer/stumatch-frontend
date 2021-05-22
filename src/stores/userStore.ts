@@ -107,7 +107,8 @@ export function useCurrentUser() {
   const user = useUserStore().userInfo?.user;
   if (!user) {
     throw new Error(
-      'No user details are known at the moment. Only call "useUser" in locations where a user must be logged in.',
+      'No user details are known at the moment. ' +
+        'Only call "useUser" in locations where a user is guaranteed to be logged in.',
     );
   }
   return user;
