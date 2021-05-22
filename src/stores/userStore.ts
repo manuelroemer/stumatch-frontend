@@ -97,16 +97,6 @@ export const useUserStore = create<UserState>((set, get) => ({
 }));
 
 /**
- * Automatically loads remembered user data and logs the user in during component mount.
- */
-export function useAutomaticUserLogin() {
-  const tryLoadRememberedLogin = useUserStore((state) => state.tryLoadRememberedUser);
-  useEffect(() => {
-    tryLoadRememberedLogin();
-  }, []);
-}
-
-/**
  * Returns the information of the currently logged in user that are stored in the user store.
  * Throws an error if no user is logged in (i.e. if the user data is undefined).
  *
