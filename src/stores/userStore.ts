@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import create from 'zustand';
 import { postAuthToken } from '../api/auth';
 import { getMe, GetUserResponseBody } from '../api/users';
