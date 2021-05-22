@@ -24,9 +24,9 @@ export default function LoginBox() {
   const onSubmit = handleSubmit(async ({ email, password }) => {
     setIsSubmitting(true);
     const couldLogin = await login(email, password);
-    setIsSubmitting(false);
 
     if (!couldLogin) {
+      setIsSubmitting(false);
       setHasUnsucessfulLoginAttempt(true);
       setValue('password', '');
     }
@@ -42,7 +42,7 @@ export default function LoginBox() {
           <Input
             placeholder="Your E-Mail Address"
             autoFocus
-            {...register('email', { required: true, maxLength: 320, pattern: /.+@.+/ })}
+            {...register('email', { required: true, maxLength: 320, pattern: /^\S+@\S+/ })}
           />
           <FormErrorMessage>Please enter a valid E-Mail address.</FormErrorMessage>
         </FormControl>
