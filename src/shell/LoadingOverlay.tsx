@@ -10,7 +10,7 @@ export default function LoadingOverlay({ show, children }: LoadingOverlayProps) 
   return (
     <>
       {show ? (
-        <Center position="fixed" top="0" left="0" w="100%" h="100%" bg="white">
+        <Center layerStyle="fullPageOverlay" bg="white">
           <HStack>
             <Spinner emptyColor="gray.200" color="primary.500" size="xl" />
           </HStack>

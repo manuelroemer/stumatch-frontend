@@ -95,3 +95,14 @@ async function tryParseJsonBody(response: Response) {
     return undefined;
   }
 }
+
+/**
+ * Creates an `AbortSignal` which times out after the specified duration.
+ * @param after The duration after which to timeout (in milliseconds).
+ * @returns An `AbortSignal` to be passed to a fetch init.
+ */
+export function timeoutAfter(after: number) {
+  const ac = new AbortController();
+  setTimeout(() => ac.abort(), after);
+  return ac.signal;
+}

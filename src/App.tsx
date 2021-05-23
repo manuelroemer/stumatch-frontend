@@ -7,6 +7,7 @@ import AppShell from './shell/AppShell';
 import { routes } from './constants';
 import LoadingOverlay from './shell/LoadingOverlay';
 import { useEffect, useState } from 'react';
+import NotConnectedOverlay from './shell/NotConnectedOverlay';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -19,18 +20,20 @@ export default function App() {
 
   return (
     <ChakraProvider theme={appTheme}>
-      <LoadingOverlay show={isLoading}>
-        <BrowserRouter>
-          <Switch>
-            <Route
-              exact
-              path={routes.root}
-              render={() => (hasLoggedInUser ? <Redirect to={routes.feed} /> : <LandingPage />)}
-            />
-            <Route render={() => (hasLoggedInUser ? <AppShell /> : <Redirect to={routes.root} />)} />
-          </Switch>
-        </BrowserRouter>
-      </LoadingOverlay>
+      <NotConnectedOverlay>
+        <LoadingOverlay show={isLoading}>
+          <BrowserRouter>
+            <Switch>
+              <Route
+                exact
+                path={routes.root}
+                render={() => (hasLoggedInUser ? <Redirect to={routes.feed} /> : <LandingPage />)}
+              />
+              <Route render={() => (hasLoggedInUser ? <AppShell /> : <Redirect to={routes.root} />)} />
+            </Switch>
+          </BrowserRouter>
+        </LoadingOverlay>
+      </NotConnectedOverlay>
     </ChakraProvider>
   );
 }
