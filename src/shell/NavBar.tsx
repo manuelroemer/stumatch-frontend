@@ -1,4 +1,5 @@
 import { Box, chakra, HStack, Flex, Button, Text } from '@chakra-ui/react';
+import RequireRoles from '../components/RequireRoles';
 import { routes } from '../constants';
 import { useCurrentUser, useUserStore } from '../stores/userStore';
 import NavBarItem from './NavBarItem';
@@ -23,6 +24,9 @@ export default function NavBar() {
       <HStack grow={2} w="100%" mx="16" spacing="8">
         <NavBarItem title="Feed" to={routes.feed} />
         <NavBarItem title="Matching" to={routes.matching} />
+        <RequireRoles roles="admin">
+          <NavBarItem title="Administration" to={routes.administration} />
+        </RequireRoles>
       </HStack>
       <HStack spacing="4">
         <Text>Hello {user.displayName}!</Text>
