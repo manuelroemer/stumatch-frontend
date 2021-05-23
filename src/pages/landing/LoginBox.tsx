@@ -1,7 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Input } from '@chakra-ui/input';
-import { Button, Divider, FormControl, FormErrorMessage } from '@chakra-ui/react';
-import { Box, Heading } from '@chakra-ui/layout';
+import { Button, Divider, Input, FormControl, FormErrorMessage, Box, Heading } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useUserStore } from '../../stores/userStore';
 

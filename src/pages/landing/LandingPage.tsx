@@ -1,5 +1,4 @@
-import { Heading, Flex } from '@chakra-ui/react';
-import { Box, Stack } from '@chakra-ui/layout';
+import { Heading, Flex, Box, Stack } from '@chakra-ui/react';
 import logo from '../../assets/logo.png';
 import LoginBox from './LoginBox';
 
