@@ -29,7 +29,9 @@ export default function NavBar() {
         </RequireRoles>
       </HStack>
       <HStack spacing="4">
-        <Text>Hello {user.displayName}!</Text>
+        <Text w="10rem" noOfLines={1}>
+          Hello {user.displayName}!
+        </Text>
         <Button onClick={logout}>Logout</Button>
       </HStack>
     </Flex>

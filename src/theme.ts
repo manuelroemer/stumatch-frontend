@@ -15,4 +15,11 @@ export const appTheme = extendTheme({
       h: '100%',
     },
   },
+  styles: {
+    global: {
+      'html, body, #root': {
+        minHeight: '100vh',
+      },
+    },
+  }
 });

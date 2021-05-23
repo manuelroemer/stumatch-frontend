@@ -1,8 +1,9 @@
-import { Box, Center, chakra, Heading, VStack, Text } from '@chakra-ui/react';
+import { Box, Center } from '@chakra-ui/react';
 import { ReactNode, useEffect, useState } from 'react';
 import { timeoutAfter } from '../api/fetch';
 import { getStatus } from '../api/status';
 import serverDown from '../assets/server-down.svg';
+import EmptyContent from '../components/EmptyContent';
 
 export interface NotConnectedOverlayProps {
   children?: ReactNode;
@@ -15,16 +16,13 @@ export default function NotConnectedOverlay({ children }: NotConnectedOverlayPro
       <Box display={isConnected ? undefined : 'none'}>{children}</Box>
       {!isConnected && (
         <Center layerStyle="fullPageOverlay">
-          <VStack maxW="md" p="8">
-            <chakra.img mb="8" src={serverDown} alt="Server Down" />
-            <Heading as="h1" w="100%">
-              Backend Unreachable
-            </Heading>
-            <Text>
-              We are sorry, but we cannot reach our servers at the moment. We will automatically try to reconnect.
-              Please stay patient!
-            </Text>
-          </VStack>
+          <EmptyContent
+            imgSrc={serverDown}
+            imgAlt="Server Down"
+            title="Backend Unreachable"
+            description="We are sorry, but we cannot reach our servers at the moment.
+              We will automatically try to reconnect. Please stay patient!"
+          />
         </Center>
       )}
     </>
