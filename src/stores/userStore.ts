@@ -1,6 +1,7 @@
 import create from 'zustand';
 import { postAuthToken } from '../api/auth';
-import { getMe, GetUserResponseBody } from '../api/users';
+import { me } from '../api/conventions';
+import { getUser, User } from '../api/users';
 
 /**
  * The global state containing information about the current user who is currently logged in.
@@ -13,7 +14,7 @@ export interface UserState {
     /**
      * The most recent information about the logged in user.
      */
-    user: GetUserResponseBody;
+    user: User;
     /**
      * The user's token.
      */
@@ -116,7 +117,7 @@ export function useCurrentUser() {
 async function fetchUser(token: string) {
   // getMe/stumatchFetch can automatically add the token, but only when it's set in the user store.
   // This is not the case before logging in (which is why we specify the token manually here).
-  const res = await getMe({ headers: { Authorization: `Bearer ${token}` } });
+  const res = await getUser(me, { headers: { Authorization: `Bearer ${token}` } });
   return res.data.result;
 }
 

@@ -14,6 +14,11 @@ export const appTheme = extendTheme({
       w: '100%',
       h: '100%',
     },
+    timeAgoHint: {
+      fontSize: 'xs',
+      color: 'gray.500',
+      whiteSpace: 'nowrap',
+    },
   },
   styles: {
     global: {
@@ -21,5 +26,5 @@ export const appTheme = extendTheme({
         minHeight: '100vh',
       },
     },
-  }
+  },
 });
