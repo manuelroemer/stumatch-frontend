@@ -8,15 +8,24 @@ import { routes } from './constants';
 import LoadingOverlay from './shell/LoadingOverlay';
 import { useEffect, useState } from 'react';
 import NotConnectedOverlay from './shell/NotConnectedOverlay';
+import { connectSocket } from './api/socket';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const hasLoggedInUser = useUserStore((state) => !!state.userInfo);
   const tryLoadRememberedLogin = useUserStore((state) => state.tryLoadRememberedUser);
+  const token = useUserStore((state) => state.userInfo?.token);
 
   useEffect(() => {
     tryLoadRememberedLogin().finally(() => setIsLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (token) {
+      connectSocket(token);
+      console.info('Socket connected.');
+    }
+  }, [token]);
 
   return (
     <ChakraProvider theme={appTheme}>
