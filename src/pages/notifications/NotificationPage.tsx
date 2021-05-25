@@ -1,45 +1,58 @@
-import { Box, Flex, Heading, VStack, Center } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { Box, Flex, Heading, VStack, Center, Skeleton } from '@chakra-ui/react';
+import { PaginationApiResult } from '../../api/apiResult';
 import { me } from '../../api/conventions';
-import { Notification, getAllUserNotifications } from '../../api/notifications';
+import { StumatchFetchResponse } from '../../api/fetch';
+import { getAllUserNotifications, Notification } from '../../api/notifications';
 import Pagination from '../../components/Pagination';
+import { useLoadedData } from '../../utils/useLoadedData';
+import { usePageQueryParameter, usePageSizeQueryParameter } from '../../utils/useQueryParameter';
 import NotificationCard from './NotificationCard';
+import range from 'lodash-es/range';
 
 export default function NotificationPage() {
-  const [page, setPage] = useState(1);
-  const [notifications, setNotifications] = useState<Array<Notification>>([]);
+  const [page, setPage] = usePageQueryParameter();
+  const [pageSize] = usePageSizeQueryParameter();
 
-  useEffect(() => {
-    const ac = new AbortController();
-    getAllUserNotifications(me, { sort: 'createdDate:desc' }, { signal: ac.signal }).then((res) =>
-      setNotifications(res.data.result),
-    );
-    return () => ac.abort();
-  }, []);
+  const { isLoading, data: response } = useLoadedData<StumatchFetchResponse<PaginationApiResult<Notification>>>(
+    (signal) => getAllUserNotifications(me, { page, pageSize, sort: 'createdDate:desc' }, { signal }),
+    [page, pageSize],
+  );
 
   return (
     <Flex justify="center" mt="12">
       <Box w="70%">
         <Heading as="h1">Notifications</Heading>
-        <VStack spacing="10">
-          {notifications.map((notification) => (
-            <NotificationCard
-              key={notification.id}
-              title={notification.title}
-              content={notification.content}
-              date={notification.createdOn}
-              emoji="💬"
-              seen={!!notification.seen}
-              onClick={() => alert('click')}
-              onDelete={() => alert('Delete')}
-              onMarkAsRead={() => alert('read')}
-              onMarkAsUnread={() => alert('unread')}
-            />
-          ))}
+        <VStack spacing="5">
+          {isLoading ? (
+            range(pageSize).map((i) => <Skeleton key={i} height="2rem" />)
+          ) : (
+            <>
+              {response?.data.result.map((notification) => (
+                <NotificationCard
+                  key={notification.id}
+                  title={notification.title ?? ''}
+                  content={notification.content ?? ''}
+                  date={notification.createdOn}
+                  emoji="💬"
+                  seen={!!notification.seen}
+                  onClick={() => alert('click')}
+                  onDelete={() => alert('Delete')}
+                  onMarkAsRead={() => alert('read')}
+                  onMarkAsUnread={() => alert('unread')}
+                />
+              ))}
+            </>
+          )}
         </VStack>
-        <Center mt="10">
-          <Pagination currentPage={page} pages={20} onPageChanged={setPage} />
-        </Center>
+        {response && (
+          <Center mt="10">
+            <Pagination
+              currentPage={response?.data.page ?? 1}
+              pages={response?.data.pages ?? 1}
+              onPageChanged={setPage}
+            />
+          </Center>
+        )}
       </Box>
     </Flex>
   );
