@@ -111,7 +111,7 @@ export default function NotificationTemplate({
               <IconButton
                 size="sm"
                 aria-label="Mark as unread"
-                icon={<Icon as={IoMailOutline} />}
+                icon={<IoMailOutline />}
                 onClick={preventPropagation(onMarkAsUnread)}
                 isLoading={isMarking}
                 disabled={isLoading}
@@ -123,7 +123,7 @@ export default function NotificationTemplate({
               <IconButton
                 size="sm"
                 aria-label="Mark as read"
-                icon={<Icon as={IoMailOpenOutline} />}
+                icon={<IoMailOpenOutline />}
                 onClick={preventPropagation(onMarkAsRead)}
                 isLoading={isMarking}
                 disabled={isLoading}
@@ -134,7 +134,7 @@ export default function NotificationTemplate({
             <IconButton
               size="sm"
               aria-label="Delete"
-              icon={<Icon as={AiOutlineDelete} />}
+              icon={<AiOutlineDelete />}
               onClick={preventPropagation(onDelete)}
               isLoading={isDeleting}
               disabled={isLoading}
