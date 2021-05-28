@@ -6,6 +6,7 @@ import range from 'lodash-es/range';
 import NotificationSelector from '../../components/NotificationSelector';
 import { useGetAllUserNotificationsQuery } from '../../queries/notifications';
 import DefaultPageLayout from '../../components/DefaultPageLayout';
+import { NoNotificationsEmptyState } from '../../components/EmptyStates';
 
 export default function NotificationPage() {
   const [page, setPage] = usePageQueryParameter();
@@ -33,11 +34,12 @@ export default function NotificationPage() {
           </>
         )}
       </VStack>
-      {data && (
+      {data && data.result.length > 0 && (
         <Center mt="10">
           <Pagination currentPage={data.page} pages={data.pages} onPageChanged={setPage} />
         </Center>
       )}
+      {data && data.result.length === 0 && <NoNotificationsEmptyState />}
     </DefaultPageLayout>
   );
 }

@@ -3,7 +3,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { timeoutAfter } from '../api/fetch';
 import { getStatus } from '../api/status';
 import serverDown from '../assets/server-down.svg';
-import EmptyContent from '../components/EmptyContent';
+import EmptyState from '../components/EmptyState';
 
 export interface NotConnectedOverlayProps {
   children?: ReactNode;
@@ -16,7 +16,7 @@ export default function NotConnectedOverlay({ children }: NotConnectedOverlayPro
       <Box display={isConnected ? undefined : 'none'}>{children}</Box>
       {!isConnected && (
         <Center layerStyle="fullPageOverlay">
-          <EmptyContent
+          <EmptyState
             imgSrc={serverDown}
             imgAlt="Server Down"
             title="Backend Unreachable"

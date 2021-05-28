@@ -1,15 +1,15 @@
 import { Button } from '@chakra-ui/react';
-import EmptyContent from './EmptyContent';
+import EmptyState, { EmptyStateProps } from './EmptyState';
 import accessDenied from '../assets/access-denied.svg';
 import { useHistory } from 'react-router';
+import socialSerenity from '../assets/social-serenity.svg';
 
-export default function AccessDenied() {
+export function AccessDeniedEmptyState(props?: EmptyStateProps) {
   const history = useHistory();
 
   return (
-    <EmptyContent
+    <EmptyState
       imgSrc={accessDenied}
-      imgAlt="Access Denied"
       title="Access Denied"
       description="You do not have the required privileges to access this page."
       actions={
@@ -17,6 +17,18 @@ export default function AccessDenied() {
           Go Back
         </Button>
       }
+      {...props}
+    />
+  );
+}
+
+export function NoNotificationsEmptyState(props?: EmptyStateProps) {
+  return (
+    <EmptyState
+      imgSrc={socialSerenity}
+      title="No Notifications"
+      description="You have no notifications at the moment."
+      {...props}
     />
   );
 }
