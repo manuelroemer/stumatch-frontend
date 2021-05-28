@@ -50,30 +50,31 @@ export default function NotificationTemplate({
   ...rest
 }: NotificationTemplateProps) {
   const isLoading = isDeleting || isMarking;
+  const onNotificationClick = () => {
+    if (onClick) {
+      onMarkAsRead();
+      onClick();
+    }
+  };
 
   return (
     <Grid
-      w="100%"
-      borderWidth="1px"
-      borderColor="gray.50"
-      shadow="lg"
-      borderRadius="md"
       transition="opacity 150ms"
-      opacity={seen ? 0.7 : 1}
+      opacity={seen ? 0.6 : 1}
       _hover={{ opacity: 1 }}
       templateRows="auto auto"
-      templateColumns="4px auto minmax(0, 1fr) auto"
+      templateColumns="auto auto minmax(0, 1fr) auto"
       rowGap="1"
       columnGap="4"
       cursor={onClick ? 'pointer' : undefined}
-      onClick={onClick}
+      onClick={onNotificationClick}
       {...rest}>
       <Box
         gridColumn="1"
         gridRow="1 / span 2"
-        w="1"
+        w="5px"
         bg="primary.500"
-        borderLeftRadius="md"
+        borderLeftRadius={rest.borderRadius ?? rest.borderLeftRadius}
         visibility={seen ? 'hidden' : undefined}
       />
 
@@ -100,7 +101,7 @@ export default function NotificationTemplate({
         <ReactTimeago date={date} component={(props) => <Text layerStyle="timeAgoHint" {...props} />} />
       </Flex>
 
-      <Text gridRow="2" gridColumn="3" mb="4" mr="4" noOfLines={2}>
+      <Text gridRow="2" gridColumn="3" mb="4" mr="4" fontSize="sm" noOfLines={2}>
         {content}
       </Text>
 

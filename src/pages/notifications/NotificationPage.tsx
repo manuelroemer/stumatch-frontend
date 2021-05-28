@@ -9,7 +9,7 @@ import { useGetAllUserNotificationsQuery } from '../../queries/notifications';
 export default function NotificationPage() {
   const [page, setPage] = usePageQueryParameter();
   const [pageSize] = usePageSizeQueryParameter();
-  const { isLoading, data } = useGetAllUserNotificationsQuery(me, { page, pageSize, sort: 'createdDate:desc' });
+  const { isLoading, data } = useGetAllUserNotificationsQuery(me, { page, pageSize, sort: 'createdOn:desc' });
 
   return (
     <Flex justify="center" mt="12">
@@ -21,7 +21,15 @@ export default function NotificationPage() {
           ) : (
             <>
               {data?.result.map((notification) => (
-                <NotificationSelector key={notification.id} notification={notification} />
+                <NotificationSelector
+                  key={notification.id}
+                  notification={notification}
+                  w="100%"
+                  borderWidth="1px"
+                  borderColor="gray.50"
+                  shadow="lg"
+                  borderRadius="md"
+                />
               ))}
             </>
           )}

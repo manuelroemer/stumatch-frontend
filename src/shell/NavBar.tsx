@@ -3,6 +3,7 @@ import RequireRoles from '../components/RequireRoles';
 import { routes } from '../constants';
 import { useCurrentUser, useUserStore } from '../stores/userStore';
 import NavBarItem from './NavBarItem';
+import NavBarNotificationItem from './NavBarNotificationItem';
 
 export default function NavBar() {
   const logout = useUserStore((state) => state.logout);
@@ -29,6 +30,7 @@ export default function NavBar() {
         </RequireRoles>
       </HStack>
       <HStack spacing="4">
+        <NavBarNotificationItem />
         <Text w="10rem" noOfLines={1}>
           Hello {user.displayName}!
         </Text>
