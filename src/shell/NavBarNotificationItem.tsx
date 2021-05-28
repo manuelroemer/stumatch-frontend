@@ -9,6 +9,7 @@ import {
   PopoverArrow,
   PopoverCloseButton,
   PopoverHeader,
+  Text,
   VStack,
   StackDivider,
   Link,
@@ -21,17 +22,14 @@ import { Link as RouterLink } from 'react-router-dom';
 import { routes } from '../constants';
 import { NoNotificationsEmptyState } from '../components/EmptyStates';
 import range from 'lodash-es/range';
-import take from 'lodash-es/take';
 import NotificationTemplateSkeleton from '../components/NotificationTemplateSkeleton';
 
+const pageSize = 20;
+
 export default function NavBarNotificationItem() {
-  const { isLoading, data } = useGetAllUserNotificationsQuery(me, { page: 1, pageSize: 100, sort: 'createdOn:desc' });
+  const { isLoading, data } = useGetAllUserNotificationsQuery(me, { page: 1, pageSize, sort: 'createdOn:desc' });
   const hasUnreadNotifications = data?.result.some((x) => !x.seen) ?? false;
-  // The above unread notifications boolean reflects only the latest 100 notifications.
-  // This is a good enough tradeoff which doesn't require additional endpoints on the
-  // backend for querying the number while also providing the user with a mostly accurate
-  // value (as the change for having an unread notification in the first 100 results is
-  // more than likely).
+  const hiddenNotifications = data ? data.totalCount - pageSize : -1;
 
   return (
     <Popover isLazy>
@@ -59,9 +57,10 @@ export default function NavBarNotificationItem() {
             {data && data.result.length > 0 && (
               <>
                 <VStack divider={<StackDivider />} spacing="0" overflowY="auto">
-                  {take(data.result, 20).map((notification) => (
+                  {data.result.map((notification) => (
                     <NotificationSelector key={notification.id} notification={notification} />
                   ))}
+                  {hiddenNotifications > 0 && <Text my="2">...and {hiddenNotifications} more.</Text>}
                 </VStack>
                 <Divider />
                 <Center>
