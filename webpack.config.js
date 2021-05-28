@@ -1,13 +1,16 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { DefinePlugin } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { resolve } = require('path');
 
 module.exports = (env, argv = {}) => {
+  const mode = argv.mode || process.env.NODE_ENV || 'production';
+
   return {
     entry: resolve(__dirname, 'src', 'index.tsx'),
-    mode: argv.mode || process.env.NODE_ENV || 'production',
+    mode,
     target: 'web',
-    devtool: 'source-map',
+    devtool: mode === 'production' ? 'source-map' : 'eval-source-map',
     resolve: {
       extensions: ['.tsx', '.ts', '.jsx', '.js'],
     },
@@ -17,6 +20,7 @@ module.exports = (env, argv = {}) => {
     },
     devServer: {
       contentBase: resolve(__dirname, 'src'),
+      historyApiFallback: true,
     },
     module: {
       rules: [
@@ -26,20 +30,24 @@ module.exports = (env, argv = {}) => {
           use: 'babel-loader',
         },
         {
-            test: /\.(css|scss)$/,
-            use: ["style-loader", "css-loader"],
+          test: /\.(css|scss)$/,
+          use: ['style-loader', 'css-loader'],
         },
         {
-            test: /\.(jpg|png|gif|svg)$/,
-            use: ["file-loader"],
+          test: /\.(jpg|png|gif|svg)$/,
+          use: ['file-loader'],
         },
       ],
     },
     plugins: [
       new CleanWebpackPlugin(),
+      new DefinePlugin({
+        // TODO: We don't actually have a production URL. Update as required.
+        API_BASE_URL: JSON.stringify(mode === 'production' ? 'http://localhost:4040' : 'http://localhost:4040'),
+      }),
       new HtmlWebpackPlugin({
         template: resolve(__dirname, 'src', 'index.html'),
-      })
-    ]
+      }),
+    ],
   };
 };

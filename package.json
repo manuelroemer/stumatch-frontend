@@ -13,25 +13,39 @@
     "prettier": "prettier --config .prettierrc --write \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.6.2",
+    "@emotion/react": "^11.4.0",
+    "@emotion/styled": "^11.3.0",
+    "framer-motion": "^4.1.17",
+    "lodash-es": "^4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-hook-form": "^7.6.3",
+    "react-icons": "^4.2.0",
+    "react-query": "^3.16.0",
     "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "react-timeago": "^6.1.1",
+    "socket.io-client": "^4.1.2",
+    "zustand": "^3.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.14.2",
     "@babel/preset-react": "^7.13.13",
     "@babel/preset-typescript": "^7.13.0",
+    "@types/lodash-es": "^4.17.4",
     "@types/react": "^17.0.6",
     "@types/react-dom": "^17.0.5",
     "@types/react-router": "^5.1.14",
     "@types/react-router-dom": "^5.1.7",
+    "@types/react-timeago": "^4.1.2",
     "@types/webpack": "^5.28.0",
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "core-js": "^3.12.1",
     "css-loader": "^5.2.4",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
@@ -40,14 +54,16 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.1",
-    "i": "^0.3.6",
     "npm": "^7.13.0",
     "prettier": "^2.3.0",
     "style-loader": "^2.0.0",
     "ts-loader": "^9.2.1",
-    "typescript": "^4.2.4",
+    "typescript": "^4.3.2",
     "webpack": "^5.37.1",
     "webpack-cli": "^4.7.0",
     "webpack-dev-server": "^3.11.2"
-  }
+  },
+  "browserslist": [
+    "defaults"
+  ]
 }
