@@ -9,6 +9,7 @@ import LoadingOverlay from './shell/LoadingOverlay';
 import { useEffect, useState } from 'react';
 import NotConnectedOverlay from './shell/NotConnectedOverlay';
 import { connectSocket } from './api/socket';
+import { AppQueryClientProvider } from './queries/provider';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -28,21 +29,23 @@ export default function App() {
   }, [token]);
 
   return (
-    <ChakraProvider theme={appTheme}>
-      <NotConnectedOverlay>
-        <LoadingOverlay show={isLoading}>
-          <BrowserRouter>
-            <Switch>
-              <Route
-                exact
-                path={routes.root}
-                render={() => (hasLoggedInUser ? <Redirect to={routes.feed} /> : <LandingPage />)}
-              />
-              <Route render={() => (hasLoggedInUser ? <AppShell /> : <Redirect to={routes.root} />)} />
-            </Switch>
-          </BrowserRouter>
-        </LoadingOverlay>
-      </NotConnectedOverlay>
-    </ChakraProvider>
+    <AppQueryClientProvider>
+      <ChakraProvider theme={appTheme}>
+        <NotConnectedOverlay>
+          <LoadingOverlay show={isLoading}>
+            <BrowserRouter>
+              <Switch>
+                <Route
+                  exact
+                  path={routes.root}
+                  render={() => (hasLoggedInUser ? <Redirect to={routes.feed} /> : <LandingPage />)}
+                />
+                <Route render={() => (hasLoggedInUser ? <AppShell /> : <Redirect to={routes.root} />)} />
+              </Switch>
+            </BrowserRouter>
+          </LoadingOverlay>
+        </NotConnectedOverlay>
+      </ChakraProvider>
+    </AppQueryClientProvider>
   );
 }

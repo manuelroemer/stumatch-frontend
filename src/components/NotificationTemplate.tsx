@@ -16,30 +16,41 @@ import { IoMailOutline, IoMailOpenOutline } from 'react-icons/io5';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { SyntheticEvent } from 'react';
 
-export interface NotificationCardProps extends HTMLChakraProps<'div'> {
+export interface NotificationTemplateProps extends HTMLChakraProps<'div'> {
   title: string;
   date: Date | string;
   content: string;
   emoji: string;
   seen: boolean;
+  isDeleting: boolean;
+  isMarking: boolean;
   onMarkAsRead(): void;
   onMarkAsUnread(): void;
   onDelete(): void;
   onClick?(): void;
 }
 
-export default function NotificationCard({
+/**
+ * The {@link NotificationTemplate} renders the inner layout of a notification.
+ * It only focuses on the UI/layout and does not contain any logic for interacting with or
+ * displaying the properties of a notification resource coming from the API.
+ */
+export default function NotificationTemplate({
   title,
   date,
   content,
   emoji,
   seen,
+  isDeleting,
+  isMarking,
   onMarkAsRead,
   onMarkAsUnread,
   onDelete,
   onClick,
   ...rest
-}: NotificationCardProps) {
+}: NotificationTemplateProps) {
+  const isLoading = isDeleting || isMarking;
+
   return (
     <Grid
       w="100%"
@@ -101,7 +112,9 @@ export default function NotificationCard({
                 size="sm"
                 aria-label="Mark as unread"
                 icon={<Icon as={IoMailOutline} />}
-                onClick={preventPropagation(onMarkAsRead)}
+                onClick={preventPropagation(onMarkAsUnread)}
+                isLoading={isMarking}
+                disabled={isLoading}
               />
             </Tooltip>
           )}
@@ -111,7 +124,9 @@ export default function NotificationCard({
                 size="sm"
                 aria-label="Mark as read"
                 icon={<Icon as={IoMailOpenOutline} />}
-                onClick={preventPropagation(onMarkAsUnread)}
+                onClick={preventPropagation(onMarkAsRead)}
+                isLoading={isMarking}
+                disabled={isLoading}
               />
             </Tooltip>
           )}
@@ -121,6 +136,8 @@ export default function NotificationCard({
               aria-label="Delete"
               icon={<Icon as={AiOutlineDelete} />}
               onClick={preventPropagation(onDelete)}
+              isLoading={isDeleting}
+              disabled={isLoading}
             />
           </Tooltip>
         </HStack>
