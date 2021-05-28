@@ -1,4 +1,4 @@
-import { VStack, Center, Skeleton } from '@chakra-ui/react';
+import { VStack, Center } from '@chakra-ui/react';
 import { me } from '../../api/conventions';
 import Pagination from '../../components/Pagination';
 import { usePageQueryParameter, usePageSizeQueryParameter } from '../../utils/useQueryParameter';
@@ -7,6 +7,8 @@ import NotificationSelector from '../../components/NotificationSelector';
 import { useGetAllUserNotificationsQuery } from '../../queries/notifications';
 import DefaultPageLayout from '../../components/DefaultPageLayout';
 import { NoNotificationsEmptyState } from '../../components/EmptyStates';
+import NotificationTemplateSkeleton from '../../components/NotificationTemplateSkeleton';
+import FloatingCard from '../../components/FloatingCard';
 
 export default function NotificationPage() {
   const [page, setPage] = usePageQueryParameter();
@@ -17,19 +19,17 @@ export default function NotificationPage() {
     <DefaultPageLayout header="Notifications" subHeader="Manage all of your notifications.">
       <VStack spacing="5">
         {isLoading ? (
-          range(pageSize).map((i) => <Skeleton key={i} height="2rem" />)
+          range(page < (data?.pages ?? -1) ? pageSize : 3).map((i) => (
+            <FloatingCard key={i}>
+              <NotificationTemplateSkeleton />
+            </FloatingCard>
+          ))
         ) : (
           <>
             {data?.result.map((notification) => (
-              <NotificationSelector
-                key={notification.id}
-                notification={notification}
-                w="100%"
-                borderWidth="1px"
-                borderColor="gray.50"
-                shadow="lg"
-                borderRadius="md"
-              />
+              <FloatingCard key={notification.id}>
+                <NotificationSelector notification={notification} />
+              </FloatingCard>
             ))}
           </>
         )}

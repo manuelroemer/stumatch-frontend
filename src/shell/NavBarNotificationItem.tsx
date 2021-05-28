@@ -19,12 +19,14 @@ import { useGetAllUserNotificationsQuery } from '../queries/notifications';
 import { Link as RouterLink } from 'react-router-dom';
 import { routes } from '../constants';
 import { NoNotificationsEmptyState } from '../components/EmptyStates';
+import range from 'lodash-es/range';
+import NotificationTemplateSkeleton from '../components/NotificationTemplateSkeleton';
 
 export default function NavBarNotificationItem() {
-  const { data } = useGetAllUserNotificationsQuery(me, { page: 1, pageSize: 20, sort: 'createdOn:desc' });
+  const { isLoading, data } = useGetAllUserNotificationsQuery(me, { page: 1, pageSize: 20, sort: 'createdOn:desc' });
 
   return (
-    <Popover>
+    <Popover isLazy>
       {({ onClose }) => (
         <>
           <PopoverTrigger>
@@ -34,6 +36,13 @@ export default function NavBarNotificationItem() {
             <PopoverArrow />
             <PopoverCloseButton />
             <PopoverHeader>Notifications</PopoverHeader>
+            {isLoading && (
+              <VStack divider={<StackDivider />} spacing="0">
+                {range(3).map((i) => (
+                  <NotificationTemplateSkeleton key={i} />
+                ))}
+              </VStack>
+            )}
             {data && data.result.length > 0 && (
               <>
                 <VStack divider={<StackDivider />} spacing="0" overflowY="auto">
