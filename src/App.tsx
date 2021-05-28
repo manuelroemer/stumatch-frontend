@@ -9,7 +9,7 @@ import LoadingOverlay from './shell/LoadingOverlay';
 import { useEffect, useState } from 'react';
 import NotConnectedOverlay from './shell/NotConnectedOverlay';
 import { connectSocket } from './api/socket';
-import { AppQueryClientProvider } from './queries/provider';
+import { AppQueryClientProvider } from './queries/AppQueryClientProvider';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
