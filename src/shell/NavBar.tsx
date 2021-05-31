@@ -24,7 +24,9 @@ export default function NavBar() {
       </Box>
       <HStack grow={2} w="100%" mx="16" spacing="8">
         <NavBarItem title="Feed" to={routes.feed} />
-        <NavBarItem title="Matching" to={routes.matching} />
+        <RequireRoles roles={['admin', 'student']}>
+          <NavBarItem title="Matching" to={routes.matching} />
+        </RequireRoles>
         <RequireRoles roles="admin">
           <NavBarItem title="Administration" to={routes.administration} />
         </RequireRoles>
