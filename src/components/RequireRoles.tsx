@@ -18,6 +18,6 @@ export default function RequireRoles({ children, fallback, roles = [] }: Require
 
   const userRoles = useUserStore((state) => state.userInfo?.user.roles ?? []);
   const requiredRoles = Array.isArray(roles) ? roles : [roles];
-  const hasAccess = requiredRoles.every((requiredRole) => userRoles.includes(requiredRole));
+  const hasAccess = requiredRoles.some((requiredRole) => userRoles.includes(requiredRole));
   return <>{hasAccess ? children : fallback}</>;
 }
