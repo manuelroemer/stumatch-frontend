@@ -7,11 +7,15 @@ export type UserRole = 'student' | 'admin';
 
 export interface User {
   id: string;
-  email: string;
+  email?: string;
   displayName: string;
   createdOn: string;
   modifiedOn: string;
   roles: Array<UserRole>;
+}
+
+export interface Me extends User {
+  email: string;
 }
 
 export function getAllUsers(options?: QueryOptions, init?: StumatchFetchInit) {

@@ -1,7 +1,7 @@
 import create from 'zustand';
 import { postAuthToken } from '../api/auth';
 import { me } from '../api/conventions';
-import { getUser, User } from '../api/users';
+import { getUser, Me } from '../api/users';
 
 /**
  * The global state containing information about the current user who is currently logged in.
@@ -14,7 +14,7 @@ export interface UserState {
     /**
      * The most recent information about the logged in user.
      */
-    user: User;
+    user: Me;
     /**
      * The user's token.
      */
@@ -47,7 +47,7 @@ export const useUserStore = create<UserState>((set, get) => ({
   async login(email, password) {
     try {
       const token = (await postAuthToken({ email, password })).data.access_token;
-      const user = await fetchUser(token);
+      const user = (await fetchUser(token)) as Me;
       persistToken(token);
       set(() => ({ userInfo: { user, token } }));
       return true;
@@ -64,7 +64,7 @@ export const useUserStore = create<UserState>((set, get) => ({
     }
 
     try {
-      const user = await fetchUser(token);
+      const user = (await fetchUser(token)) as Me;
       set(() => ({ userInfo: { user, token } }));
       return true;
     } catch (e) {
@@ -81,7 +81,7 @@ export const useUserStore = create<UserState>((set, get) => ({
     }
 
     try {
-      const user = await fetchUser(token);
+      const user = (await fetchUser(token)) as Me;
       set((state) => ({ userInfo: { ...state.userInfo, user } }));
       return true;
     } catch (e) {

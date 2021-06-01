@@ -4,7 +4,7 @@ import { routes } from '../constants';
 import { useCurrentUser, useUserStore } from '../stores/userStore';
 import NavBarItem from './NavBarItem';
 import NavBarNotificationItem from './NavBarNotificationItem';
-import logo from '../../assets/logo.svg';
+import logo from '../assets/logo.svg';
 
 export default function NavBar() {
   const logout = useUserStore((state) => state.logout);
