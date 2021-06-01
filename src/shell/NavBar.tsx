@@ -4,6 +4,7 @@ import { routes } from '../constants';
 import { useCurrentUser, useUserStore } from '../stores/userStore';
 import NavBarItem from './NavBarItem';
 import NavBarNotificationItem from './NavBarNotificationItem';
+import logo from '../../assets/logo.svg';
 
 export default function NavBar() {
   const logout = useUserStore((state) => state.logout);
@@ -20,7 +21,7 @@ export default function NavBar() {
       align="center"
       justify="space-between">
       <Box>
-        <chakra.img src="../../assets/logo.png" height="8" alt="sTUMatch Logo" />
+        <chakra.img src={logo} height="8" alt="sTUMatch Logo" />
       </Box>
       <HStack grow={2} w="100%" mx="16" spacing="8">
         <NavBarItem title="Feed" to={routes.feed} />

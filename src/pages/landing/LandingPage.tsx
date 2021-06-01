@@ -1,5 +1,5 @@
 import { Heading, Flex, Box, Stack } from '@chakra-ui/react';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/logo.svg';
 import LoginBox from './LoginBox';
 
 export default function LandingPage() {
