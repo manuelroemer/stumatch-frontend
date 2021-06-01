@@ -20,7 +20,7 @@ export default function NavBar() {
       align="center"
       justify="space-between">
       <Box>
-        <chakra.img src="../../assets/logo.png" height="8" alt="sTUMatch Logo" />
+        <chakra.img src="../../assets/logo.svg" height="8" alt="sTUMatch Logo" />
       </Box>
       <HStack grow={2} w="100%" mx="16" spacing="8">
         <NavBarItem title="Feed" to={routes.feed} />
