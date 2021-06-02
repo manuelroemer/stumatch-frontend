@@ -4,7 +4,7 @@ import Pagination from '../../components/Pagination';
 import { usePageQueryParameter, usePageSizeQueryParameter } from '../../utils/useQueryParameter';
 import range from 'lodash-es/range';
 import NotificationSelector from '../../components/NotificationSelector';
-import { useGetAllUserNotificationsQuery } from '../../queries/notifications';
+import { useGetAllUserNotificationsQuery, useNotificationsSocketQueryInvalidation } from '../../queries/notifications';
 import DefaultPageLayout from '../../components/DefaultPageLayout';
 import { NoNotificationsEmptyState } from '../../components/EmptyStates';
 import NotificationTemplateSkeleton from '../../components/NotificationTemplateSkeleton';
@@ -14,6 +14,7 @@ export default function NotificationPage() {
   const [page, setPage] = usePageQueryParameter();
   const [pageSize] = usePageSizeQueryParameter();
   const { isLoading, data } = useGetAllUserNotificationsQuery(me, { page, pageSize, sort: 'createdOn:desc' });
+  useNotificationsSocketQueryInvalidation();
 
   return (
     <DefaultPageLayout header="Notifications" subHeader="Manage all of your notifications.">
