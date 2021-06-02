@@ -24,7 +24,7 @@ export const AppSocketContext = createContext<AppSocketContextProps>({});
  * @param token The token to be used for WS authentication.
  * @returns The connected socket instance once
  */
-export function useSocket(token?: string) {
+export function useConnectedSocket(token?: string) {
   const [socket, setSocket] = useState<Socket | undefined>(undefined);
 
   useEffect(() => {

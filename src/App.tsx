@@ -9,14 +9,14 @@ import LoadingOverlay from './shell/LoadingOverlay';
 import { useEffect, useState } from 'react';
 import NotConnectedOverlay from './shell/NotConnectedOverlay';
 import { AppQueryClientProvider } from './queries/AppQueryClientProvider';
-import { AppSocketContext, useSocket } from './sockets/socket';
+import { AppSocketContext, useConnectedSocket } from './sockets/socket';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const hasLoggedInUser = useUserStore((state) => !!state.userInfo);
   const tryLoadRememberedLogin = useUserStore((state) => state.tryLoadRememberedUser);
   const token = useUserStore((state) => state.userInfo?.token);
-  const socket = useSocket(token);
+  const socket = useConnectedSocket(token);
 
   useEffect(() => {
     tryLoadRememberedLogin().finally(() => setIsLoading(false));
