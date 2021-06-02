@@ -9,7 +9,7 @@ import LoadingOverlay from './shell/LoadingOverlay';
 import { useEffect, useState } from 'react';
 import NotConnectedOverlay from './shell/NotConnectedOverlay';
 import { AppQueryClientProvider } from './queries/AppQueryClientProvider';
-import { AppSocketContext, useConnectedSocket } from './sockets/socket';
+import { SocketContext, useConnectedSocket } from './sockets/socket';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,7 +24,7 @@ export default function App() {
 
   return (
     <AppQueryClientProvider>
-      <AppSocketContext.Provider value={{ socket }}>
+      <SocketContext.Provider value={{ socket }}>
         <ChakraProvider theme={appTheme}>
           <NotConnectedOverlay>
             <LoadingOverlay show={isLoading}>
@@ -41,7 +41,7 @@ export default function App() {
             </LoadingOverlay>
           </NotConnectedOverlay>
         </ChakraProvider>
-      </AppSocketContext.Provider>
+      </SocketContext.Provider>
     </AppQueryClientProvider>
   );
 }

@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 import io, { Socket } from 'socket.io-client';
 
-export interface AppSocketContextProps {
+export interface SocketContextProps {
   /**
    * The application's shared socket that is connected to the backend.
    *
@@ -14,7 +14,7 @@ export interface AppSocketContextProps {
 /**
  * React context for accessing the application's shared socket that is connected to the backend.
  */
-export const AppSocketContext = createContext<AppSocketContextProps>({});
+export const SocketContext = createContext<SocketContextProps>({});
 
 /**
  * Establishes a WS connection to the backend given the specified token and returns the resulting connected socket.
