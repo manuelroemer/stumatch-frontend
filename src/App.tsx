@@ -8,44 +8,40 @@ import { routes } from './constants';
 import LoadingOverlay from './shell/LoadingOverlay';
 import { useEffect, useState } from 'react';
 import NotConnectedOverlay from './shell/NotConnectedOverlay';
-import { connectSocket } from './api/socket';
 import { AppQueryClientProvider } from './queries/AppQueryClientProvider';
+import { SocketContext, useConnectedSocket } from './sockets/socket';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const hasLoggedInUser = useUserStore((state) => !!state.userInfo);
   const tryLoadRememberedLogin = useUserStore((state) => state.tryLoadRememberedUser);
   const token = useUserStore((state) => state.userInfo?.token);
+  const socket = useConnectedSocket(token);
 
   useEffect(() => {
     tryLoadRememberedLogin().finally(() => setIsLoading(false));
   }, []);
 
-  useEffect(() => {
-    if (token) {
-      connectSocket(token);
-      console.info('Socket connected.');
-    }
-  }, [token]);
-
   return (
     <AppQueryClientProvider>
-      <ChakraProvider theme={appTheme}>
-        <NotConnectedOverlay>
-          <LoadingOverlay show={isLoading}>
-            <BrowserRouter>
-              <Switch>
-                <Route
-                  exact
-                  path={routes.root}
-                  render={() => (hasLoggedInUser ? <Redirect to={routes.feed} /> : <LandingPage />)}
-                />
-                <Route render={() => (hasLoggedInUser ? <AppShell /> : <Redirect to={routes.root} />)} />
-              </Switch>
-            </BrowserRouter>
-          </LoadingOverlay>
-        </NotConnectedOverlay>
-      </ChakraProvider>
+      <SocketContext.Provider value={{ socket }}>
+        <ChakraProvider theme={appTheme}>
+          <NotConnectedOverlay>
+            <LoadingOverlay show={isLoading}>
+              <BrowserRouter>
+                <Switch>
+                  <Route
+                    exact
+                    path={routes.root}
+                    render={() => (hasLoggedInUser ? <Redirect to={routes.feed} /> : <LandingPage />)}
+                  />
+                  <Route render={() => (hasLoggedInUser ? <AppShell /> : <Redirect to={routes.root} />)} />
+                </Switch>
+              </BrowserRouter>
+            </LoadingOverlay>
+          </NotConnectedOverlay>
+        </ChakraProvider>
+      </SocketContext.Provider>
     </AppQueryClientProvider>
   );
 }

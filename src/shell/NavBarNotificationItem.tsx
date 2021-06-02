@@ -17,7 +17,7 @@ import {
 import { IoNotificationsOutline } from 'react-icons/io5';
 import { me } from '../api/conventions';
 import NotificationSelector from '../components/NotificationSelector';
-import { useGetAllUserNotificationsQuery } from '../queries/notifications';
+import { useGetAllUserNotificationsQuery, useNotificationsSocketQueryInvalidation } from '../queries/notifications';
 import { Link as RouterLink } from 'react-router-dom';
 import { routes } from '../constants';
 import { NoNotificationsEmptyState } from '../components/EmptyStates';
@@ -30,6 +30,7 @@ export default function NavBarNotificationItem() {
   const { isLoading, data } = useGetAllUserNotificationsQuery(me, { page: 1, pageSize, sort: 'createdOn:desc' });
   const hasUnreadNotifications = data?.result.some((x) => !x.seen) ?? false;
   const hiddenNotifications = data ? data.totalCount - pageSize : -1;
+  useNotificationsSocketQueryInvalidation();
 
   return (
     <Popover isLazy>
