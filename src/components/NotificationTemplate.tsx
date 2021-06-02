@@ -59,6 +59,7 @@ export default function NotificationTemplate({
 
   return (
     <Grid
+      w="100%"
       transition="opacity 150ms"
       opacity={seen ? 0.6 : 1}
       _hover={{ opacity: 1 }}
