@@ -23,7 +23,7 @@ export const appTheme = extendTheme({
   styles: {
     global: {
       'html, body, #root': {
-        minHeight: '100vh',
+        height: '100vh',
       },
     },
   },
