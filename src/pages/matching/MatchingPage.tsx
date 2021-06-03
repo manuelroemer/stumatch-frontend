@@ -3,9 +3,9 @@ import DefaultPageLayout from '../../components/DefaultPageLayout';
 import { AccessDeniedEmptyState } from '../../components/EmptyStates';
 import RequireRoles from '../../components/RequireRoles';
 import FloatingCard from '../../components/FloatingCard';
-import MatchingTemplateSkeleton from './MatchingTemplateSkeleton';
 import { matchingData } from '../../api/matching';
 import { BiPlus } from 'react-icons/bi';
+import MatchingSelector from './MatchingSelector';
 
 export default function MatchingPage() {
   return (
@@ -20,7 +20,7 @@ export default function MatchingPage() {
         }>
         {matchingData.map((matchRequest, index) => (
           <FloatingCard key={index}>
-            <MatchingTemplateSkeleton matchRequest={matchRequest} />
+            <MatchingSelector matchRequest={matchRequest} />
           </FloatingCard>
         ))}
       </DefaultPageLayout>

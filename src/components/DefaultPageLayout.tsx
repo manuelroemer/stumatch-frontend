@@ -14,7 +14,7 @@ export default function DefaultPageLayout({ children, header, subHeader, actions
       <Box w={['95%', '90%', '80%', '75%']}>
         <Flex justify="space-between">
           <Box as="header">
-            <Heading as="h1" mb="0" isTruncated>
+            <Heading as="h1" lineHeight="1.4" mb="0" isTruncated>
               {header}
             </Heading>
             {subHeader && <Text noOfLines={2}>{subHeader}</Text>}

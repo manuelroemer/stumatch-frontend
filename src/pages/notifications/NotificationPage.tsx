@@ -7,7 +7,7 @@ import NotificationSelector from '../../components/NotificationSelector';
 import { useGetAllUserNotificationsQuery, useNotificationsSocketQueryInvalidation } from '../../queries/notifications';
 import DefaultPageLayout from '../../components/DefaultPageLayout';
 import { NoNotificationsEmptyState } from '../../components/EmptyStates';
-import NotificationTemplateSkeleton from '../../components/NotificationTemplateSkeleton';
+import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptionSkeleton';
 import FloatingCard from '../../components/FloatingCard';
 
 export default function NotificationPage() {
@@ -22,7 +22,7 @@ export default function NotificationPage() {
         {isLoading ? (
           range(page < (data?.pages ?? -1) ? pageSize : 3).map((i) => (
             <FloatingCard key={i}>
-              <NotificationTemplateSkeleton />
+              <ImageTitleDescriptionSkeleton />
             </FloatingCard>
           ))
         ) : (
