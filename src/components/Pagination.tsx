@@ -18,11 +18,18 @@ export default function Pagination({ currentPage, pages, maxOptionsPerSide = 3, 
   const missingOptionsRangeStart = Math.min(0, currentPage - maxOptionsPerSide - 1);
   const rangeStart = Math.max(1, currentPage - maxOptionsPerSide + missingOptionsRangeEnd);
   const rangeEnd = Math.min(pages, currentPage + maxOptionsPerSide - missingOptionsRangeStart);
+  const lastPage = Math.max(pages, currentPage + maxOptionsPerSide + missingOptionsRangeStart);
   const isOnFirstPage = currentPage === 1;
   const isOnLastPage = currentPage === pages;
 
   return (
     <HStack>
+      <Tooltip hasArrow label="First Page">
+        <Button p="0" disabled={isOnFirstPage} onClick={() => onPageChanged(1)}>
+          <Icon as={GrFormPrevious} />
+          <Icon as={GrFormPrevious} />
+        </Button>
+      </Tooltip>
       <Tooltip hasArrow label="Previous">
         <Button p="0" disabled={isOnFirstPage} onClick={() => onPageChanged(currentPage - 1)}>
           <Icon as={GrFormPrevious} />
@@ -33,6 +40,12 @@ export default function Pagination({ currentPage, pages, maxOptionsPerSide = 3, 
       ))}
       <Tooltip hasArrow label="Next">
         <Button p="0" disabled={isOnLastPage} onClick={() => onPageChanged(currentPage + 1)}>
+          <Icon as={GrFormNext} />
+        </Button>
+      </Tooltip>
+      <Tooltip hasArrow label="Last Page">
+        <Button p="0" disabled={isOnLastPage} onClick={() => onPageChanged(lastPage)}>
+          <Icon as={GrFormNext} />
           <Icon as={GrFormNext} />
         </Button>
       </Tooltip>
