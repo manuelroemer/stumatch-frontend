@@ -1,4 +1,4 @@
-import { Button } from '@chakra-ui/react';
+import { Button, useDisclosure } from '@chakra-ui/react';
 import DefaultPageLayout from '../../components/DefaultPageLayout';
 import { AccessDeniedEmptyState } from '../../components/EmptyStates';
 import RequireRoles from '../../components/RequireRoles';
@@ -6,15 +6,17 @@ import FloatingCard from '../../components/FloatingCard';
 import { matchingData } from '../../api/matching';
 import { BiPlus } from 'react-icons/bi';
 import MatchingSelector from './MatchingSelector';
+import MatchingModal from './MatchingModal';
 
 export default function MatchingPage() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <RequireRoles roles={['student', 'admin']} fallback={<AccessDeniedEmptyState />}>
       <DefaultPageLayout
         header="Your Matchings"
         subHeader="Match and connect with other students."
         actions={
-          <Button colorScheme="primary" leftIcon={<BiPlus />} size="md">
+          <Button onClick={onOpen} colorScheme="primary" leftIcon={<BiPlus />} size="md">
             Create New
           </Button>
         }>
@@ -24,6 +26,7 @@ export default function MatchingPage() {
           </FloatingCard>
         ))}
       </DefaultPageLayout>
+      <MatchingModal isOpen={isOpen} onClose={onClose} />
     </RequireRoles>
   );
 }
