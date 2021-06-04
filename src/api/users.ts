@@ -3,7 +3,7 @@ import { ApiResult, PaginationApiResult } from './apiResult';
 import { QueryOptions } from './conventions';
 import { stumatchFetch, StumatchFetchInit } from './fetch';
 
-export type UserRole = 'student' | 'admin';
+export type UserRole = 'student' | 'admin' | 'globalContentManager';
 
 export interface User {
   id: string;
