@@ -18,7 +18,6 @@ export default function Pagination({ currentPage, pages, maxOptionsPerSide = 3, 
   const missingOptionsRangeStart = Math.min(0, currentPage - maxOptionsPerSide - 1);
   const rangeStart = Math.max(1, currentPage - maxOptionsPerSide + missingOptionsRangeEnd);
   const rangeEnd = Math.min(pages, currentPage + maxOptionsPerSide - missingOptionsRangeStart);
-  const lastPage = Math.max(pages, currentPage + maxOptionsPerSide + missingOptionsRangeStart);
   const isOnFirstPage = currentPage === 1;
   const isOnLastPage = currentPage === pages;
 
@@ -44,7 +43,7 @@ export default function Pagination({ currentPage, pages, maxOptionsPerSide = 3, 
         </Button>
       </Tooltip>
       <Tooltip hasArrow label="Last Page">
-        <Button p="0" disabled={isOnLastPage} onClick={() => onPageChanged(lastPage)}>
+        <Button p="0" disabled={isOnLastPage} onClick={() => onPageChanged(pages)}>
           <Icon as={GrFormNext} />
           <Icon as={GrFormNext} />
         </Button>
