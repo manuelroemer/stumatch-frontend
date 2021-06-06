@@ -22,18 +22,15 @@ export interface MatchingSelectorProps {
 
 export default function MatchingSelector({ matchRequest }: MatchingSelectorProps) {
   const getMatchingTemplateProps = (): MatchingTemplateProps => {
+    const partnerName = `${matchRequest.partner?.firstName} ${matchRequest.partner?.lastName}`;
+    const partnerAvatar = <Avatar name={partnerName} bg="gray.300" />;
     switch (matchRequest.status) {
       case 'matched':
       case 'acceptedByMe':
       case 'acceptedByPartner':
         return {
-          leftChildren: (
-            <Text fontSize="2xl" unselectable="on" userSelect="none">
-              <Avatar bg="gray.300" />
-            </Text>
-          ),
-
-          title: 'test',
+          leftChildren: partnerAvatar,
+          title: partnerName,
           description: descriptions[matchRequest.status],
           actions: (
             <>
@@ -43,17 +40,12 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
             </>
           ),
         };
-
       case 'declinedByMe':
       case 'declinedByPartner':
       case 'accepted':
         return {
-          leftChildren: (
-            <Text fontSize="2xl" unselectable="on" userSelect="none">
-              <Avatar bg="gray.300" />
-            </Text>
-          ),
-          title: 'test',
+          leftChildren: partnerAvatar,
+          title: partnerName,
           description: descriptions[matchRequest.status],
           actions: (
             <>
@@ -67,11 +59,10 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
           leftChildren: (
             <>
               <Center w="12" h="12" bg="gray.300" borderRadius="full">
-                <Icon as={BiHourglass} w="9" h="9" color="white" />
+                <Icon as={BiHourglass} w="8" h="8" color="white" />
               </Center>
             </>
           ),
-
           title: 'Pending...',
           description: descriptions[matchRequest.status],
           actions: <IconButton aria-label="Delete" fontSize="25" icon={<MdDeleteForever />} />,

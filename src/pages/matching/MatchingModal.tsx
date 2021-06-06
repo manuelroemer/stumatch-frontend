@@ -43,7 +43,7 @@ export default function MatchingModal({ isOpen, onClose }: MatchingModalProps) {
                   <option value="option2">Option 2</option>
                   <option value="option3">Option 3</option>
                 </Select>
-                <FormHelperText>We will never share your email.</FormHelperText>
+                <FormHelperText>Select the faculty you would like to meet.</FormHelperText>
               </FormControl>
 
               <FormControl>
@@ -53,8 +53,9 @@ export default function MatchingModal({ isOpen, onClose }: MatchingModalProps) {
                   <option value="option2">Option 2</option>
                   <option value="option3">Option 3</option>
                 </Select>
-                <FormHelperText>We will never share your email.</FormHelperText>
+                <FormHelperText>Select the study program you would like to meet.</FormHelperText>
               </FormControl>
+
               <FormControl>
                 <FormLabel>Select the semesters you would like to meet</FormLabel>
                 <HStack>
@@ -74,7 +75,6 @@ export default function MatchingModal({ isOpen, onClose }: MatchingModalProps) {
                     </NumberInputStepper>
                   </NumberInput>
                 </HStack>
-                <FormHelperText>We will never share your email.</FormHelperText>
               </FormControl>
             </VStack>
           </ModalBody>
