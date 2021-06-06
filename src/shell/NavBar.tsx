@@ -35,7 +35,7 @@ export default function NavBar() {
       <HStack spacing="4">
         <NavBarNotificationItem />
         <Text w="10rem" noOfLines={1}>
-          Hello {user.displayName}!
+          Hello {user.firstName} {user.lastName}!
         </Text>
         <Button onClick={logout}>Logout</Button>
       </HStack>
