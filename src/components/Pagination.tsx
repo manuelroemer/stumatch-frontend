@@ -1,6 +1,6 @@
 import { Button, HStack, Icon, Tooltip } from '@chakra-ui/react';
 import range from 'lodash-es/range';
-import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
+import { BiChevronLeft, BiChevronRight, BiChevronsLeft, BiChevronsRight } from 'react-icons/bi';
 
 export interface PaginationProps {
   currentPage: number;
@@ -25,13 +25,12 @@ export default function Pagination({ currentPage, pages, maxOptionsPerSide = 3, 
     <HStack>
       <Tooltip hasArrow label="First Page">
         <Button p="0" disabled={isOnFirstPage} onClick={() => onPageChanged(1)}>
-          <Icon as={GrFormPrevious} />
-          <Icon as={GrFormPrevious} />
+          <Icon as={BiChevronsLeft} />
         </Button>
       </Tooltip>
       <Tooltip hasArrow label="Previous">
         <Button p="0" disabled={isOnFirstPage} onClick={() => onPageChanged(currentPage - 1)}>
-          <Icon as={GrFormPrevious} />
+          <Icon as={BiChevronLeft} />
         </Button>
       </Tooltip>
       {range(rangeStart, rangeEnd + 1).map((page) => (
@@ -39,13 +38,12 @@ export default function Pagination({ currentPage, pages, maxOptionsPerSide = 3, 
       ))}
       <Tooltip hasArrow label="Next">
         <Button p="0" disabled={isOnLastPage} onClick={() => onPageChanged(currentPage + 1)}>
-          <Icon as={GrFormNext} />
+          <Icon as={BiChevronRight} />
         </Button>
       </Tooltip>
       <Tooltip hasArrow label="Last Page">
         <Button p="0" disabled={isOnLastPage} onClick={() => onPageChanged(pages)}>
-          <Icon as={GrFormNext} />
-          <Icon as={GrFormNext} />
+          <Icon as={BiChevronsRight} />
         </Button>
       </Tooltip>
     </HStack>
