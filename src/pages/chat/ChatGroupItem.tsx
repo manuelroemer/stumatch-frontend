@@ -1,4 +1,4 @@
-import { Avatar, Heading, Flex, Tag, Center, Text, Grid, AvatarGroup, AvatarProps } from '@chakra-ui/react';
+import { Avatar, Heading, Flex, Tag, Center, Text, Grid, AvatarGroup, AvatarProps, Tooltip } from '@chakra-ui/react';
 import ReactTimeago from 'react-timeago';
 
 export interface ChatGroupItemProps {
@@ -31,19 +31,21 @@ export default function ChatGroupItem({
       onClick={onClick}>
       <Center gridRow="1 / span 2" gridColumn="1" minH="12" minW="12" mr="2">
         <AvatarGroup max={2} size={avatars.length > 1 ? 'xs' : 'md'}>
-          {avatars.map((avatars, i) => (
-            <Avatar key={i} {...avatars} />
+          {avatars.map((avatar, i) => (
+            <Avatar key={i} {...avatar} />
           ))}
         </AvatarGroup>
       </Center>
       <Flex gridRow="1" gridColumn="2" align="center" mr="2">
-        <Heading as="h3" fontSize="sm" isTruncated>
-          {title}
-        </Heading>
+        <Tooltip label={title} hasArrow>
+          <Heading as="h3" fontSize="sm" isTruncated>
+            {title}
+          </Heading>
+        </Tooltip>
       </Flex>
       <Flex gridRow="1" gridColumn="3" align="center">
         <ReactTimeago
-          minPeriod={60}
+          minPeriod={10}
           date={new Date()}
           component={(props) => <Text layerStyle="timeAgoHint" {...props} />}
         />

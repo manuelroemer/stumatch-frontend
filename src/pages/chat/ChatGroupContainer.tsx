@@ -9,6 +9,7 @@ import { getUser, User } from '../../api/users';
 import { ApiResult } from '../../api/apiResult';
 import { useHistory, useParams } from 'react-router';
 import { routes } from '../../constants';
+import { getFullName } from '../../utils/userUtils';
 
 export interface ChatGroupContainerProps extends HTMLChakraProps<'div'> {}
 
@@ -17,10 +18,32 @@ interface RouteParams {
 }
 
 export default function ChatGroupContainer({ ...rest }: ChatGroupContainerProps) {
-  const { groupId } = useParams<RouteParams>();
   const history = useHistory();
-  const { isLoading: isLoadingChatGroups, data } = useGetAllUserChatGroupsQuery(me);
-  const userIds = flatten((data?.result ?? []).map((chatGroup) => chatGroup.activeParticipantIds));
+  const { groupId } = useParams<RouteParams>();
+  const { isLoading, data } = useChatGroupData();
+
+  return (
+    <VStack as="aside" h="100%" divider={<StackDivider />} spacing="0" overflowY="auto" {...rest}>
+      {!isLoading &&
+        data.length > 0 &&
+        data.map((chatGroupItem) => (
+          <ChatGroupItem
+            key={chatGroupItem.id}
+            avatars={chatGroupItem.participants.map((user) => ({ name: getFullName(user!) }))}
+            title={chatGroupItem.participants.map((user) => getFullName(user!)).join(', ')}
+            newMessages={0}
+            lastMessage={'Last message'}
+            isSelected={groupId === chatGroupItem.id}
+            onClick={() => history.replace(`${routes.chat}/${chatGroupItem.id}`)}
+          />
+        ))}
+    </VStack>
+  );
+}
+
+function useChatGroupData() {
+  const { isLoading: isLoadingChatGroups, data: chatGroupsData } = useGetAllUserChatGroupsQuery(me);
+  const userIds = flatten((chatGroupsData?.result ?? []).map((chatGroup) => chatGroup.activeParticipantIds));
   const usersQueries = useQueries(
     userIds.map((userId) => ({
       queryKey: [usersQueryKey, userId],
@@ -30,30 +53,14 @@ export default function ChatGroupContainer({ ...rest }: ChatGroupContainerProps)
   ) as Array<UseQueryResult<ApiResult<User>>>;
 
   const isLoading = isLoadingChatGroups || usersQueries.some((query) => query.isLoading);
-  const chatGroupList = isLoading
+  const data = isLoading
     ? []
-    : data!.result.map((chatGroup) => ({
+    : chatGroupsData!.result.map((chatGroup) => ({
         ...chatGroup,
         participants: chatGroup.activeParticipantIds.map((userId) =>
           usersQueries.map((query) => query.data!.result).find((user) => user!.id === userId),
         ),
       }));
 
-  return (
-    <VStack as="aside" h="100%" divider={<StackDivider />} spacing="0" overflowY="auto" {...rest}>
-      {!isLoading &&
-        chatGroupList.length > 0 &&
-        chatGroupList.map((chatGroupItem) => (
-          <ChatGroupItem
-            key={chatGroupItem.id}
-            avatars={chatGroupItem.participants.map((user) => ({ name: `${user?.firstName} ${user?.lastName}` }))}
-            title={chatGroupItem.participants.map((user) => `${user?.firstName} ${user?.lastName}`).join(', ')}
-            newMessages={0}
-            lastMessage={'Last message'}
-            isSelected={groupId === chatGroupItem.id}
-            onClick={() => history.replace(`${routes.chat}/${chatGroupItem.id}`)}
-          />
-        ))}
-    </VStack>
-  );
+  return { isLoading, data };
 }
