@@ -10,6 +10,7 @@ import { ApiResult } from '../../api/apiResult';
 import { useHistory, useParams } from 'react-router';
 import { routes } from '../../constants';
 import { getFullName } from '../../utils/userUtils';
+import { useCurrentUser } from '../../stores/userStore';
 
 export interface ChatGroupContainerProps extends HTMLChakraProps<'div'> {}
 
@@ -42,6 +43,7 @@ export default function ChatGroupContainer({ ...rest }: ChatGroupContainerProps)
 }
 
 function useChatGroupData() {
+  const currentUser = useCurrentUser();
   const { isLoading: isLoadingChatGroups, data: chatGroupsData } = useGetAllUserChatGroupsQuery(me);
   const userIds = flatten((chatGroupsData?.result ?? []).map((chatGroup) => chatGroup.activeParticipantIds));
   const usersQueries = useQueries(
@@ -57,9 +59,9 @@ function useChatGroupData() {
     ? []
     : chatGroupsData!.result.map((chatGroup) => ({
         ...chatGroup,
-        participants: chatGroup.activeParticipantIds.map((userId) =>
-          usersQueries.map((query) => query.data!.result).find((user) => user!.id === userId),
-        ),
+        participants: chatGroup.activeParticipantIds
+          .filter((userId) => userId !== currentUser.id)
+          .map((userId) => usersQueries.map((query) => query.data!.result).find((user) => user!.id === userId)),
       }));
 
   return { isLoading, data };
