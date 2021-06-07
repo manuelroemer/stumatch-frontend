@@ -39,7 +39,6 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
   const getMatchingTemplateProps = (): MatchingTemplateProps => {
     const partnerName = `${matchRequest.partner?.firstName} ${matchRequest.partner?.lastName}`;
     const partnerAvatar = <Avatar name={partnerName} bg="gray.300" />;
-
     const deleteButton = <DeleteButton matchRequestId={matchRequest.id} />;
 
     switch (matchRequest.status) {
@@ -96,12 +95,15 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
 function ChatButton(props: HTMLChakraProps<'button'>) {
   return <IconButton aria-label="Chat" fontSize="25" icon={<IoChatbubblesOutline />} {...props} />;
 }
+
 function CheckButton(props: HTMLChakraProps<'button'>) {
   return <IconButton aria-label="Check" fontSize="25" color="green" icon={<IoMdCheckmark />} {...props} />;
 }
+
 function CloseButton(props: HTMLChakraProps<'button'>) {
   return <IconButton aria-label="Close" fontSize="25" color="red" icon={<IoMdClose />} {...props} />;
 }
+
 function DeleteButton(props: HTMLChakraProps<'button'> & { matchRequestId: string }) {
   const mutation = useDeleteMatchRequestMutation(props.matchRequestId);
   const [isOpen, setIsOpen] = useState(false);
@@ -122,9 +124,7 @@ function DeleteButton(props: HTMLChakraProps<'button'> & { matchRequestId: strin
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Remove Match Request
             </AlertDialogHeader>
-
             <AlertDialogBody>Are you sure? You can not undo this action afterwards.</AlertDialogBody>
-
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
                 No, keep it
