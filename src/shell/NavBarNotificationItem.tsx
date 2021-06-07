@@ -22,7 +22,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { routes } from '../constants';
 import { NoNotificationsEmptyState } from '../components/EmptyStates';
 import range from 'lodash-es/range';
-import NotificationTemplateSkeleton from '../components/NotificationTemplateSkeleton';
+import ImageTitleDescriptionSkeleton from '../components/ImageTitleDescriptionSkeleton';
 
 const pageSize = 20;
 
@@ -51,7 +51,7 @@ export default function NavBarNotificationItem() {
             {isLoading && (
               <VStack divider={<StackDivider />} spacing="0">
                 {range(3).map((i) => (
-                  <NotificationTemplateSkeleton key={i} />
+                  <ImageTitleDescriptionSkeleton key={i} />
                 ))}
               </VStack>
             )}
