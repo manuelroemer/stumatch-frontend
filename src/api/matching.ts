@@ -1,7 +1,10 @@
 import { User } from './users';
-
+import { qs } from '../utils/qs';
+import { PaginationApiResult } from './apiResult';
+import { QueryOptions } from './conventions';
+import { stumatchFetch, StumatchFetchInit } from './fetch';
 export interface MatchRequest {
-  //userId: string;
+  id: string;
   partner?: User;
   status:
     | 'pending'
@@ -11,23 +14,14 @@ export interface MatchRequest {
     | 'declinedByMe'
     | 'declinedByPartner'
     | 'matched';
+  createdOn: string;
+  modifiedOn: string;
 }
-const partner = {
-  id: '00000000-0000-1000-8000-000000000000',
-  firstName: 'sTUMatch',
-  lastName: 'User',
-  createdOn: '',
-  modifiedOn: '',
-  roles: [],
-};
 
-export const matchingData: Array<MatchRequest> = [
-  { status: 'pending' },
-  { status: 'pending' },
-  { status: 'matched', partner },
-  { status: 'accepted', partner },
-  { status: 'acceptedByMe', partner },
-  { status: 'acceptedByPartner', partner },
-  { status: 'declinedByMe', partner },
-  { status: 'declinedByPartner', partner },
-];
+export function getAllUserMatchRequests(userId: string, options?: QueryOptions, init?: StumatchFetchInit) {
+  return stumatchFetch<PaginationApiResult<MatchRequest>>(`/api/v1/users/${userId}/matchRequests?${qs(options)}`, init);
+}
+
+export function deleteMatchRequest(id: string, init?: StumatchFetchInit) {
+  return stumatchFetch(`/api/v1/matchRequests/${id}`, { method: 'DELETE', ...init });
+}

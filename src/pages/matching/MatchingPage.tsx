@@ -1,16 +1,24 @@
-import { Button, useDisclosure, Center } from '@chakra-ui/react';
+import { Button, useDisclosure, Center, VStack } from '@chakra-ui/react';
 import DefaultPageLayout from '../../components/DefaultPageLayout';
-import { AccessDeniedEmptyState } from '../../components/EmptyStates';
+import { AccessDeniedEmptyState, NoMatchRequestsEmptyState } from '../../components/EmptyStates';
 import RequireRoles from '../../components/RequireRoles';
 import FloatingCard from '../../components/FloatingCard';
-import { matchingData } from '../../api/matching';
 import { BiPlus } from 'react-icons/bi';
 import MatchingSelector from './MatchingSelector';
 import MatchingModal from './MatchingModal';
 import Pagination from '../../components/Pagination';
+import { useGetAllUserMatchRequestsQuery } from '../../queries/matchRequests';
+import { usePageQueryParameter, usePageSizeQueryParameter } from '../../utils/useQueryParameter';
+import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptionSkeleton';
+import { me } from '../../api/conventions';
+import range from 'lodash-es/range';
 
 export default function MatchingPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [page, setPage] = usePageQueryParameter();
+  const [pageSize] = usePageSizeQueryParameter();
+  const { isLoading, data } = useGetAllUserMatchRequestsQuery(me, { page, pageSize, sort: 'createdOn:desc' });
+
   return (
     <RequireRoles roles={['student', 'admin']} fallback={<AccessDeniedEmptyState />}>
       <DefaultPageLayout
@@ -21,14 +29,29 @@ export default function MatchingPage() {
             Create New
           </Button>
         }>
-        {matchingData.map((matchRequest, index) => (
-          <FloatingCard key={index}>
-            <MatchingSelector matchRequest={matchRequest} />
-          </FloatingCard>
-        ))}
-        <Center mt="10">
-          <Pagination currentPage={1} pages={1} onPageChanged={() => {}} />
-        </Center>
+        <VStack spacing="5">
+          {isLoading ? (
+            range(page < (data?.pages ?? -1) ? pageSize : 3).map((i) => (
+              <FloatingCard key={i}>
+                <ImageTitleDescriptionSkeleton />
+              </FloatingCard>
+            ))
+          ) : (
+            <>
+              {data?.result.map((matchRequest) => (
+                <FloatingCard key={matchRequest.id}>
+                  <MatchingSelector matchRequest={matchRequest} />
+                </FloatingCard>
+              ))}
+            </>
+          )}
+        </VStack>
+        {data && data.result.length > 0 && (
+          <Center mt="10">
+            <Pagination currentPage={data.page} pages={data.pages} onPageChanged={setPage} />
+          </Center>
+        )}
+        {data && data.result.length === 0 && <NoMatchRequestsEmptyState />}
       </DefaultPageLayout>
       <MatchingModal isOpen={isOpen} onClose={onClose} />
     </RequireRoles>
