@@ -17,6 +17,7 @@ module.exports = (env, argv = {}) => {
     output: {
       filename: '[name].js',
       path: resolve(__dirname, 'dist'),
+      publicPath: '/',
     },
     devServer: {
       contentBase: resolve(__dirname, 'src'),

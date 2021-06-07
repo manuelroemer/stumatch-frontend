@@ -16,7 +16,7 @@ export default function AppShell() {
       <Route exact path={routes.matching} component={MatchingPage} />
       <Route exact path={routes.administration} component={AdministrationPage} />
       <Route exact path={routes.notifications} component={NotificationPage} />
-      <Route exact path={routes.chat} component={ChatPage} />
+      <Route path={routes.chatGroup} component={ChatPage} />
     </Flex>
   );
 }
