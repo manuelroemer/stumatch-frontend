@@ -33,7 +33,7 @@ export default function ChatGroupContainer({ ...rest }: ChatGroupContainerProps)
             avatars={chatGroupItem.participants.map((user) => ({ name: getFullName(user!) }))}
             title={chatGroupItem.participants.map((user) => getFullName(user!)).join(', ')}
             newMessages={0}
-            lastMessage={'Last message'}
+            lastMessage={undefined}
             isSelected={groupId === chatGroupItem.id}
             onClick={() => history.replace(`${routes.chat}/${chatGroupItem.id}`)}
           />

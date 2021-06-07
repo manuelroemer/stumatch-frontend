@@ -39,7 +39,7 @@ export default function AdministrationPage() {
   return (
     <Flex h="100%">
       <Box w="25rem" h="100%">
-        <ChatGroupContainer />
+        <ChatGroupContainer borderRight="1px" borderRightColor="gray.200" />
       </Box>
     </Flex>
   );

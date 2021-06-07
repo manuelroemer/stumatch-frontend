@@ -51,9 +51,13 @@ export default function ChatGroupItem({
         />
       </Flex>
       <Flex gridRow="2" gridColumn="2" align="center" mr="2">
-        <Text fontSize="sm" isTruncated>
-          {lastMessage}
-        </Text>
+        {lastMessage ? (
+          <Text fontSize="sm" isTruncated>
+            {lastMessage}
+          </Text>
+        ) : (
+          <Text layerStyle="hint">No messages yet.</Text>
+        )}
       </Flex>
       {newMessages > 0 && (
         <Flex gridRow="2" gridColumn="3" justify="flex-end" align="center">
