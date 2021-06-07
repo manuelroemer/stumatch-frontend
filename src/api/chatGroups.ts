@@ -1,6 +1,4 @@
-import { qs } from '../utils/qs';
 import { PaginationApiResult } from './apiResult';
-import { PaginationQueryOptions } from './conventions';
 import { stumatchFetch, StumatchFetchInit } from './fetch';
 
 export interface ChatGroup {
@@ -10,6 +8,6 @@ export interface ChatGroup {
   activeParticipantIds: Array<string>;
 }
 
-export function getAllUserChatGroups(userId: string, options?: PaginationQueryOptions, init?: StumatchFetchInit) {
-  return stumatchFetch<PaginationApiResult<ChatGroup>>(`/api/v1/users/${userId}/chatGroups?${qs(options)}`, init);
+export function getAllUserChatGroups(userId: string, init?: StumatchFetchInit) {
+  return stumatchFetch<PaginationApiResult<ChatGroup>>(`/api/v1/users/${userId}/chatGroups`, init);
 }
