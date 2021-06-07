@@ -3,12 +3,13 @@ import { ApiResult, PaginationApiResult } from './apiResult';
 import { QueryOptions } from './conventions';
 import { stumatchFetch, StumatchFetchInit } from './fetch';
 
-export type UserRole = 'student' | 'admin';
+export type UserRole = 'student' | 'admin' | 'globalContentManager';
 
 export interface User {
   id: string;
   email?: string;
-  displayName: string;
+  firstName: string;
+  lastName: string;
   createdOn: string;
   modifiedOn: string;
   roles: Array<UserRole>;

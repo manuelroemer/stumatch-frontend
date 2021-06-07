@@ -23,6 +23,12 @@ export default function Pagination({ currentPage, pages, maxOptionsPerSide = 3, 
 
   return (
     <HStack>
+      <Tooltip hasArrow label="First Page">
+        <Button p="0" disabled={isOnFirstPage} onClick={() => onPageChanged(1)}>
+          <Icon as={GrFormPrevious} />
+          <Icon as={GrFormPrevious} />
+        </Button>
+      </Tooltip>
       <Tooltip hasArrow label="Previous">
         <Button p="0" disabled={isOnFirstPage} onClick={() => onPageChanged(currentPage - 1)}>
           <Icon as={GrFormPrevious} />
@@ -33,6 +39,12 @@ export default function Pagination({ currentPage, pages, maxOptionsPerSide = 3, 
       ))}
       <Tooltip hasArrow label="Next">
         <Button p="0" disabled={isOnLastPage} onClick={() => onPageChanged(currentPage + 1)}>
+          <Icon as={GrFormNext} />
+        </Button>
+      </Tooltip>
+      <Tooltip hasArrow label="Last Page">
+        <Button p="0" disabled={isOnLastPage} onClick={() => onPageChanged(pages)}>
+          <Icon as={GrFormNext} />
           <Icon as={GrFormNext} />
         </Button>
       </Tooltip>
