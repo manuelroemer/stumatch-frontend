@@ -32,3 +32,14 @@ export function NoNotificationsEmptyState(props?: EmptyStateProps) {
     />
   );
 }
+
+export function NoMatchRequestsEmptyState(props?: EmptyStateProps) {
+  return (
+    <EmptyState
+      imgSrc={socialSerenity}
+      title="No Match Requests"
+      description="You have no match requests at the moment."
+      {...props}
+    />
+  );
+}

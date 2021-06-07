@@ -1,6 +1,6 @@
 import { HStack, HTMLChakraProps, Skeleton, SkeletonCircle, VStack } from '@chakra-ui/react';
 
-export default function NotificationTemplateSkeleton(props?: HTMLChakraProps<'div'>) {
+export default function ImageTitleDescriptionSkeleton(props?: HTMLChakraProps<'div'>) {
   return (
     <HStack p="4" spacing="4" {...props}>
       <SkeletonCircle w="14" h="14" />
