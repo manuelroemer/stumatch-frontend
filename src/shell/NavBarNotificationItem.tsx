@@ -33,7 +33,7 @@ export default function NavBarNotificationItem() {
   useNotificationsSocketQueryInvalidation();
 
   return (
-    <Popover isLazy>
+    <Popover isLazy strategy="fixed">
       {({ onClose }) => (
         <>
           <PopoverTrigger>
