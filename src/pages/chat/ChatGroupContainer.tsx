@@ -12,6 +12,9 @@ import { routes } from '../../constants';
 import { getFullName } from '../../utils/userUtils';
 import { useCurrentUser } from '../../stores/userStore';
 import { ChatGroup } from '../../api/chatGroups';
+import range from 'lodash-es/range';
+import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptionSkeleton';
+import { NoChatGroupsEmptyState } from '../../components/EmptyStates';
 
 export interface ChatGroupContainerProps extends HTMLChakraProps<'div'> {
   chatGroupFilter: string;
@@ -33,6 +36,10 @@ export default function ChatGroupContainer({ chatGroupFilter, ...rest }: ChatGro
 
   return (
     <VStack h="100%" divider={<StackDivider />} spacing="0" overflowY="auto" {...rest}>
+      {isLoading &&
+        range(5).map((i) => (
+          <ImageTitleDescriptionSkeleton key={i} w="100%" p="2" imageSize="12" textSize="4" imageTextSpacing="2" />
+        ))}
       {!isLoading &&
         filteredData.length > 0 &&
         filteredData.map((chatGroupItem) => (
@@ -46,6 +53,9 @@ export default function ChatGroupContainer({ chatGroupFilter, ...rest }: ChatGro
             onClick={() => history.replace(`${routes.chat}/${chatGroupItem.id}`)}
           />
         ))}
+      {!isLoading && filteredData.length === 0 && (
+        <NoChatGroupsEmptyState size="xs" emptyDueToFiltering={data.length !== 0} />
+      )}
     </VStack>
   );
 }

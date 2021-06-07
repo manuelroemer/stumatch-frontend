@@ -20,8 +20,8 @@ export default function NotificationPage() {
     <DefaultPageLayout header="Notifications" subHeader="Manage all of your notifications.">
       <VStack spacing="5">
         {isLoading ? (
-          range(page < (data?.pages ?? -1) ? pageSize : 3).map((i) => (
-            <FloatingCard key={i}>
+          range(3).map((i) => (
+            <FloatingCard key={i} p="4">
               <ImageTitleDescriptionSkeleton />
             </FloatingCard>
           ))

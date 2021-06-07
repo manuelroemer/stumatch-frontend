@@ -10,7 +10,7 @@ export interface MatchingTemplateProps {
 
 export default function MatchingTemplate({ leftChildren, title, description, actions }: MatchingTemplateProps) {
   return (
-    <HStack p="5" spacing="4">
+    <HStack p="4" spacing="4">
       {leftChildren}
       <VStack align="flex-start">
         <Heading as="h1" lineHeight="1.4" fontSize="20" isTruncated>

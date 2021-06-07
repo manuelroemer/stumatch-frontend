@@ -13,7 +13,7 @@ export default function ChatGroupFilter({ filter, onFilterChanged }: ChatGroupFi
         <Icon as={IoFilterOutline} color="gray.400" />
       </InputLeftElement>
       <Input
-        placeholder="Filter users"
+        placeholder="Filter conversations"
         rounded="full"
         value={filter}
         onChange={(e) => onFilterChanged(e.target.value.trim())}
