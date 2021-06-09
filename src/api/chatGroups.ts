@@ -1,10 +1,8 @@
 import { PaginationApiResult } from './apiResult';
+import { ApiObject } from './conventions';
 import { stumatchFetch, StumatchFetchInit } from './fetch';
 
-export interface ChatGroup {
-  id: string;
-  createdOn: string;
-  modifiedOn: string;
+export interface ChatGroup extends ApiObject {
   activeParticipantIds: Array<string>;
 }
 

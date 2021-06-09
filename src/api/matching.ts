@@ -1,10 +1,9 @@
 import { User } from './users';
 import { qs } from '../utils/qs';
 import { PaginationApiResult } from './apiResult';
-import { QueryOptions } from './conventions';
+import { ApiObject, QueryOptions } from './conventions';
 import { stumatchFetch, StumatchFetchInit } from './fetch';
-export interface MatchRequest {
-  id: string;
+export interface MatchRequest extends ApiObject {
   partner?: User;
   status:
     | 'pending'
@@ -14,8 +13,6 @@ export interface MatchRequest {
     | 'declinedByMe'
     | 'declinedByPartner'
     | 'matched';
-  createdOn: string;
-  modifiedOn: string;
 }
 
 export function getAllUserMatchRequests(userId: string, options?: QueryOptions, init?: StumatchFetchInit) {
