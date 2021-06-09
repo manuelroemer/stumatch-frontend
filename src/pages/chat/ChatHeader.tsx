@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 
 export interface ChatHeaderProps {
@@ -7,8 +7,8 @@ export interface ChatHeaderProps {
 
 export default function ChatHeader({ children }: ChatHeaderProps) {
   return (
-    <Box h="16" p="2">
+    <Flex w="100%" h="16" p="2" borderBottom="1px" borderBottomColor="gray.200" bg="gray.50" align="center">
       {children}
-    </Box>
+    </Flex>
   );
 }
