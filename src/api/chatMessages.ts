@@ -10,5 +10,5 @@ export interface ChatMessage extends ApiObject {
 }
 
 export function getAllChatGroupChatMessages(chatGroupId: string, init?: StumatchFetchInit) {
-  return stumatchFetch<ApiResult<ChatMessage>>(`/api/v1/chatGroups/${chatGroupId}/chatMessages`, init);
+  return stumatchFetch<ApiResult<Array<ChatMessage>>>(`/api/v1/chatGroups/${chatGroupId}/chatMessages`, init);
 }

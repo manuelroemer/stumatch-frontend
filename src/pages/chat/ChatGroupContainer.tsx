@@ -7,7 +7,7 @@ import flatten from 'lodash-es/flatten';
 import { usersQueryKey } from '../../queries/users';
 import { getUser, User } from '../../api/users';
 import { ApiResult } from '../../api/apiResult';
-import { useHistory, useParams } from 'react-router';
+import { useHistory } from 'react-router';
 import { routes } from '../../constants';
 import { getFullName } from '../../utils/userUtils';
 import { useCurrentUser } from '../../stores/userStore';
@@ -17,20 +17,16 @@ import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptio
 import { NoChatGroupsEmptyState } from '../../components/EmptyStates';
 
 export interface ChatGroupContainerProps extends HTMLChakraProps<'div'> {
+  currentChatGroupId?: string;
   chatGroupFilter: string;
-}
-
-interface RouteParams {
-  groupId?: string;
 }
 
 interface EnrichedChatGroupData extends ChatGroup {
   participants: Array<User>;
 }
 
-export default function ChatGroupContainer({ chatGroupFilter, ...rest }: ChatGroupContainerProps) {
+export default function ChatGroupContainer({ currentChatGroupId, chatGroupFilter, ...rest }: ChatGroupContainerProps) {
   const history = useHistory();
-  const { groupId } = useParams<RouteParams>();
   const { isLoading, data } = useChatGroupData();
   const filteredData = data.filter((chatGroup) => filterChatGroup(chatGroup, chatGroupFilter));
 
@@ -49,7 +45,7 @@ export default function ChatGroupContainer({ chatGroupFilter, ...rest }: ChatGro
             title={chatGroupItem.participants.map((user) => getFullName(user!)).join(', ')}
             newMessages={0}
             lastMessage={undefined}
-            isSelected={groupId === chatGroupItem.id}
+            isSelected={currentChatGroupId === chatGroupItem.id}
             onClick={() => history.replace(`${routes.chat}/${chatGroupItem.id}`)}
           />
         ))}
