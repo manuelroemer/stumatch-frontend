@@ -3,7 +3,7 @@ import { ApiResult, PaginationApiResult } from './apiResult';
 import { ApiObject, QueryOptions } from './conventions';
 import { stumatchFetch, StumatchFetchInit } from './fetch';
 
-export type UserRole = 'student' | 'admin' | 'globalContentManager';
+export type UserRole = 'student' | 'admin' | 'advertiser' | 'globalContentManager';
 
 export interface User extends ApiObject {
   email?: string;
