@@ -28,6 +28,9 @@ export default function NavBar() {
         <RequireRoles roles={['admin', 'student']}>
           <NavBarItem title="Matching" to={routes.matching} />
         </RequireRoles>
+        <RequireRoles roles={['admin', 'advertiser']}>
+          <NavBarItem title="Advertising" to={routes.advertising} />
+        </RequireRoles>
         <RequireRoles roles="admin">
           <NavBarItem title="Administration" to={routes.administration} />
         </RequireRoles>
