@@ -1,10 +1,12 @@
-import { Box, chakra, HStack, Flex, Button, Text } from '@chakra-ui/react';
+import { Box, chakra, HStack, Flex, Button, Text, Icon } from '@chakra-ui/react';
 import RequireRoles from '../components/RequireRoles';
 import { routes } from '../constants';
 import { useCurrentUser, useUserStore } from '../stores/userStore';
 import NavBarItem from './NavBarItem';
 import NavBarNotificationItem from './NavBarNotificationItem';
 import logo from '../assets/logo.svg';
+import { Link } from 'react-router-dom';
+import { IoChatbubblesOutline } from 'react-icons/io5';
 
 export default function NavBar() {
   const logout = useUserStore((state) => state.logout);
@@ -36,6 +38,9 @@ export default function NavBar() {
         </RequireRoles>
       </HStack>
       <HStack spacing="4">
+        <Link to={routes.chat}>
+          <Icon as={IoChatbubblesOutline} />
+        </Link>
         <NavBarNotificationItem />
         <Text w="10rem" noOfLines={1}>
           Hello {user.firstName} {user.lastName}!

@@ -1,13 +1,28 @@
-import { HStack, HTMLChakraProps, Skeleton, SkeletonCircle, VStack } from '@chakra-ui/react';
+import { Grid, HTMLChakraProps, LayoutProps, Skeleton, SkeletonCircle, VStack } from '@chakra-ui/react';
 
-export default function ImageTitleDescriptionSkeleton(props?: HTMLChakraProps<'div'>) {
+type Size = LayoutProps['width'];
+
+export interface ImageTitleDescriptionSkeletonProps extends HTMLChakraProps<'div'> {
+  imageSize?: Size;
+  textSize?: Size;
+  imageTextSpacing?: Size;
+  textSpacing?: Size;
+}
+
+export default function ImageTitleDescriptionSkeleton({
+  imageSize = 14,
+  textSize = 5,
+  imageTextSpacing = 4,
+  textSpacing = 2,
+  ...rest
+}: ImageTitleDescriptionSkeletonProps) {
   return (
-    <HStack p="4" spacing="4" {...props}>
-      <SkeletonCircle w="14" h="14" />
-      <VStack w="100%" spacing="2">
-        <Skeleton h="5" w="100%" />
-        <Skeleton h="5" w="100%" />
+    <Grid templateColumns="auto 1fr" {...rest}>
+      <SkeletonCircle w={imageSize} h={imageSize} />
+      <VStack spacing={textSpacing} ml={imageTextSpacing} justify="center">
+        <Skeleton h={textSize} w="100%" />
+        <Skeleton h={textSize} w="100%" />
       </VStack>
-    </HStack>
+    </Grid>
   );
 }

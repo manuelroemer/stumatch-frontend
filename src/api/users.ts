@@ -1,17 +1,14 @@
 import { qs } from '../utils/qs';
 import { ApiResult, PaginationApiResult } from './apiResult';
-import { QueryOptions } from './conventions';
+import { ApiObject, QueryOptions } from './conventions';
 import { stumatchFetch, StumatchFetchInit } from './fetch';
 
 export type UserRole = 'student' | 'admin' | 'advertiser' | 'globalContentManager';
 
-export interface User {
-  id: string;
+export interface User extends ApiObject {
   email?: string;
   firstName: string;
   lastName: string;
-  createdOn: string;
-  modifiedOn: string;
   roles: Array<UserRole>;
 }
 

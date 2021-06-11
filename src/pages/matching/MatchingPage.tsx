@@ -31,8 +31,8 @@ export default function MatchingPage() {
         }>
         <VStack spacing="5">
           {isLoading ? (
-            range(page < (data?.pages ?? -1) ? pageSize : 3).map((i) => (
-              <FloatingCard key={i}>
+            range(3).map((i) => (
+              <FloatingCard key={i} p="4">
                 <ImageTitleDescriptionSkeleton />
               </FloatingCard>
             ))

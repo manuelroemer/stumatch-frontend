@@ -1,12 +1,9 @@
 import { qs } from '../utils/qs';
 import { PaginationApiResult } from './apiResult';
-import { QueryOptions } from './conventions';
+import { ApiObject, QueryOptions } from './conventions';
 import { stumatchFetch, StumatchFetchInit } from './fetch';
 
-export interface BaseNotification<NotificationType extends string> {
-  id: string;
-  createdOn: string;
-  modifiedOn: string;
+export interface BaseNotification<NotificationType extends string> extends ApiObject {
   userId: string;
   type: NotificationType;
   seen?: boolean | null;

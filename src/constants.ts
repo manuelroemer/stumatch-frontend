@@ -5,4 +5,6 @@ export const routes = {
   advertising: '/advertising',
   administration: '/administration',
   notifications: '/notifications',
+  chat: '/chat',
+  chatGroup: '/chat/:groupId?',
 } as const;

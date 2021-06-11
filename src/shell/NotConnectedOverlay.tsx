@@ -13,12 +13,13 @@ export default function NotConnectedOverlay({ children }: NotConnectedOverlayPro
   const isConnected = useIsConnected();
   return (
     <>
-      <Box display={isConnected ? undefined : 'none'}>{children}</Box>
+      <Box display={isConnected ? undefined : 'none'} h="100%">
+        {children}
+      </Box>
       {!isConnected && (
         <Center layerStyle="fullPageOverlay">
           <EmptyState
             imgSrc={serverDown}
-            imgAlt="Server Down"
             title="Backend Unreachable"
             description="We are sorry, but we cannot reach our servers at the moment.
               We will automatically try to reconnect. Please stay patient!"
