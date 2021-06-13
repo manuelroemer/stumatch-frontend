@@ -8,3 +8,8 @@ export interface PaginationApiResult<T> extends ApiResult<Array<T>> {
   page: number;
   pageSize: number;
 }
+
+export interface CursorPaginationApiResult<T, TCursor = unknown> extends ApiResult<Array<T>> {
+  cursor: TCursor;
+  nextCursor: TCursor | null;
+}

@@ -1,5 +1,6 @@
-import { ApiResult } from './apiResult';
-import { ApiObject } from './conventions';
+import { qs } from '../utils/qs';
+import { CursorPaginationApiResult } from './apiResult';
+import { ApiObject, CursorPaginationQueryOptions } from './conventions';
 import { stumatchFetch, StumatchFetchInit } from './fetch';
 
 export interface ChatMessage extends ApiObject {
@@ -9,6 +10,13 @@ export interface ChatMessage extends ApiObject {
   isDeleted: boolean;
 }
 
-export function getAllChatGroupChatMessages(chatGroupId: string, init?: StumatchFetchInit) {
-  return stumatchFetch<ApiResult<Array<ChatMessage>>>(`/api/v1/chatGroups/${chatGroupId}/chatMessages`, init);
+export function getAllChatGroupChatMessages(
+  chatGroupId: string,
+  options?: CursorPaginationQueryOptions,
+  init?: StumatchFetchInit,
+) {
+  return stumatchFetch<CursorPaginationApiResult<ChatMessage, string>>(
+    `/api/v1/chatGroups/${chatGroupId}/chatMessages?${qs(options)}`,
+    init,
+  );
 }
