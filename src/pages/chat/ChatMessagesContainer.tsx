@@ -1,9 +1,8 @@
 import { Flex } from '@chakra-ui/react';
 import { useRef } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { useInfiniteQuery } from 'react-query';
-import { getAllChatGroupChatMessages } from '../../api/chatMessages';
 import { NoChatMessagesEmptyState } from '../../components/EmptyStates';
+import { useInfiniteGetAllChatGroupChatMessagesQuery } from '../../queries/chatMessages';
 import ChatMessageSelector from './ChatMessageSelector';
 import ChatMessagesSkeleton from './ChatMessagesSkeleton';
 import ScrollToBottomButton from './ScrollToBottomButton';
@@ -14,18 +13,8 @@ export interface ChatMessagesContainerProps {
 
 export default function ChatMessagesContainer({ currentChatGroupId }: ChatMessagesContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { isLoading, data, fetchPreviousPage, hasPreviousPage } = useInfiniteQuery(
-    ['chatMessages', currentChatGroupId],
-    ({ pageParam = '' }) => {
-      return getAllChatGroupChatMessages(currentChatGroupId, { pageSize: 20, before: pageParam }).then(
-        (res) => res.data,
-      );
-    },
-    {
-      // react-query expects `undefined` (not `null`) for "no next cursor". -> `?? undefined`
-      getPreviousPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
-    },
-  );
+  const { isLoading, data, fetchPreviousPage, hasPreviousPage } =
+    useInfiniteGetAllChatGroupChatMessagesQuery(currentChatGroupId);
 
   // Due to the 'column-reverse' hack we must also reverse the order in which messages are rendered.
   // Otherwise they are displayed bottom-to-top.
