@@ -44,13 +44,24 @@ export function NoMatchRequestsEmptyState(props?: EmptyStateProps) {
   );
 }
 
+export function NoChatMessagesEmptyState(props?: EmptyStateProps) {
+  return (
+    <EmptyState
+      imgSrc={socialSerenity}
+      title="No Messages"
+      description="This is the beginning of your conversation."
+      {...props}
+    />
+  );
+}
+
 export function NoChatGroupsEmptyState(props?: EmptyStateProps & { emptyDueToFiltering: boolean }) {
   return (
     <EmptyState
       imgSrc={socialSerenity}
       title="No Chats"
       description={
-        props.emptyDueToFiltering
+        props?.emptyDueToFiltering
           ? 'Your filter does not match any conversations.'
           : 'You have not started a conversation with anyone yet.'
       }

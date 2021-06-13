@@ -1,9 +1,9 @@
-import { Box, Button, Text } from '@chakra-ui/react';
-import { Fragment, useRef } from 'react';
-import { useEffect, UIEvent } from 'react';
-import { useInfiniteQuery, useQuery } from 'react-query';
+import { Flex } from '@chakra-ui/react';
+import { useRef } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useInfiniteQuery } from 'react-query';
 import { getAllChatGroupChatMessages } from '../../api/chatMessages';
-import { isScrolledToTop, scrollToBottom } from '../../utils/scrollUtils';
+import { NoChatMessagesEmptyState } from '../../components/EmptyStates';
 import ChatMessageSelector from './ChatMessageSelector';
 import ChatMessagesSkeleton from './ChatMessagesSkeleton';
 import ScrollToBottomButton from './ScrollToBottomButton';
@@ -14,10 +14,12 @@ export interface ChatMessagesContainerProps {
 
 export default function ChatMessagesContainer({ currentChatGroupId }: ChatMessagesContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { isLoading, data, fetchPreviousPage, hasPreviousPage, isFetchingPreviousPage } = useInfiniteQuery(
+  const { isLoading, data, fetchPreviousPage, hasPreviousPage } = useInfiniteQuery(
     ['chatMessages', currentChatGroupId],
     ({ pageParam = '' }) => {
-      return getAllChatGroupChatMessages(currentChatGroupId, { before: pageParam }).then((res) => res.data);
+      return getAllChatGroupChatMessages(currentChatGroupId, { pageSize: 20, before: pageParam }).then(
+        (res) => res.data,
+      );
     },
     {
       // react-query expects `undefined` (not `null`) for "no next cursor". -> `?? undefined`
@@ -25,31 +27,40 @@ export default function ChatMessagesContainer({ currentChatGroupId }: ChatMessag
     },
   );
 
-  const handleScroll = (e: UIEvent) => {
-    if (isScrolledToTop(e.currentTarget) && hasPreviousPage && !isFetchingPreviousPage) {
-      fetchPreviousPage();
-    }
-  };
-
-  useEffect(() => {
-    if (containerRef.current && !isFetchingPreviousPage) {
-      // scrollToBottom(containerRef.current);
-    }
-  }, [isLoading, data]);
+  // Due to the 'column-reverse' hack we must also reverse the order in which messages are rendered.
+  // Otherwise they are displayed bottom-to-top.
+  const chatMessages = data?.pages.flatMap((page) => page.result).reverse() ?? [];
 
   return (
-    <Box ref={containerRef} as="article" flexGrow={1} height="0" overflowY="auto" p={[4, 4, 8]} onScroll={handleScroll}>
-      {isFetchingPreviousPage && <ChatMessagesSkeleton />}
-      {data &&
-        data.pages.length > 0 &&
-        data.pages.map((page, i) => (
-          <Fragment key={i}>
-            {page.result.map((chatMessage) => (
+    <Flex
+      id="chatMessagesContainer"
+      ref={containerRef}
+      as="article"
+      flexDirection="column-reverse"
+      flexGrow={1}
+      height="0"
+      overflowY="auto"
+      p={[4, 4, 8]}>
+      {isLoading && chatMessages.length === 0 && <ChatMessagesSkeleton />}
+      {!isLoading && chatMessages.length === 0 && <NoChatMessagesEmptyState />}
+      {chatMessages.length > 0 && (
+        <>
+          <InfiniteScroll
+            style={{ display: 'flex', flexDirection: 'column-reverse' }}
+            scrollableTarget="chatMessagesContainer"
+            dataLength={chatMessages.length}
+            inverse={true}
+            hasMore={hasPreviousPage ?? false}
+            next={() => fetchPreviousPage()}
+            loader={<ChatMessagesSkeleton />}
+            pullDownToRefresh={false}>
+            {chatMessages.map((chatMessage) => (
               <ChatMessageSelector key={chatMessage.id} chatMessage={chatMessage} />
             ))}
-          </Fragment>
-        ))}
-      <ScrollToBottomButton containerRef={containerRef} />
-    </Box>
+          </InfiniteScroll>
+          <ScrollToBottomButton containerRef={containerRef} />
+        </>
+      )}
+    </Flex>
   );
 }
