@@ -44,9 +44,14 @@ export function NoMatchRequestsEmptyState(props?: EmptyStateProps) {
   );
 }
 
-export function NoPostsEmptyState(props?: EmptyStateProps) {
+export function NoChatMessagesEmptyState(props?: EmptyStateProps) {
   return (
-    <EmptyState imgSrc={socialSerenity} title="No Posts" description="There are no posts at the moment." {...props} />
+    <EmptyState
+      imgSrc={socialSerenity}
+      title="No Messages"
+      description="This is the beginning of your conversation."
+      {...props}
+    />
   );
 }
 
