@@ -69,3 +69,9 @@ export function NoChatGroupsEmptyState(props?: EmptyStateProps & { emptyDueToFil
     />
   );
 }
+
+export function NoPostsEmptyState(props?: EmptyStateProps) {
+  return (
+    <EmptyState imgSrc={socialSerenity} title="No Posts" description="There are no posts at the moment." {...props} />
+  );
+}
