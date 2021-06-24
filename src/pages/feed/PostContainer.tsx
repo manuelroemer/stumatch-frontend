@@ -14,7 +14,7 @@ export interface PostContainerProps {
 
 export default function PostContainer({ post }: PostContainerProps) {
   return (
-    <Grid h="100px" templateRows="repeat(2, 1fr)" templateColumns="repeat(14, 1fr)" gap={2}>
+    <Grid templateRows="repeat(2, 1fr)" templateColumns="repeat(14, 1fr)" gap={2}>
       <GridItem rowSpan={2} colSpan={2}>
         <Flex h="100%" align="center">
           <Icon aria-lable="Picture" as={AiOutlinePicture} w="80%" h="80%" margin="5" />
@@ -67,11 +67,6 @@ export default function PostContainer({ post }: PostContainerProps) {
           <IconButton size="sm" aria-label="Share" icon={<AiOutlineShareAlt />} />
         </Flex>
       </GridItem>
-      {/* <GridItem rowSpan={1} colSpan={2}>
-        <Flex h="100%" align="top" justify="center">
-          <Text>{post.comments}</Text>
-        </Flex>
-      </GridItem> */}
     </Grid>
   );
 }

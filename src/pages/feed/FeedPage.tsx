@@ -19,13 +19,6 @@ export default function FeedPage() {
   return (
     <RequireRoles roles={['student', 'admin']} fallback={<AccessDeniedEmptyState />}>
       <DefaultPageLayout header="Feed" subHeader="What happened at your university?">
-        {/* <VStack spacing="5">
-          {mockPosts.map((post) => (
-            <FloatingCard key={post.id}>
-              <PostContainer post={post} />
-            </FloatingCard>
-          ))}
-        </VStack> */}
         <VStack spacing="5">
           {isLoading ? (
             range(3).map((i) => (

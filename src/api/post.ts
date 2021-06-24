@@ -10,7 +10,7 @@ export interface Post extends ApiObject {
   author: User;
   likes: number;
   comments: number;
-  categories: string[];
+  categories: Array<string>;
 }
 
 export function getAllPosts(userId: string, options?: QueryOptions, init?: StumatchFetchInit) {
