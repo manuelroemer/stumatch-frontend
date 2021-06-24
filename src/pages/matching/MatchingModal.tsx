@@ -8,10 +8,8 @@ import {
   ModalCloseButton,
   Button,
   VStack,
-  Select,
   FormControl,
   FormLabel,
-  FormHelperText,
   HStack,
   NumberInput,
   NumberInputField,
@@ -20,6 +18,8 @@ import {
   NumberDecrementStepper,
   Spacer,
 } from '@chakra-ui/react';
+import { useGetAllFacultiesQuery } from '../../queries/faculties';
+import FacultyDropdown from './FacultyDropdown';
 
 export interface MatchingModalProps {
   isOpen: boolean;
@@ -27,64 +27,50 @@ export interface MatchingModalProps {
 }
 
 export default function MatchingModal({ isOpen, onClose }: MatchingModalProps) {
+  const { isLoading, data } = useGetAllFacultiesQuery();
   return (
     <>
       <Modal isOpen={isOpen} size="xl" onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Create New Match Request</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <VStack align="flex-start" spacing="10">
-              <FormControl>
-                <FormLabel>Faculty</FormLabel>
-                <Select variant="filled" placeholder="Any Faculty">
-                  <option value="option1">Option 1</option>
-                  <option value="option2">Option 2</option>
-                  <option value="option3">Option 3</option>
-                </Select>
-                <FormHelperText>Select the faculty you would like to meet.</FormHelperText>
-              </FormControl>
+          {!isLoading && (
+            <>
+              <ModalHeader>Create New Match Request</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <VStack align="flex-start" spacing="10">
+                  <FacultyDropdown facultyData={data?.result ?? []} />
+                  <FormControl>
+                    <FormLabel>Select the semesters you would like to meet</FormLabel>
+                    <HStack>
+                      <NumberInput min={1} variant="filled">
+                        <NumberInputField placeholder="Min. Semester" />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
+                        </NumberInputStepper>
+                      </NumberInput>
+                      <Spacer />
+                      <NumberInput min={1} variant="filled">
+                        <NumberInputField placeholder="Max.Semester" />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
+                        </NumberInputStepper>
+                      </NumberInput>
+                    </HStack>
+                  </FormControl>
+                </VStack>
+              </ModalBody>
 
-              <FormControl>
-                <FormLabel>Study Program</FormLabel>
-                <Select variant="filled" placeholder="Any Study Program">
-                  <option value="option1">Option 1</option>
-                  <option value="option2">Option 2</option>
-                  <option value="option3">Option 3</option>
-                </Select>
-                <FormHelperText>Select the study program you would like to meet.</FormHelperText>
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>Select the semesters you would like to meet</FormLabel>
-                <HStack>
-                  <NumberInput min={1} variant="filled">
-                    <NumberInputField placeholder="Min. Semester" />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                  <Spacer />
-                  <NumberInput min={1} variant="filled">
-                    <NumberInputField placeholder="Max.Semester" />
-                    <NumberInputStepper>
-                      <NumberIncrementStepper />
-                      <NumberDecrementStepper />
-                    </NumberInputStepper>
-                  </NumberInput>
-                </HStack>
-              </FormControl>
-            </VStack>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
-              Create
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
+              <ModalFooter>
+                <Button colorScheme="blue" mr={3}>
+                  Create
+                </Button>
+                <Button onClick={onClose}>Cancel</Button>
+              </ModalFooter>
+            </>
+          )}
         </ModalContent>
       </Modal>
     </>
