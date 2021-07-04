@@ -26,8 +26,8 @@ export default function ScrollToBottomButton({ containerRef }: ScrollToBottomBut
         size="lg"
         rounded="full"
         position="absolute"
-        right="10"
-        bottom="20"
+        right="20"
+        bottom="40"
         shadow="lg"
         onClick={() => {
           if (containerRef.current) {

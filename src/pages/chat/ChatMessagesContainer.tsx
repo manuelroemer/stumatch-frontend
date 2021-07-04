@@ -30,8 +30,7 @@ export default function ChatMessagesContainer({ currentChatGroupId }: ChatMessag
       flexGrow={1}
       height="0"
       p={[4, 4, 8]}
-      overflowY="scroll"
-      sx={{ 'scrollbar-width': 'thin' }}>
+      overflowY="scroll">
       {isLoading && chatMessages.length === 0 && <ChatMessagesSkeleton />}
       {!isLoading && chatMessages.length === 0 && <NoChatMessagesEmptyState />}
       {chatMessages.length > 0 && (

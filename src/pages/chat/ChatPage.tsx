@@ -29,7 +29,7 @@ export default function AdministrationPage() {
           <>
             <ChatMessagesHeader />
             <ChatMessagesContainer currentChatGroupId={groupId} />
-            <ChatMessageInput onMessageSent={alert} />
+            <ChatMessageInput />
           </>
         ) : (
           <NoChatGroupSelectedEmptyState />
