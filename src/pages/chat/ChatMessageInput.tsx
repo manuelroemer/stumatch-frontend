@@ -6,12 +6,18 @@ import isEmpty from 'lodash-es/isEmpty';
 import trim from 'lodash-es/trim';
 import countBy from 'lodash-es/countBy';
 import EmojiPickerButton from './EmojiPickerPopover';
+import { usePostChatGroupChatMessageMutation } from '../../queries/chatMessages';
 
-export default function ChatMessageInput() {
+export interface ChatMessageInputProps {
+  chatGroupId: string;
+}
+
+export default function ChatMessageInput({ chatGroupId }: ChatMessageInputProps) {
+  const postChatMessageMutation = usePostChatGroupChatMessageMutation(chatGroupId);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const [typedMessage, setTypedMessage] = useState('');
   const sanitizedMessage = trim(typedMessage);
-  const canSubmit = !isEmpty(sanitizedMessage);
+  const canSubmit = !isEmpty(sanitizedMessage) && !postChatMessageMutation.isLoading;
   const typedLines = countBy(typedMessage)['\n'] + 1 || 1;
 
   const handleEmojiSelected = (emoji: IEmojiData) => {
@@ -36,7 +42,10 @@ export default function ChatMessageInput() {
       return;
     }
 
-    alert(sanitizedMessage);
+    postChatMessageMutation.mutate({ textContent: sanitizedMessage });
+
+    setTypedMessage('');
+    inputRef.current!.focus();
   };
 
   return (
@@ -74,6 +83,7 @@ export default function ChatMessageInput() {
           colorScheme="primary"
           rounded="full"
           isDisabled={!canSubmit}
+          isLoading={postChatMessageMutation.isLoading}
           onClick={send}
         />
       </Tooltip>
