@@ -13,6 +13,7 @@ export interface MatchRequest extends ApiObject {
     | 'declinedByMe'
     | 'declinedByPartner'
     | 'matched';
+  chatGroupId?: string;
 }
 
 export interface MatchRequestPost {
@@ -21,6 +22,10 @@ export interface MatchRequestPost {
   studyProgramId?: string;
   minSemester?: number;
   maxSemester?: number;
+}
+
+export interface MatchRequestAcceptOrDeclinePost {
+  accepted: boolean;
 }
 
 export function getAllUserMatchRequests(userId: string, options?: QueryOptions, init?: StumatchFetchInit) {
@@ -33,4 +38,12 @@ export function deleteMatchRequest(id: string, init?: StumatchFetchInit) {
 
 export function postMatchRequest(body: MatchRequestPost, init?: StumatchFetchInit) {
   return stumatchFetch<MatchRequest>(`/api/v1/matchRequests`, { body, method: 'POST', ...init });
+}
+
+export function postMatchRequestAcceptOrDeclinePost(
+  id: string,
+  body: MatchRequestAcceptOrDeclinePost,
+  init?: StumatchFetchInit,
+) {
+  return stumatchFetch<MatchRequest>(`/api/v1/matchRequests/${id}/acceptOrDecline`, { body, method: 'POST', ...init });
 }

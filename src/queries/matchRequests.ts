@@ -1,6 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { QueryOptions } from '../api/conventions';
-import { deleteMatchRequest, getAllUserMatchRequests, MatchRequestPost, postMatchRequest } from '../api/matching';
+import {
+  deleteMatchRequest,
+  getAllUserMatchRequests,
+  MatchRequestAcceptOrDeclinePost,
+  MatchRequestPost,
+  postMatchRequest,
+  postMatchRequestAcceptOrDeclinePost,
+} from '../api/matching';
 
 const key = 'matchRequests';
 
@@ -20,4 +27,14 @@ export function usePostMatchRequestMutation() {
   return useMutation((body: MatchRequestPost) => postMatchRequest(body).then((res) => res.data), {
     onSuccess: () => client.invalidateQueries(key),
   });
+}
+
+export function usePostAcceptDeclineMatchRequestMutation(id: string) {
+  const client = useQueryClient();
+  return useMutation(
+    (body: MatchRequestAcceptOrDeclinePost) => postMatchRequestAcceptOrDeclinePost(id, body).then((res) => res.data),
+    {
+      onSuccess: () => client.invalidateQueries(key),
+    },
+  );
 }
