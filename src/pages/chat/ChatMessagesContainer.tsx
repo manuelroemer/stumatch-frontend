@@ -3,19 +3,18 @@ import { useRef } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { NoChatMessagesEmptyState } from '../../components/EmptyStates';
 import { useInfiniteGetAllChatGroupChatMessagesQuery } from '../../queries/chatMessages';
-import ChatMessageInput from './ChatMessageInput';
 import ChatMessageSelector from './ChatMessageSelector';
 import ChatMessagesSkeleton from './ChatMessagesSkeleton';
 import ScrollToBottomButton from './ScrollToBottomButton';
 
 export interface ChatMessagesContainerProps {
-  currentChatGroupId: string;
+  chatGroupId: string;
 }
 
-export default function ChatMessagesContainer({ currentChatGroupId }: ChatMessagesContainerProps) {
+export default function ChatMessagesContainer({ chatGroupId }: ChatMessagesContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { isLoading, data, fetchPreviousPage, hasPreviousPage } =
-    useInfiniteGetAllChatGroupChatMessagesQuery(currentChatGroupId);
+    useInfiniteGetAllChatGroupChatMessagesQuery(chatGroupId);
 
   // Due to the 'column-reverse' hack we must also reverse the order in which messages are rendered.
   // Otherwise they are displayed bottom-to-top.

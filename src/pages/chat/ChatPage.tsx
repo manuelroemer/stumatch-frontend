@@ -10,11 +10,11 @@ import ChatMessagesContainer from './ChatMessagesContainer';
 import ChatMessagesHeader from './ChatMessagesHeader';
 
 interface RouteParams {
-  groupId?: string;
+  chatGroupId?: string;
 }
 
 export default function AdministrationPage() {
-  const { groupId } = useParams<RouteParams>();
+  const { chatGroupId } = useParams<RouteParams>();
   const [chatGroupFilter, setChatGroupFilter] = useState('');
 
   return (
@@ -22,14 +22,14 @@ export default function AdministrationPage() {
       <Flex as="aside" w="28rem" h="100%" borderRight="1px" borderRightColor="gray.200" direction="column">
         <ChatGroupHeader />
         <ChatGroupFilter filter={chatGroupFilter} onFilterChanged={setChatGroupFilter} />
-        <ChatGroupContainer currentChatGroupId={groupId} chatGroupFilter={chatGroupFilter} />
+        <ChatGroupContainer chatGroupId={chatGroupId} chatGroupFilter={chatGroupFilter} />
       </Flex>
       <Flex as="main" w="100%" direction="column">
-        {groupId ? (
+        {chatGroupId ? (
           <>
-            <ChatMessagesHeader />
-            <ChatMessagesContainer currentChatGroupId={groupId} />
-            <ChatMessageInput chatGroupId={groupId} />
+            <ChatMessagesHeader chatGroupId={chatGroupId} />
+            <ChatMessagesContainer chatGroupId={chatGroupId} />
+            <ChatMessageInput chatGroupId={chatGroupId} />
           </>
         ) : (
           <NoChatGroupSelectedEmptyState />
