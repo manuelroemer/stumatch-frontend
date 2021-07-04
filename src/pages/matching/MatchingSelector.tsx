@@ -20,6 +20,7 @@ import { MatchRequest } from '../../api/matching';
 import MatchingTemplate, { MatchingTemplateProps } from './MatchingTemplate';
 import { useDeleteMatchRequestMutation } from '../../queries/matchRequests';
 import React, { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const descriptions = {
   acceptedByMe: 'You have accepted your partner.',
@@ -93,7 +94,11 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
 }
 
 function ChatButton(props: HTMLChakraProps<'button'>) {
-  return <IconButton aria-label="Chat" fontSize="25" icon={<IoChatbubblesOutline />} {...props} />;
+  return (
+    <Link to={'/chat'}>
+      <IconButton aria-label="Chat" fontSize="25" icon={<IoChatbubblesOutline />} {...props} />
+    </Link>
+  );
 }
 
 function CheckButton(props: HTMLChakraProps<'button'>) {
@@ -104,8 +109,8 @@ function CloseButton(props: HTMLChakraProps<'button'>) {
   return <IconButton aria-label="Close" fontSize="25" color="red" icon={<IoMdClose />} {...props} />;
 }
 
-function DeleteButton(props: HTMLChakraProps<'button'> & { matchRequestId: string }) {
-  const mutation = useDeleteMatchRequestMutation(props.matchRequestId);
+function DeleteButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & { matchRequestId: string }) {
+  const mutation = useDeleteMatchRequestMutation(matchRequestId);
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef<any>();
