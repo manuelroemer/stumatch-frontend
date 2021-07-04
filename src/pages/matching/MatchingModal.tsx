@@ -29,7 +29,6 @@ export default function MatchingModal({ isOpen, onClose }: MatchingModalProps) {
   const mutation = usePostMatchRequestMutation();
   const onSubmit = form.handleSubmit(async (matchRequestPost) => {
     setIsSubmitting(true);
-    mutation.mutate(matchRequestPost);
     try {
       await mutation.mutateAsync(matchRequestPost);
       onClose();
@@ -45,27 +44,25 @@ export default function MatchingModal({ isOpen, onClose }: MatchingModalProps) {
       <ModalOverlay />
       <ModalContent>
         {!isLoading && (
-          <>
-            <form onSubmit={onSubmit}>
-              <ModalHeader>Create New Match Request</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <VStack align="flex-start" spacing="10">
-                  <FacultyDropdown facultyData={data?.result ?? []} form={form} />
-                  <SemesterSelection form={form} />
-                </VStack>
-              </ModalBody>
+          <form onSubmit={onSubmit}>
+            <ModalHeader>Create New Match Request</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <VStack align="flex-start" spacing="10">
+                <FacultyDropdown facultyData={data?.result ?? []} form={form} />
+                <SemesterSelection form={form} />
+              </VStack>
+            </ModalBody>
 
-              <ModalFooter>
-                <Button colorScheme="primary" mr={3} type="submit" isLoading={isSubmitting}>
-                  Create
-                </Button>
-                <Button onClick={onClose} isLoading={isSubmitting}>
-                  Cancel
-                </Button>
-              </ModalFooter>
-            </form>
-          </>
+            <ModalFooter>
+              <Button colorScheme="primary" mr={3} type="submit" isLoading={isSubmitting}>
+                Create
+              </Button>
+              <Button onClick={onClose} isLoading={isSubmitting}>
+                Cancel
+              </Button>
+            </ModalFooter>
+          </form>
         )}
       </ModalContent>
     </Modal>
