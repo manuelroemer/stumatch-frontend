@@ -12,8 +12,14 @@ import {
   Spacer,
   Switch,
 } from '@chakra-ui/react';
+import { UseFormReturn } from 'react-hook-form';
+import { MatchRequestPost } from '../../api/matching';
 
-export default function SemesterSelection() {
+export interface SemesterSelectionProps {
+  form: UseFormReturn<MatchRequestPost>;
+}
+
+export default function SemesterSelection({ form }: SemesterSelectionProps) {
   const [isFilteringBySemester, setIsFilteringBySemester] = useState(false);
   const [minValue, setMinValue] = useState<string | number | undefined>(undefined);
   const [maxValue, setMaxValue] = useState<string | number | undefined>(undefined);
@@ -24,13 +30,27 @@ export default function SemesterSelection() {
     const adjustedMax = max < min ? min : max;
     setMinValue(min);
     setMaxValue(adjustedMax);
+    form.setValue('minSemester', min);
+    form.setValue('maxSemester', adjustedMax);
   }, [minValue]);
 
   useEffect(() => {
     const adjustedMin = max < min ? max : min;
     setMinValue(adjustedMin);
     setMaxValue(max);
+    form.setValue('minSemester', adjustedMin);
+    form.setValue('maxSemester', max);
   }, [maxValue]);
+
+  useEffect(() => {
+    if (!isFilteringBySemester) {
+      form.setValue('minSemester', undefined);
+      form.setValue('maxSemester', undefined);
+    } else {
+      form.setValue('minSemester', min);
+      form.setValue('maxSemester', max);
+    }
+  }, [isFilteringBySemester]);
 
   return (
     <FormControl>
