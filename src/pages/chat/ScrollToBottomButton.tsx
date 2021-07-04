@@ -10,8 +10,7 @@ export interface ScrollToBottomButtonProps {
 
 export default function ScrollToBottomButton({ containerRef }: ScrollToBottomButtonProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const evaluateVisibility = () =>
-    setIsVisible(containerRef.current ? !isScrolledToBottom(containerRef.current) : false);
+  const evaluateVisibility = () => setIsVisible(!!(containerRef.current && !isScrolledToBottom(containerRef.current)));
 
   useEffect(() => {
     evaluateVisibility();
