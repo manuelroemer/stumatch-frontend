@@ -59,7 +59,9 @@ export default function ChatMessageInput() {
         ref={inputRef}
         rounded="3xl"
         autoFocus
+        variant="filled"
         resize="none"
+        placeholder="Type here to send a message..."
         rows={Math.min(5, typedLines)}
         value={typedMessage}
         onKeyPress={handleTextAreaKeyPress}

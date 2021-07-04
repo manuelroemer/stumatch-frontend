@@ -18,7 +18,7 @@ export default function EmojiPickerButton({ onEmojiSelected }: EmojiPickerButton
   return (
     <Popover isOpen={isOpen} onClose={close} strategy="fixed" placement="top-start">
       <PopoverTrigger>
-        <Tooltip label="Pick Emoji">
+        <Tooltip label="Pick Emoji" hasArrow>
           <IconButton
             aria-label="Pick Emoji"
             icon={<HiOutlineEmojiHappy />}
