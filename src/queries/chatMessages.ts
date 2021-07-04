@@ -1,5 +1,5 @@
-import { useInfiniteQuery } from 'react-query';
-import { getAllChatGroupChatMessages } from '../api/chatMessages';
+import { useInfiniteQuery, useMutation, useQueryClient } from 'react-query';
+import { ChatMessagePost, getAllChatGroupChatMessages, postChatGroupChatMessage } from '../api/chatMessages';
 import { CursorPaginationQueryOptions } from '../api/conventions';
 
 const key = 'chatMessages';
@@ -17,4 +17,13 @@ export function useInfiniteGetAllChatGroupChatMessagesQuery(
       getPreviousPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
     },
   );
+}
+
+export function usePostChatGroupChatMessageMutation(chatGroupId: string) {
+  const queryClient = useQueryClient();
+  return useMutation((body: ChatMessagePost) => postChatGroupChatMessage(chatGroupId, body), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(key);
+    },
+  });
 }
