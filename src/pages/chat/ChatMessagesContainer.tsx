@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { NoChatMessagesEmptyState } from '../../components/EmptyStates';
 import { useInfiniteGetAllChatGroupChatMessagesQuery } from '../../queries/chatMessages';
+import ChatMessageInput from './ChatMessageInput';
 import ChatMessageSelector from './ChatMessageSelector';
 import ChatMessagesSkeleton from './ChatMessagesSkeleton';
 import ScrollToBottomButton from './ScrollToBottomButton';
@@ -28,8 +29,9 @@ export default function ChatMessagesContainer({ currentChatGroupId }: ChatMessag
       flexDirection="column-reverse"
       flexGrow={1}
       height="0"
-      overflowY="auto"
-      p={[4, 4, 8]}>
+      p={[4, 4, 8]}
+      overflowY="scroll"
+      sx={{ 'scrollbar-width': 'thin' }}>
       {isLoading && chatMessages.length === 0 && <ChatMessagesSkeleton />}
       {!isLoading && chatMessages.length === 0 && <NoChatMessagesEmptyState />}
       {chatMessages.length > 0 && (
