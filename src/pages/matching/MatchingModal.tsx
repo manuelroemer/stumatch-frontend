@@ -9,7 +9,6 @@ import {
   Button,
   VStack,
 } from '@chakra-ui/react';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { MatchRequestPost } from '../../api/matching';
 import { useGetAllFacultiesQuery } from '../../queries/faculties';
@@ -24,19 +23,10 @@ export interface MatchingModalProps {
 
 export default function MatchingModal({ isOpen, onClose }: MatchingModalProps) {
   const { isLoading, data } = useGetAllFacultiesQuery();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<MatchRequestPost>();
   const mutation = usePostMatchRequestMutation();
   const onSubmit = form.handleSubmit(async (matchRequestPost) => {
-    setIsSubmitting(true);
-    try {
-      await mutation.mutateAsync(matchRequestPost);
-      onClose();
-    } catch (e) {
-      //todo
-    } finally {
-      setIsSubmitting(false);
-    }
+    mutation.mutate(matchRequestPost);
   });
 
   return (
@@ -55,10 +45,10 @@ export default function MatchingModal({ isOpen, onClose }: MatchingModalProps) {
             </ModalBody>
 
             <ModalFooter>
-              <Button colorScheme="primary" mr={3} type="submit" isLoading={isSubmitting}>
+              <Button colorScheme="primary" mr={3} type="submit" isLoading={mutation.isLoading}>
                 Create
               </Button>
-              <Button onClick={onClose} isLoading={isSubmitting}>
+              <Button onClick={onClose} isLoading={mutation.isLoading}>
                 Cancel
               </Button>
             </ModalFooter>
