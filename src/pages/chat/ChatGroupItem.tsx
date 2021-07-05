@@ -1,23 +1,24 @@
-import { Avatar, Heading, Flex, Tag, Center, Text, Grid, AvatarGroup, AvatarProps, Tooltip } from '@chakra-ui/react';
+import { Heading, Flex, Tag, Center, Text, Grid, Tooltip } from '@chakra-ui/react';
+import { useHistory } from 'react-router';
 import ReactTimeago from 'react-timeago';
+import { ChatGroup } from '../../api/chatGroups';
+import { routes } from '../../constants';
+import { useCurrentUser } from '../../stores/userStore';
+import ChatGroupAvatarGroup from './ChatGroupAvatarGroup';
+import { getChatGroupTitle } from './utils';
 
 export interface ChatGroupItemProps {
-  avatars: Array<AvatarProps>;
-  title: string;
-  lastMessage?: string;
-  newMessages: number;
+  chatGroup: ChatGroup;
   isSelected: boolean;
-  onClick(): void;
 }
 
-export default function ChatGroupItem({
-  avatars,
-  title,
-  lastMessage,
-  newMessages,
-  isSelected,
-  onClick,
-}: ChatGroupItemProps) {
+export default function ChatGroupItem({ chatGroup, isSelected }: ChatGroupItemProps) {
+  const history = useHistory();
+  const title = getChatGroupTitle(chatGroup, useCurrentUser());
+  const newMessages = 0;
+  const lastMessage = undefined;
+  const handleClick = () => history.replace(`${routes.chat}/${chatGroup.id}`);
+
   return (
     <Grid
       templateRows="1fr 1fr"
@@ -28,13 +29,9 @@ export default function ChatGroupItem({
       cursor="pointer"
       bg={isSelected ? 'gray.300' : undefined}
       _hover={!isSelected ? { bg: 'gray.200' } : undefined}
-      onClick={onClick}>
+      onClick={handleClick}>
       <Center gridRow="1 / span 2" gridColumn="1" minH="12" minW="12" mr="2">
-        <AvatarGroup max={2} size={avatars.length > 1 ? 'xs' : 'md'}>
-          {avatars.map((avatar, i) => (
-            <Avatar key={i} {...avatar} />
-          ))}
-        </AvatarGroup>
+        <ChatGroupAvatarGroup chatGroup={chatGroup} />
       </Center>
       <Flex gridRow="1" gridColumn="2" align="center" mr="2">
         <Tooltip label={title} hasArrow>

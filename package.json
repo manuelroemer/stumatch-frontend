@@ -16,6 +16,7 @@
     "@chakra-ui/react": "^1.6.2",
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
+    "emoji-picker-react": "^3.4.8",
     "framer-motion": "^4.1.17",
     "lodash-es": "^4.17.21",
     "react": "^17.0.2",

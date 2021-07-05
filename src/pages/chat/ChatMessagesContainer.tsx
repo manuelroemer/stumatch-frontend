@@ -8,13 +8,13 @@ import ChatMessagesSkeleton from './ChatMessagesSkeleton';
 import ScrollToBottomButton from './ScrollToBottomButton';
 
 export interface ChatMessagesContainerProps {
-  currentChatGroupId: string;
+  chatGroupId: string;
 }
 
-export default function ChatMessagesContainer({ currentChatGroupId }: ChatMessagesContainerProps) {
+export default function ChatMessagesContainer({ chatGroupId }: ChatMessagesContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { isLoading, data, fetchPreviousPage, hasPreviousPage } =
-    useInfiniteGetAllChatGroupChatMessagesQuery(currentChatGroupId);
+    useInfiniteGetAllChatGroupChatMessagesQuery(chatGroupId);
 
   // Due to the 'column-reverse' hack we must also reverse the order in which messages are rendered.
   // Otherwise they are displayed bottom-to-top.
@@ -28,8 +28,8 @@ export default function ChatMessagesContainer({ currentChatGroupId }: ChatMessag
       flexDirection="column-reverse"
       flexGrow={1}
       height="0"
-      overflowY="auto"
-      p={[4, 4, 8]}>
+      p={[4, 4, 8]}
+      overflowY="scroll">
       {isLoading && chatMessages.length === 0 && <ChatMessagesSkeleton />}
       {!isLoading && chatMessages.length === 0 && <NoChatMessagesEmptyState />}
       {chatMessages.length > 0 && (

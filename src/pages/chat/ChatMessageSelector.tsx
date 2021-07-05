@@ -19,7 +19,7 @@ export default function ChatMessageSelector({ chatMessage }: ChatMessageSelector
         rounded="2xl"
         bg={isWrittenByCurrentUser ? 'primary.500' : 'gray.200'}
         color={isWrittenByCurrentUser ? 'white' : 'black'}>
-        <Text>{chatMessage.textContent}</Text>
+        <Text whiteSpace="pre-line">{chatMessage.textContent}</Text>
       </Box>
     </Flex>
   );
