@@ -14,6 +14,8 @@ export interface ChatMessagePost {
   textContent: string;
 }
 
+export type ChatMessagePut = ChatMessagePost;
+
 export function getAllChatGroupChatMessages(
   chatGroupId: string,
   options?: CursorPaginationQueryOptions,
@@ -31,4 +33,12 @@ export function postChatGroupChatMessage(chatGroupId: string, body: ChatMessageP
     method: 'POST',
     ...init,
   });
+}
+
+export function putChatMessage(id: string, body: ChatMessagePut, init?: StumatchFetchInit) {
+  return stumatchFetch<ApiResult<ChatMessage>>(`/api/v1/chatMessages/${id}`, { method: 'PUT', body, ...init });
+}
+
+export function deleteChatMessage(id: string, init?: StumatchFetchInit) {
+  return stumatchFetch<ApiResult<ChatMessage>>(`/api/v1/chatMessages/${id}`, { method: 'DELETE', ...init });
 }
