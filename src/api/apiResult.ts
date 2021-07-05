@@ -11,5 +11,6 @@ export interface PaginationApiResult<T> extends ApiResult<Array<T>> {
 
 export interface CursorPaginationApiResult<T, TCursor = unknown> extends ApiResult<Array<T>> {
   cursor: TCursor;
-  nextCursor: TCursor | null;
+  beforeCursor: TCursor | null;
+  afterCursor: TCursor | null;
 }
