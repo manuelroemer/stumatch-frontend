@@ -2,12 +2,10 @@ import { Flex, Grid } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useParams } from 'react-router';
 import { NoChatGroupSelectedEmptyState } from '../../components/EmptyStates';
+import ChatArea from './ChatArea';
 import ChatGroupContainer from './ChatGroupContainer';
 import ChatGroupFilter from './ChatGroupFilter';
 import ChatGroupHeader from './ChatGroupHeader';
-import ChatMessageInput from './ChatMessageInput';
-import ChatMessagesContainer from './ChatMessagesContainer';
-import ChatMessagesHeader from './ChatMessagesHeader';
 
 interface RouteParams {
   chatGroupId?: string;
@@ -25,15 +23,7 @@ export default function AdministrationPage() {
         <ChatGroupContainer chatGroupId={chatGroupId} chatGroupFilter={chatGroupFilter} />
       </Flex>
       <Flex as="main" direction="column">
-        {chatGroupId ? (
-          <>
-            <ChatMessagesHeader chatGroupId={chatGroupId} />
-            <ChatMessagesContainer chatGroupId={chatGroupId} />
-            <ChatMessageInput chatGroupId={chatGroupId} />
-          </>
-        ) : (
-          <NoChatGroupSelectedEmptyState />
-        )}
+        {chatGroupId ? <ChatArea chatGroupId={chatGroupId} /> : <NoChatGroupSelectedEmptyState />}
       </Flex>
     </Grid>
   );

@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useRef } from 'react';
 import { HStack, IconButton, Textarea, Tooltip } from '@chakra-ui/react';
 import { IEmojiData } from 'emoji-picker-react';
 import { BiSend } from 'react-icons/bi';
@@ -6,27 +6,32 @@ import isEmpty from 'lodash-es/isEmpty';
 import trim from 'lodash-es/trim';
 import countBy from 'lodash-es/countBy';
 import EmojiPickerButton from './EmojiPickerPopover';
-import { usePostChatGroupChatMessageMutation } from '../../queries/chatMessages';
 
-export interface ChatMessageInputProps {
-  chatGroupId: string;
+export interface ChatMessageInputLayoutProps {
+  message: string;
+  isSending: boolean;
+  onMessageChanged(message: string): void;
+  onSendClicked(): void;
 }
 
-export default function ChatMessageInput({ chatGroupId }: ChatMessageInputProps) {
-  const postChatMessageMutation = usePostChatGroupChatMessageMutation(chatGroupId);
+export default function ChatMessageInputLayout({
+  message,
+  isSending,
+  onMessageChanged,
+  onSendClicked,
+}: ChatMessageInputLayoutProps) {
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
-  const [typedMessage, setTypedMessage] = useState('');
-  const sanitizedMessage = trim(typedMessage);
-  const canSubmit = !isEmpty(sanitizedMessage) && !postChatMessageMutation.isLoading;
-  const typedLines = countBy(typedMessage)['\n'] + 1 || 1;
+  const sanitizedMessage = trim(message);
+  const canSubmit = !isEmpty(sanitizedMessage) && !isSending;
+  const typedLines = countBy(message)['\n'] + 1 || 1;
 
   const handleEmojiSelected = (emoji: IEmojiData) => {
-    setTypedMessage(typedMessage + emoji.emoji);
+    onMessageChanged(message + emoji.emoji);
     inputRef.current!.focus();
   };
 
-  const handleTypedMessageChanged = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setTypedMessage(e.target.value);
+  const handlemessageChanged = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    onMessageChanged(e.target.value);
   };
 
   const handleTextAreaKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -42,9 +47,7 @@ export default function ChatMessageInput({ chatGroupId }: ChatMessageInputProps)
       return;
     }
 
-    postChatMessageMutation.mutate({ textContent: sanitizedMessage });
-
-    setTypedMessage('');
+    onSendClicked();
     inputRef.current!.focus();
   };
 
@@ -55,7 +58,7 @@ export default function ChatMessageInput({ chatGroupId }: ChatMessageInputProps)
       px="8"
       bg="white"
       overflowY="scroll"
-      // Dirty hack: To get the correct padding as the chat messages above we need the system's
+      // Hack: To get the correct padding as the chat messages above we need the system's
       // scrollbar width. Simply achieve that by adding a transparent scrollbar.
       sx={{ scrollbarColor: 'transparent transparent' }}
       css={{
@@ -72,9 +75,9 @@ export default function ChatMessageInput({ chatGroupId }: ChatMessageInputProps)
         resize="none"
         placeholder="Type here to send a message..."
         rows={Math.min(5, typedLines)}
-        value={typedMessage}
+        value={message}
         onKeyPress={handleTextAreaKeyPress}
-        onChange={handleTypedMessageChanged}
+        onChange={handlemessageChanged}
       />
       <Tooltip type="submit" label="Send" hasArrow>
         <IconButton
@@ -83,7 +86,7 @@ export default function ChatMessageInput({ chatGroupId }: ChatMessageInputProps)
           colorScheme="primary"
           rounded="full"
           isDisabled={!canSubmit}
-          isLoading={postChatMessageMutation.isLoading}
+          isLoading={isSending}
           onClick={send}
         />
       </Tooltip>
