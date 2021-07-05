@@ -41,7 +41,7 @@ export default function CreateAccountModal({ isOpen, onClose }: CreateAccountMod
   } = useForm<UserPost>();
   const mutation = usePostUserMutation();
   const login = useUserStore((state) => state.login);
-  console.log(errors);
+
   const onSubmit = handleSubmit(async (userPost) => {
     if (!userPost.immatriculatedOn?.startingSemester || !userPost.immatriculatedOn?.startingYear) {
       userPost.immatriculatedOn = undefined;
@@ -50,18 +50,12 @@ export default function CreateAccountModal({ isOpen, onClose }: CreateAccountMod
     onClose();
     await login(userPost.email, userPost.password);
   });
-  console.log(errors.password);
 
   const validateImmatriculatedOn = () => {
     const startingYear = getValues('immatriculatedOn.startingYear');
     const startingSemester = getValues('immatriculatedOn.startingSemester');
-    console.log(startingYear, startingSemester);
 
-    if ((!!startingSemester && !startingYear) || (!startingSemester && !!startingYear)) {
-      return false;
-    } else {
-      return true;
-    }
+    return !((!!startingSemester && !startingYear) || (!startingSemester && !!startingYear));
   };
 
   const reset = () => {
