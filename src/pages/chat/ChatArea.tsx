@@ -42,7 +42,7 @@ export default function ChatArea({ chatGroupId }: ChatAreaProps) {
       <ChatMessagesContainer chatGroupId={chatGroupId} onChatMessageEdit={handleChatMessageEdit} />
       <ChatMessageInputLayout
         message={message}
-        isSending={postChatMessageMutation.isLoading}
+        isSending={postChatMessageMutation.isLoading || putChatMessageMutation.isLoading}
         isEditing={!!messageToEdit}
         cancelEditing={cancelEditing}
         onMessageChanged={setMessage}

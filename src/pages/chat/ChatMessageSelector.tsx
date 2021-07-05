@@ -60,6 +60,7 @@ export default function ChatMessageSelector({ chatMessage, onChatMessageEdit }: 
             {chatMessage.createdOn !== chatMessage.modifiedOn && (
               <Text
                 mt="1"
+                mr="3"
                 float="left"
                 fontSize="0.6rem"
                 color={isWrittenByCurrentUser ? 'white' : 'black'}

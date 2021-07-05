@@ -32,7 +32,13 @@ export default function ChatMessageInputLayout({
   const canSubmit = !isEmpty(sanitizedMessage) && !isSending;
   const typedLines = countBy(message)['\n'] + 1 || 1;
 
-  const focusInput = () => setTimeout(() => inputRef.current!.focus(), 0); // https://stackoverflow.com/a/1096938
+  const focusInput = () => {
+    // https://stackoverflow.com/a/1096938
+    setTimeout(() => {
+      inputRef.current!.focus();
+      inputRef.current!.selectionStart = inputRef.current!.selectionEnd = inputRef.current!.value.length;
+    }, 0);
+  };
 
   const handleEmojiSelected = (emoji: IEmojiData) => {
     onMessageChanged(message + emoji.emoji);
