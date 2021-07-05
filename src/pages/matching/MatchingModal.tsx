@@ -13,7 +13,7 @@ import { useForm } from 'react-hook-form';
 import { MatchRequestPost } from '../../api/matching';
 import { useGetAllFacultiesQuery } from '../../queries/faculties';
 import { usePostMatchRequestMutation } from '../../queries/matchRequests';
-import FacultyDropdown from './FacultyDropdown';
+import FacultyDropdown from '../../components/FacultyDropdown';
 import SemesterSelection from './SemesterSelection';
 
 export interface MatchingModalProps {
@@ -39,7 +39,13 @@ export default function MatchingModal({ isOpen, onClose }: MatchingModalProps) {
             <ModalCloseButton />
             <ModalBody>
               <VStack align="flex-start" spacing="10">
-                <FacultyDropdown facultyData={data?.result ?? []} form={form} />
+                <FacultyDropdown
+                  facultyData={data?.result ?? []}
+                  facultyDescription="Select the faculty you would like to meet."
+                  studyProgramDescription="Select the study program you would like to meet."
+                  onFacultyChanged={(faculty) => form.setValue('facultyId', faculty?.id)}
+                  onStudyProgramChanged={(studyProgram) => form.setValue('studyProgramId', studyProgram?.id)}
+                />
                 <SemesterSelection form={form} />
               </VStack>
             </ModalBody>
