@@ -2,6 +2,8 @@ import { KeyboardEvent, useRef } from 'react';
 import { HStack, IconButton, Textarea, Tooltip } from '@chakra-ui/react';
 import { IEmojiData } from 'emoji-picker-react';
 import { BiSend } from 'react-icons/bi';
+import { AiOutlineEdit } from 'react-icons/ai';
+import { MdClose } from 'react-icons/md';
 import isEmpty from 'lodash-es/isEmpty';
 import trim from 'lodash-es/trim';
 import countBy from 'lodash-es/countBy';
@@ -12,6 +14,7 @@ export interface ChatMessageInputLayoutProps {
   message: string;
   isSending: boolean;
   isEditing: boolean;
+  cancelEditing(): void;
   onMessageChanged(message: string): void;
   onSendClicked(): void;
 }
@@ -20,6 +23,7 @@ export default function ChatMessageInputLayout({
   message,
   isSending,
   isEditing,
+  cancelEditing,
   onMessageChanged,
   onSendClicked,
 }: ChatMessageInputLayoutProps) {
@@ -86,10 +90,10 @@ export default function ChatMessageInputLayout({
         onKeyPress={handleTextAreaKeyPress}
         onChange={(e) => onMessageChanged(e.target.value)}
       />
-      <Tooltip type="submit" label="Send" hasArrow>
+      <Tooltip type="submit" label={isEditing ? 'Edit' : 'Send'} hasArrow>
         <IconButton
-          aria-label="Send"
-          icon={<BiSend />}
+          aria-label={isEditing ? 'Edit' : 'Send'}
+          icon={isEditing ? <AiOutlineEdit /> : <BiSend />}
           colorScheme="primary"
           rounded="full"
           isDisabled={!canSubmit}
@@ -97,6 +101,11 @@ export default function ChatMessageInputLayout({
           onClick={send}
         />
       </Tooltip>
+      {isEditing && (
+        <Tooltip type="submit" label="Cancel Editing" hasArrow>
+          <IconButton aria-label="Cancel Editing" icon={<MdClose />} rounded="full" onClick={() => cancelEditing()} />
+        </Tooltip>
+      )}
     </HStack>
   );
 }

@@ -15,6 +15,11 @@ export default function ChatArea({ chatGroupId }: ChatAreaProps) {
   const [messageToEdit, setMessageToEdit] = useState<ChatMessage | null>(null);
   const postChatMessageMutation = usePostChatGroupChatMessageMutation(chatGroupId);
 
+  const cancelEditing = () => {
+    setMessageToEdit(null);
+    setMessage('');
+  };
+
   const handleChatMessageEdit = useCallback((chatMessage: ChatMessage) => {
     setMessageToEdit(chatMessage);
     setMessage(chatMessage.textContent);
@@ -28,6 +33,7 @@ export default function ChatArea({ chatGroupId }: ChatAreaProps) {
         message={message}
         isSending={postChatMessageMutation.isLoading}
         isEditing={!!messageToEdit}
+        cancelEditing={cancelEditing}
         onMessageChanged={setMessage}
         onSendClicked={() => {
           postChatMessageMutation.mutate({ textContent: message });
