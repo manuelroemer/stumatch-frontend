@@ -42,9 +42,33 @@ export default function NotificationSelector({ notification, ...rest }: Notifica
           emoji: '💬',
           onClick: undefined,
         };
+      case 'matchRequestAcceptedByPartner':
+        return {
+          ...baseNotificationTemplateProps,
+          title: 'Match Request Accepted',
+          content: 'Your partner has accepted you. :)',
+          emoji: '🎉',
+          onClick: undefined,
+        };
+      case 'matchRequestDeclinedByPartner':
+        return {
+          ...baseNotificationTemplateProps,
+          title: 'Match Request Declined',
+          content: 'Your partner has declined you. :(',
+          emoji: '😢',
+          onClick: undefined,
+        };
+      case 'matchRequestAccepted':
+        return {
+          ...baseNotificationTemplateProps,
+          title: 'You have a new friend!',
+          content: 'Name is now your friend!',
+          emoji: '👫',
+          onClick: undefined,
+        };
       default:
         console.warn(
-          `Received unknown notification type ${notification.type}. The type must be added to the component.`,
+          `Received unknown notification type ${(notification as any).type}. The type must be added to the component.`,
         );
 
         return {

@@ -28,7 +28,7 @@ const descriptions = {
   matched: 'We have found a match.',
   accepted: 'You are now friends!',
   declinedByMe: 'You have declined your partner.',
-  declinedByPartner: 'Your partner as declined you. :(',
+  declinedByPartner: 'Your partner has declined you. :(',
   pending: 'We are searching for a match ...',
 };
 
@@ -52,7 +52,7 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
           description: descriptions[matchRequest.status],
           actions: (
             <>
-              <ChatButton disabled={true} chatGroupId="" />
+              <ChatButton  chatGroupId="matchRequest.chatGroupId ?? ''" />
               <CheckButton matchRequestId={matchRequest.id} disabled={matchRequest.status === 'acceptedByMe'} />
               <CloseButton matchRequestId={matchRequest.id} disabled={matchRequest.status === 'acceptedByMe'} />
             </>
