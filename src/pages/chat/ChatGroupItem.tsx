@@ -16,7 +16,7 @@ export default function ChatGroupItem({ chatGroup, isSelected }: ChatGroupItemPr
   const history = useHistory();
   const title = getChatGroupTitle(chatGroup, useCurrentUser());
   const newMessages = 0;
-  const lastMessage = undefined;
+  const lastMessage = chatGroup.lastMessage?.textContent;
   const handleClick = () => history.replace(`${routes.chat}/${chatGroup.id}`);
 
   return (
@@ -49,11 +49,13 @@ export default function ChatGroupItem({ chatGroup, isSelected }: ChatGroupItemPr
       </Flex>
       <Flex gridRow="2" gridColumn="2" align="center" mr="2">
         {lastMessage ? (
-          <Text fontSize="sm" isTruncated>
+          <Text fontSize="sm" noOfLines={1} textOverflow="ellipsis">
             {lastMessage}
           </Text>
         ) : (
-          <Text layerStyle="hint">No messages yet.</Text>
+          <Text layerStyle="hint" noOfLines={1} textOverflow="ellipsis">
+            No messages yet.
+          </Text>
         )}
       </Flex>
       {newMessages > 0 && (

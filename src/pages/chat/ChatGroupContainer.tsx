@@ -1,6 +1,6 @@
 import { HTMLChakraProps, StackDivider, VStack } from '@chakra-ui/react';
 import { me } from '../../api/conventions';
-import { useGetAllUserChatGroupsQuery } from '../../queries/chatGroups';
+import { useGetAllUserChatGroupsQuery, useUserChatGroupSocketQueryInvalidation } from '../../queries/chatGroups';
 import ChatGroupItem from './ChatGroupItem';
 import { getFullName } from '../../utils/userUtils';
 import { ChatGroup } from '../../api/chatGroups';
@@ -16,6 +16,7 @@ export interface ChatGroupContainerProps extends HTMLChakraProps<'div'> {
 export default function ChatGroupContainer({ chatGroupId, chatGroupFilter, ...rest }: ChatGroupContainerProps) {
   const { isLoading, data } = useGetAllUserChatGroupsQuery(me);
   const filteredData = data?.result.filter((chatGroup) => filterChatGroup(chatGroup, chatGroupFilter));
+  useUserChatGroupSocketQueryInvalidation();
 
   return (
     <VStack h="100%" divider={<StackDivider />} spacing="0" overflowY="auto" {...rest}>

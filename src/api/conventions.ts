@@ -18,5 +18,6 @@ export interface QueryOptions extends PaginationQueryOptions, SortQueryOptions {
 
 export interface CursorPaginationQueryOptions<TCursor = unknown> {
   before?: TCursor;
+  after?: TCursor;
   pageSize?: number;
 }
