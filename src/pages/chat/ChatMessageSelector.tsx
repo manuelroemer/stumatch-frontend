@@ -32,7 +32,6 @@ export default function ChatMessageSelector({ chatMessage }: ChatMessageSelector
               {isWrittenByCurrentUser && (
                 <Menu strategy="fixed">
                   <MenuButton
-                    mt="1"
                     ml="1"
                     minH="6"
                     as={IconButton}
