@@ -1,7 +1,8 @@
 import { useForm } from 'react-hook-form';
-import { Button, Divider, Input, FormControl, FormErrorMessage, Box, Heading } from '@chakra-ui/react';
+import { Button, Divider, Input, FormControl, FormErrorMessage, Box, Heading, useDisclosure } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useUserStore } from '../../stores/userStore';
+import CreateAccountModal from './CreateAccountModal';
 
 interface LoginFormData {
   email: string;
@@ -9,6 +10,8 @@ interface LoginFormData {
 }
 
 export default function LoginBox() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasUnsucessfulLoginAttempt, setHasUnsucessfulLoginAttempt] = useState(false);
   const login = useUserStore((state) => state.login);
@@ -61,9 +64,10 @@ export default function LoginBox() {
       <Heading as="h1" size="md" mb="4">
         New to sTUMatch?
       </Heading>
-      <Button w="100%" colorScheme="green">
+      <Button w="100%" colorScheme="green" onClick={onOpen}>
         Create an account
       </Button>
+      <CreateAccountModal isOpen={isOpen} onClose={onClose} />
     </Box>
   );
 }
