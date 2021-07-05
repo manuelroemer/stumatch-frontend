@@ -3,9 +3,11 @@ import { CursorPaginationApiResult } from '../api/apiResult';
 import {
   ChatMessage,
   ChatMessagePost,
+  ChatMessagePut,
   deleteChatMessage,
   getAllChatGroupChatMessages,
   postChatGroupChatMessage,
+  putChatMessage,
 } from '../api/chatMessages';
 import { useResourceChangedEventEffect } from '../sockets/resourceChangedEvent';
 
@@ -39,6 +41,18 @@ export function useChatMessageSocketQueryInvalidation(chatGroupId: string) {
       query.fetchNextPage();
     }
   });
+}
+
+export function usePutChatMessageMutation() {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ({ id, body }: { id: string; body: ChatMessagePut }) => putChatMessage(id, body).then((res) => res.data),
+    {
+      onSuccess: (data) => {
+        updateChatMessageQueryData(queryClient, data.result);
+      },
+    },
+  );
 }
 
 export function useDeleteChatMessageMutation(id: string) {

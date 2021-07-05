@@ -57,6 +57,16 @@ export default function ChatMessageSelector({ chatMessage, onChatMessageEdit }: 
                 </Menu>
               )}
             </Flex>
+            {chatMessage.createdOn !== chatMessage.modifiedOn && (
+              <Text
+                mt="1"
+                float="left"
+                fontSize="0.6rem"
+                color={isWrittenByCurrentUser ? 'white' : 'black'}
+                opacity={0.6}>
+                Edited
+              </Text>
+            )}
             <ReactTimeago
               minPeriod={1}
               date={chatMessage.modifiedOn}
