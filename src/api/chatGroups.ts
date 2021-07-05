@@ -1,4 +1,5 @@
 import { ApiResult, PaginationApiResult } from './apiResult';
+import { ChatMessage } from './chatMessages';
 import { ApiObject } from './conventions';
 import { stumatchFetch, StumatchFetchInit } from './fetch';
 import { User } from './users';
@@ -6,6 +7,7 @@ import { User } from './users';
 export interface ChatGroup extends ApiObject {
   activeParticipantIds: Array<string>;
   activeParticipants: Array<User>;
+  lastMessage?: ChatMessage;
 }
 
 export function getAllUserChatGroups(userId: string, init?: StumatchFetchInit) {
