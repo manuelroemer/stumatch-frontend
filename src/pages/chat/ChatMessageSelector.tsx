@@ -8,9 +8,10 @@ import { useDeleteChatMessageMutation } from '../../queries/chatMessages';
 
 export interface ChatMessageSelectorProps {
   chatMessage: ChatMessage;
+  onChatMessageEdit(chatMessage: ChatMessage): void;
 }
 
-export default function ChatMessageSelector({ chatMessage }: ChatMessageSelectorProps) {
+export default function ChatMessageSelector({ chatMessage, onChatMessageEdit }: ChatMessageSelectorProps) {
   const currentUser = useCurrentUser();
   const deleteChatMessageMutation = useDeleteChatMessageMutation(chatMessage.id);
   const isWrittenByCurrentUser = chatMessage.userId === currentUser.id;
@@ -46,7 +47,9 @@ export default function ChatMessageSelector({ chatMessage }: ChatMessageSelector
                     _focus={{ outline: 'none' }}
                   />
                   <MenuList>
-                    <MenuItem icon={<AiOutlineEdit />}>Edit</MenuItem>
+                    <MenuItem icon={<AiOutlineEdit />} onClick={() => onChatMessageEdit(chatMessage)}>
+                      Edit
+                    </MenuItem>
                     <MenuItem icon={<AiOutlineDelete />} onClick={() => deleteChatMessageMutation.mutate()}>
                       Delete
                     </MenuItem>

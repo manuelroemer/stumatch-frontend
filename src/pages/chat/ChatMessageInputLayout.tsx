@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useRef } from 'react';
+import { KeyboardEvent, useRef } from 'react';
 import { HStack, IconButton, Textarea, Tooltip } from '@chakra-ui/react';
 import { IEmojiData } from 'emoji-picker-react';
 import { BiSend } from 'react-icons/bi';
@@ -6,10 +6,12 @@ import isEmpty from 'lodash-es/isEmpty';
 import trim from 'lodash-es/trim';
 import countBy from 'lodash-es/countBy';
 import EmojiPickerButton from './EmojiPickerPopover';
+import { useEffect } from 'react';
 
 export interface ChatMessageInputLayoutProps {
   message: string;
   isSending: boolean;
+  isEditing: boolean;
   onMessageChanged(message: string): void;
   onSendClicked(): void;
 }
@@ -17,6 +19,7 @@ export interface ChatMessageInputLayoutProps {
 export default function ChatMessageInputLayout({
   message,
   isSending,
+  isEditing,
   onMessageChanged,
   onSendClicked,
 }: ChatMessageInputLayoutProps) {
@@ -25,13 +28,11 @@ export default function ChatMessageInputLayout({
   const canSubmit = !isEmpty(sanitizedMessage) && !isSending;
   const typedLines = countBy(message)['\n'] + 1 || 1;
 
+  const focusInput = () => setTimeout(() => inputRef.current!.focus(), 0); // https://stackoverflow.com/a/1096938
+
   const handleEmojiSelected = (emoji: IEmojiData) => {
     onMessageChanged(message + emoji.emoji);
     inputRef.current!.focus();
-  };
-
-  const handlemessageChanged = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    onMessageChanged(e.target.value);
   };
 
   const handleTextAreaKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -48,8 +49,14 @@ export default function ChatMessageInputLayout({
     }
 
     onSendClicked();
-    inputRef.current!.focus();
+    focusInput();
   };
+
+  useEffect(() => {
+    if (isEditing) {
+      focusInput();
+    }
+  }, [isEditing]);
 
   return (
     <HStack
@@ -77,7 +84,7 @@ export default function ChatMessageInputLayout({
         rows={Math.min(5, typedLines)}
         value={message}
         onKeyPress={handleTextAreaKeyPress}
-        onChange={handlemessageChanged}
+        onChange={(e) => onMessageChanged(e.target.value)}
       />
       <Tooltip type="submit" label="Send" hasArrow>
         <IconButton
