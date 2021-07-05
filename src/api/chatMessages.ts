@@ -32,3 +32,7 @@ export function postChatGroupChatMessage(chatGroupId: string, body: ChatMessageP
     ...init,
   });
 }
+
+export function deleteChatMessage(id: string, init?: StumatchFetchInit) {
+  return stumatchFetch<ApiResult<ChatMessage>>(`/api/v1/chatMessages/${id}`, { method: 'DELETE', ...init });
+}
