@@ -9,28 +9,32 @@ import trim from 'lodash-es/trim';
 import countBy from 'lodash-es/countBy';
 import EmojiPickerButton from './EmojiPickerPopover';
 import { useEffect } from 'react';
+import { useState } from 'react';
 
 export interface ChatMessageInputLayoutProps {
-  message: string;
+  initialMessage: string;
   isSending: boolean;
   isEditing: boolean;
-  cancelEditing(): void;
-  onMessageChanged(message: string): void;
-  onSendClicked(): void;
+  onSendClicked(message: string): void;
+  onCancelEditClicked(): void;
 }
 
 export default function ChatMessageInputLayout({
-  message,
+  initialMessage,
   isSending,
   isEditing,
-  cancelEditing,
-  onMessageChanged,
   onSendClicked,
+  onCancelEditClicked,
 }: ChatMessageInputLayoutProps) {
+  const [message, setMessage] = useState('');
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const sanitizedMessage = trim(message);
   const canSubmit = !isEmpty(sanitizedMessage) && !isSending;
   const typedLines = countBy(message)['\n'] + 1 || 1;
+
+  useEffect(() => {
+    setMessage(initialMessage);
+  }, [initialMessage]);
 
   const focusInput = () => {
     // https://stackoverflow.com/a/1096938
@@ -41,15 +45,13 @@ export default function ChatMessageInputLayout({
   };
 
   const handleEmojiSelected = (emoji: IEmojiData) => {
-    onMessageChanged(message + emoji.emoji);
+    setMessage(message + emoji.emoji);
     inputRef.current!.focus();
   };
 
-  const handleTextAreaKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      send();
-    }
+  const cancel = () => {
+    onCancelEditClicked();
+    setMessage('');
   };
 
   const send = () => {
@@ -58,8 +60,16 @@ export default function ChatMessageInputLayout({
       return;
     }
 
-    onSendClicked();
+    onSendClicked(sanitizedMessage);
+    setMessage('');
     focusInput();
+  };
+
+  const handleTextAreaKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      send();
+    }
   };
 
   useEffect(() => {
@@ -94,7 +104,7 @@ export default function ChatMessageInputLayout({
         rows={Math.min(5, typedLines)}
         value={message}
         onKeyPress={handleTextAreaKeyPress}
-        onChange={(e) => onMessageChanged(e.target.value)}
+        onChange={(e) => setMessage(e.target.value)}
       />
       <Tooltip type="submit" label={isEditing ? 'Edit' : 'Send'} hasArrow>
         <IconButton
@@ -109,7 +119,7 @@ export default function ChatMessageInputLayout({
       </Tooltip>
       {isEditing && (
         <Tooltip type="submit" label="Cancel Editing" hasArrow>
-          <IconButton aria-label="Cancel Editing" icon={<MdClose />} rounded="full" onClick={() => cancelEditing()} />
+          <IconButton aria-label="Cancel Editing" icon={<MdClose />} rounded="full" onClick={() => cancel()} />
         </Tooltip>
       )}
     </HStack>

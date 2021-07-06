@@ -15,7 +15,7 @@ export interface ChatGroupItemProps {
 export default function ChatGroupItem({ chatGroup, isSelected }: ChatGroupItemProps) {
   const history = useHistory();
   const title = getChatGroupTitle(chatGroup, useCurrentUser());
-  const newMessages = 0;
+  const newMessages = chatGroup.unreadMessages;
   const lastMessage = chatGroup.lastMessage?.textContent;
   const handleClick = () => history.replace(`${routes.chat}/${chatGroup.id}`);
 
@@ -58,7 +58,7 @@ export default function ChatGroupItem({ chatGroup, isSelected }: ChatGroupItemPr
           </Text>
         )}
       </Flex>
-      {newMessages > 0 && (
+      {!isSelected && newMessages > 0 && (
         <Flex gridRow="2" gridColumn="3" justify="flex-end" align="center">
           <Tag colorScheme="primary" size="sm" rounded="full">
             {newMessages > 99 ? '99+' : newMessages}
