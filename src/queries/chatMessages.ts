@@ -7,6 +7,7 @@ import {
   ChatMessagePut,
   deleteChatMessage,
   getAllChatGroupChatMessages,
+  getChatMessage,
   postChatGroupChatMessage,
   putChatMessage,
 } from '../api/chatMessages';
@@ -17,46 +18,45 @@ export const chatMessagesQueryKey = 'chatMessages';
 export function useInfiniteGetAllChatGroupChatMessagesQuery(chatGroupId: string) {
   const queryClient = useQueryClient();
 
-  // On cleanup, remove the query immediately.
-  // Keeping large chat histories is expensive. Refetching later is better.
-  useEffect(() => () => queryClient.removeQueries([chatMessagesQueryKey, chatGroupId]), [chatGroupId]);
+  // On cleanup, clear the query because keeping large chat histories can be expensive. Refetching later is better.
+  useEffect(() => {
+    return () => {
+      queryClient.resetQueries([chatMessagesQueryKey, chatGroupId]);
+    };
+  }, [chatGroupId]);
 
   return useInfiniteQuery(
     [chatMessagesQueryKey, chatGroupId],
     ({ pageParam }) => getAllChatGroupChatMessages(chatGroupId, { ...pageParam }).then((res) => res.data),
     {
       // react-query expects `undefined` (not `null`) for "no next cursor". -> `?? undefined`
-      getPreviousPageParam: (firstPage) => (firstPage.beforeCursor ? { before: firstPage.beforeCursor } : undefined),
-      getNextPageParam: (lastPage, allPages) => {
-        // We want the latest cursor that exists.
-        // This way of finding it is bad, yes. Tons of hours were wasted here debugging weird
-        // behavior with alternatives though. I honestly don't want to waste more time here.
-        const validCursors = allPages
-          .map((page) => page.afterCursor)
-          .filter((cursor) => !!cursor)
-          .sort((a, b) => a!.localeCompare(b!));
-
-        return validCursors.length > 0 ? { after: validCursors[validCursors.length - 1] } : undefined;
-      },
+      getPreviousPageParam: (firstPage) => (firstPage?.beforeCursor ? { before: firstPage.beforeCursor } : undefined),
     },
   );
 }
 
-export function usePostChatGroupChatMessageMutation(chatGroupId: string) {
+export function useChatMessageSocketQueryInvalidation() {
   const queryClient = useQueryClient();
-  return useMutation((body: ChatMessagePost) => postChatGroupChatMessage(chatGroupId, body), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(chatMessagesQueryKey);
-    },
+
+  useResourceChangedEventEffect(async (event) => {
+    if (event.resourceType === 'chatMessage') {
+      try {
+        const res = await getChatMessage(event.id);
+        const message = res.data.result;
+        addOrUpdateChatMessageQueryData(queryClient, message);
+      } catch (e) {
+        console.warn(`Failed to fetch changed chat message with the ID ${event.id}. Ignoring this failure.`, e);
+      }
+    }
   });
 }
 
-export function useChatMessageSocketQueryInvalidation(chatGroupId: string) {
-  const query = useInfiniteGetAllChatGroupChatMessagesQuery(chatGroupId);
-  useResourceChangedEventEffect((event) => {
-    if (event.resourceType === 'chatMessage') {
-      query.fetchNextPage();
-    }
+export function usePostChatGroupChatMessageMutation(chatGroupId: string) {
+  const queryClient = useQueryClient();
+  return useMutation((body: ChatMessagePost) => postChatGroupChatMessage(chatGroupId, body).then((res) => res.data), {
+    onSuccess: ({ result }) => {
+      addOrUpdateChatMessageQueryData(queryClient, result);
+    },
   });
 }
 
@@ -65,8 +65,8 @@ export function usePutChatMessageMutation() {
   return useMutation(
     ({ id, body }: { id: string; body: ChatMessagePut }) => putChatMessage(id, body).then((res) => res.data),
     {
-      onSuccess: (data) => {
-        updateChatMessageQueryData(queryClient, data.result);
+      onSuccess: ({ result }) => {
+        addOrUpdateChatMessageQueryData(queryClient, result);
       },
     },
   );
@@ -75,22 +75,34 @@ export function usePutChatMessageMutation() {
 export function useDeleteChatMessageMutation(id: string) {
   const queryClient = useQueryClient();
   return useMutation(() => deleteChatMessage(id).then((res) => res.data), {
-    onSuccess: (data) => {
-      updateChatMessageQueryData(queryClient, data.result);
+    onSuccess: ({ result }) => {
+      addOrUpdateChatMessageQueryData(queryClient, result);
     },
   });
 }
 
-function updateChatMessageQueryData(queryClient: QueryClient, chatMessageUpdate: ChatMessage) {
+function addOrUpdateChatMessageQueryData(queryClient: QueryClient, message: ChatMessage) {
   queryClient.setQueryData<InfiniteData<CursorPaginationApiResult<ChatMessage>>>(
-    [chatMessagesQueryKey, chatMessageUpdate.chatGroupId],
+    [chatMessagesQueryKey, message.chatGroupId],
     (data) => {
       // Using imperative mutation here so that we don't have to (potentially) copy a full set of data.
       // That gets very inefficient for large sets of chat messages and can be avoided.
-      for (const page of data?.pages ?? []) {
-        for (const chatMessage of page.result) {
-          if (chatMessage.id === chatMessageUpdate.id) {
-            Object.assign(chatMessage, chatMessageUpdate);
+      const isNew = message.createdOn === message.modifiedOn;
+
+      if (isNew) {
+        if (
+          data?.pages &&
+          !data.pages.some((page) => page.result.some((existingMessage) => existingMessage.id === message.id))
+        ) {
+          data.pages[data.pages.length - 1].result.push(message);
+        }
+      } else {
+        for (const page of data?.pages ?? []) {
+          for (const chatMessage of page.result) {
+            if (chatMessage.id === message.id) {
+              Object.assign(chatMessage, message);
+              break;
+            }
           }
         }
       }
