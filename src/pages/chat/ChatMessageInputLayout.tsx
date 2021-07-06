@@ -102,6 +102,7 @@ export default function ChatMessageInputLayout({
         resize="none"
         placeholder="Type here to send a message..."
         rows={Math.min(5, typedLines)}
+        overflowX="hidden"
         value={message}
         onKeyPress={handleTextAreaKeyPress}
         onChange={(e) => setMessage(e.target.value)}
