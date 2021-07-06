@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { InfiniteData, QueryClient, useInfiniteQuery, useMutation, useQueryClient } from 'react-query';
 import { CursorPaginationApiResult } from '../api/apiResult';
 import {
@@ -14,13 +15,26 @@ import { useResourceChangedEventEffect } from '../sockets/resourceChangedEvent';
 export const chatMessagesQueryKey = 'chatMessages';
 
 export function useInfiniteGetAllChatGroupChatMessagesQuery(chatGroupId: string) {
+  const queryClient = useQueryClient();
+
+  // On cleanup, remove the query immediately.
+  // Keeping large chat histories is expensive. Refetching later is better.
+  useEffect(() => () => queryClient.removeQueries([chatMessagesQueryKey, chatGroupId]), [chatGroupId]);
+
   return useInfiniteQuery(
     [chatMessagesQueryKey, chatGroupId],
     ({ pageParam }) => getAllChatGroupChatMessages(chatGroupId, { ...pageParam }).then((res) => res.data),
     {
       // react-query expects `undefined` (not `null`) for "no next cursor". -> `?? undefined`
-      getPreviousPageParam: (lastPage) => (lastPage.beforeCursor ? { before: lastPage.beforeCursor } : undefined),
-      getNextPageParam: (lastPage) => (lastPage.afterCursor ? { after: lastPage.afterCursor } : undefined),
+      getPreviousPageParam: (firstPage) => (firstPage.beforeCursor ? { before: firstPage.beforeCursor } : undefined),
+      getNextPageParam: (lastPage, allPages) => {
+        const validCursors = allPages
+          .map((page) => page.afterCursor)
+          .filter((cursor) => !!cursor)
+          .sort((a, b) => a!.localeCompare(b!));
+
+        return validCursors.length > 0 ? { after: validCursors[validCursors.length - 1] } : undefined;
+      },
     },
   );
 }
