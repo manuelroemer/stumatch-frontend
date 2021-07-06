@@ -20,7 +20,7 @@ export default function ChatMessagesContainer({ chatGroupId, onChatMessageEdit }
   const containerRef = useRef<HTMLDivElement>(null);
   const { isLoading, data, fetchPreviousPage, hasPreviousPage } =
     useInfiniteGetAllChatGroupChatMessagesQuery(chatGroupId);
-  useChatMessageSocketQueryInvalidation();
+  useChatMessageSocketQueryInvalidation(chatGroupId);
 
   // Due to the 'column-reverse' hack we must also reverse the order in which messages are rendered.
   // Otherwise they are displayed bottom-to-top.

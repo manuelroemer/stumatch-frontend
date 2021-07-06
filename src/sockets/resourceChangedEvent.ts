@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { DependencyList, useContext, useEffect } from 'react';
 import { Socket } from 'socket.io-client';
 import { SocketContext } from './socket';
 
@@ -10,14 +10,14 @@ export interface ResourceChangedEvent {
   id: string;
 }
 
-export function useResourceChangedEventEffect(cb: ResourceChangedEventHandler) {
+export function useResourceChangedEventEffect(cb: ResourceChangedEventHandler, deps?: DependencyList) {
   const { socket } = useContext(SocketContext);
 
   useEffect(() => {
     if (socket) {
       return subscribeResourceChangedEvent(socket, cb);
     }
-  }, [socket]);
+  }, [socket, ...(deps ?? [])]);
 }
 
 export function subscribeResourceChangedEvent(socket: Socket, cb: ResourceChangedEventHandler): () => void {

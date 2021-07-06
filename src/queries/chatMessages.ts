@@ -9,6 +9,7 @@ import {
   getAllChatGroupChatMessages,
   getChatMessage,
   postChatGroupChatMessage,
+  postChatMessageRead,
   putChatMessage,
 } from '../api/chatMessages';
 import { useResourceChangedEventEffect } from '../sockets/resourceChangedEvent';
@@ -31,24 +32,42 @@ export function useInfiniteGetAllChatGroupChatMessagesQuery(chatGroupId: string)
     {
       // react-query expects `undefined` (not `null`) for "no next cursor". -> `?? undefined`
       getPreviousPageParam: (firstPage) => (firstPage?.beforeCursor ? { before: firstPage.beforeCursor } : undefined),
+      onSuccess: (data) => {
+        if (data?.pages && data.pages.length > 0) {
+          const lastPage = data.pages[data.pages.length - 1];
+
+          if (lastPage.result.length > 0) {
+            markChatMessageAsRead(lastPage.result[lastPage.result.length - 1].id);
+          }
+        }
+      },
     },
   );
 }
 
-export function useChatMessageSocketQueryInvalidation() {
+export function useChatMessageSocketQueryInvalidation(chatGroupId: string) {
   const queryClient = useQueryClient();
 
-  useResourceChangedEventEffect(async (event) => {
-    if (event.resourceType === 'chatMessage') {
-      try {
-        const res = await getChatMessage(event.id);
-        const message = res.data.result;
-        addOrUpdateChatMessageQueryData(queryClient, message);
-      } catch (e) {
-        console.warn(`Failed to fetch changed chat message with the ID ${event.id}. Ignoring this failure.`, e);
+  useResourceChangedEventEffect(
+    async (event) => {
+      if (event.resourceType === 'chatMessage') {
+        try {
+          const res = await getChatMessage(event.id);
+          const message = res.data.result;
+          if (message.chatGroupId !== chatGroupId) {
+            console.warn(message.chatGroupId, chatGroupId);
+            return;
+          }
+
+          markChatMessageAsRead(message.id);
+          addOrUpdateChatMessageQueryData(queryClient, message);
+        } catch (e) {
+          console.warn(`Failed to fetch changed chat message with the ID ${event.id}. Ignoring this failure.`, e);
+        }
       }
-    }
-  });
+    },
+    [chatGroupId],
+  );
 }
 
 export function usePostChatGroupChatMessageMutation(chatGroupId: string) {
@@ -112,5 +131,11 @@ function addOrUpdateChatMessageQueryData(queryClient: QueryClient, message: Chat
         pages: data?.pages ?? [],
       };
     },
+  );
+}
+
+function markChatMessageAsRead(chatMessageId: string) {
+  postChatMessageRead(chatMessageId).catch((e) =>
+    console.warn(`Failed to mark chat message ${chatMessageId} as read.`, e),
   );
 }

@@ -46,3 +46,10 @@ export function putChatMessage(id: string, body: ChatMessagePut, init?: Stumatch
 export function deleteChatMessage(id: string, init?: StumatchFetchInit) {
   return stumatchFetch<ApiResult<ChatMessage>>(`/api/v1/chatMessages/${id}`, { method: 'DELETE', ...init });
 }
+
+export function postChatMessageRead(chatMessageId: string, init?: StumatchFetchInit) {
+  return stumatchFetch<ApiResult<ChatMessage>>(`/api/v1/chatMessages/${chatMessageId}/read`, {
+    method: 'POST',
+    ...init,
+  });
+}
