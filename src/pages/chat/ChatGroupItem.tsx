@@ -15,8 +15,9 @@ export interface ChatGroupItemProps {
 export default function ChatGroupItem({ chatGroup, isSelected }: ChatGroupItemProps) {
   const history = useHistory();
   const title = getChatGroupTitle(chatGroup, useCurrentUser());
-  const newMessages = 0;
+  const newMessages = chatGroup.unreadMessages;
   const lastMessage = chatGroup.lastMessage?.textContent;
+  const timeAgo = chatGroup.lastMessage?.createdOn ?? chatGroup.createdOn;
   const handleClick = () => history.replace(`${routes.chat}/${chatGroup.id}`);
 
   return (
@@ -43,7 +44,7 @@ export default function ChatGroupItem({ chatGroup, isSelected }: ChatGroupItemPr
       <Flex gridRow="1" gridColumn="3" align="center">
         <ReactTimeago
           minPeriod={10}
-          date={new Date()}
+          date={timeAgo}
           component={(props) => <Text layerStyle="timeAgoHint" {...props} />}
         />
       </Flex>
@@ -58,7 +59,7 @@ export default function ChatGroupItem({ chatGroup, isSelected }: ChatGroupItemPr
           </Text>
         )}
       </Flex>
-      {newMessages > 0 && (
+      {!isSelected && newMessages > 0 && (
         <Flex gridRow="2" gridColumn="3" justify="flex-end" align="center">
           <Tag colorScheme="primary" size="sm" rounded="full">
             {newMessages > 99 ? '99+' : newMessages}

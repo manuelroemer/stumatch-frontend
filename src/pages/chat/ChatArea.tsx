@@ -16,37 +16,42 @@ export default function ChatArea({ chatGroupId }: ChatAreaProps) {
   const postChatMessageMutation = usePostChatGroupChatMessageMutation(chatGroupId);
   const putChatMessageMutation = usePutChatMessageMutation();
 
-  const cancelEditing = () => {
+  const cancelEditing = useCallback(() => {
     setMessageToEdit(null);
     setMessage('');
-  };
+  }, [setMessageToEdit, setMessage]);
 
-  const handleChatMessageEdit = useCallback((chatMessage: ChatMessage) => {
-    setMessageToEdit(chatMessage);
-    setMessage(chatMessage.textContent);
-  }, []);
+  const handleChatMessageEdit = useCallback(
+    (chatMessage: ChatMessage) => {
+      setMessageToEdit(chatMessage);
+      setMessage(chatMessage.textContent);
+    },
+    [setMessage, setMessageToEdit],
+  );
 
-  const handleSendClicked = () => {
-    if (messageToEdit) {
-      putChatMessageMutation.mutate({ id: messageToEdit.id, body: { textContent: message } });
-      cancelEditing();
-    } else {
-      postChatMessageMutation.mutate({ textContent: message });
-      setMessage('');
-    }
-  };
+  const handleSendClicked = useCallback(
+    (message: string) => {
+      if (messageToEdit) {
+        putChatMessageMutation.mutate({ id: messageToEdit.id, body: { textContent: message } });
+        cancelEditing();
+      } else {
+        postChatMessageMutation.mutate({ textContent: message });
+        setMessage('');
+      }
+    },
+    [message, messageToEdit, putChatMessageMutation, postChatMessageMutation, cancelEditing, setMessage],
+  );
 
   return (
     <>
       <ChatMessagesHeader chatGroupId={chatGroupId} />
       <ChatMessagesContainer chatGroupId={chatGroupId} onChatMessageEdit={handleChatMessageEdit} />
       <ChatMessageInputLayout
-        message={message}
+        initialMessage={message}
         isSending={postChatMessageMutation.isLoading || putChatMessageMutation.isLoading}
         isEditing={!!messageToEdit}
-        cancelEditing={cancelEditing}
-        onMessageChanged={setMessage}
         onSendClicked={handleSendClicked}
+        onCancelEditClicked={cancelEditing}
       />
     </>
   );

@@ -17,7 +17,7 @@ export default function PostContainer({ post }: PostContainerProps) {
     <Grid templateRows="repeat(2, 1fr)" templateColumns="repeat(14, 1fr)" gap={2}>
       <GridItem rowSpan={2} colSpan={2}>
         <Flex h="100%" align="center">
-          <Icon aria-lable="Picture" as={AiOutlinePicture} w="80%" h="80%" margin="5" />
+          <Icon aria-label="Picture" as={AiOutlinePicture} w="80%" h="80%" margin="5" />
         </Flex>
       </GridItem>
       <GridItem rowSpan={1} colSpan={12}>
@@ -47,7 +47,7 @@ export default function PostContainer({ post }: PostContainerProps) {
       </GridItem>
       <GridItem rowSpan={1} colSpan={2}>
         <Flex h="100%" align="center">
-          <Icon aria-lable="Author" as={CgProfile} marginRight="5" />
+          <Icon aria-label="Author" as={CgProfile} marginRight="5" />
           <Text textAlign="left">
             {post.author.lastName}, {post.author.firstName}
           </Text>
@@ -55,7 +55,7 @@ export default function PostContainer({ post }: PostContainerProps) {
       </GridItem>
       <GridItem rowSpan={1} colSpan={2}>
         <Flex h="100%" align="center">
-          <Icon aria-lable="Ago" as={AiOutlineClockCircle} marginRight="5" />
+          <Icon aria-label="Ago" as={AiOutlineClockCircle} marginRight="5" />
           <Text textAlign="left">{post.createdOn}</Text>
         </Flex>
       </GridItem>

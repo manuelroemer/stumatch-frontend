@@ -8,6 +8,7 @@ export interface ChatGroup extends ApiObject {
   activeParticipantIds: Array<string>;
   activeParticipants: Array<User>;
   lastMessage?: ChatMessage;
+  unreadMessages: number;
 }
 
 export function getAllUserChatGroups(userId: string, init?: StumatchFetchInit) {
