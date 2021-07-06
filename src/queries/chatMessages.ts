@@ -28,6 +28,9 @@ export function useInfiniteGetAllChatGroupChatMessagesQuery(chatGroupId: string)
       // react-query expects `undefined` (not `null`) for "no next cursor". -> `?? undefined`
       getPreviousPageParam: (firstPage) => (firstPage.beforeCursor ? { before: firstPage.beforeCursor } : undefined),
       getNextPageParam: (lastPage, allPages) => {
+        // We want the latest cursor that exists.
+        // This way of finding it is bad, yes. Tons of hours were wasted here debugging weird
+        // behavior with alternatives though. I honestly don't want to waste more time here.
         const validCursors = allPages
           .map((page) => page.afterCursor)
           .filter((cursor) => !!cursor)
