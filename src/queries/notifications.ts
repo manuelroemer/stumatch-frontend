@@ -30,7 +30,7 @@ export function useNotificationsSocketQueryInvalidation() {
   const queryClient = useQueryClient();
   useResourceChangedEventEffect((event) => {
     if (event.resourceType === 'notification') {
-      queryClient.invalidateQueries('notifications');
+      queryClient.invalidateQueries(notificationsQueryKey);
     }
   });
 }

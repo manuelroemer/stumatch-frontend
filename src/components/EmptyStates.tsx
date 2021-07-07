@@ -69,3 +69,20 @@ export function NoChatGroupsEmptyState(props?: EmptyStateProps & { emptyDueToFil
     />
   );
 }
+
+export function NoChatGroupSelectedEmptyState(props?: EmptyStateProps) {
+  return (
+    <EmptyState
+      imgSrc={socialSerenity}
+      title="No Chat Group Selected"
+      description="Select a chat group on the left to start chatting."
+      {...props}
+    />
+  );
+}
+
+export function NoPostsEmptyState(props?: EmptyStateProps) {
+  return (
+    <EmptyState imgSrc={socialSerenity} title="No Posts" description="There are no posts at the moment." {...props} />
+  );
+}

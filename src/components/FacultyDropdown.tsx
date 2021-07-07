@@ -1,13 +1,23 @@
 import { FormControl, FormLabel, FormHelperText } from '@chakra-ui/form-control';
 import { Select } from '@chakra-ui/react';
 import { ChangeEvent, useState } from 'react';
-import { Faculty, StudyProgram } from '../../api/faculty';
+import { Faculty, StudyProgram } from '../api/faculty';
 
 export interface FacultyDropdownProps {
   facultyData: Array<Faculty>;
+  facultyDescription: string;
+  studyProgramDescription: string;
+  onFacultyChanged(faculty?: Faculty): void;
+  onStudyProgramChanged(studyProgram?: StudyProgram): void;
 }
 
-export default function FacultyDropdown({ facultyData }: FacultyDropdownProps) {
+export default function FacultyDropdown({
+  facultyData,
+  facultyDescription,
+  studyProgramDescription,
+  onFacultyChanged,
+  onStudyProgramChanged,
+}: FacultyDropdownProps) {
   const [selectedFaculty, setSelectedFaculty] = useState<Faculty | undefined>(undefined);
   const [selectedStudyProgram, setSelectedStudyProgram] = useState<StudyProgram | undefined>(undefined);
   const studyPrograms = facultyData
@@ -18,17 +28,21 @@ export default function FacultyDropdown({ facultyData }: FacultyDropdownProps) {
     const faculty = facultyData.find((faculty) => e.target.value === faculty.id);
     setSelectedFaculty(faculty);
     setSelectedStudyProgram(undefined);
+    onFacultyChanged(faculty);
+    onStudyProgramChanged(undefined);
   };
 
   const handleStudyProgramChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedStudyProgram = studyPrograms.find((studyProgram) => e.target.value === studyProgram.id);
     setSelectedStudyProgram(selectedStudyProgram);
+    onStudyProgramChanged(selectedStudyProgram);
 
     if (selectedStudyProgram) {
       const associatedFaculty = facultyData.find((faculty) =>
         faculty.studyPrograms.some((studyProgram) => studyProgram.id === selectedStudyProgram?.id),
       );
       setSelectedFaculty(associatedFaculty);
+      onFacultyChanged(associatedFaculty);
     }
   };
 
@@ -47,7 +61,7 @@ export default function FacultyDropdown({ facultyData }: FacultyDropdownProps) {
             </option>
           ))}
         </Select>
-        <FormHelperText>Select the faculty you would like to meet.</FormHelperText>
+        <FormHelperText>{facultyDescription}</FormHelperText>
       </FormControl>
 
       <FormControl>
@@ -63,7 +77,7 @@ export default function FacultyDropdown({ facultyData }: FacultyDropdownProps) {
             </option>
           ))}
         </Select>
-        <FormHelperText>Select the study program you would like to meet.</FormHelperText>
+        <FormHelperText>{studyProgramDescription}</FormHelperText>
       </FormControl>
     </>
   );

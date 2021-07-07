@@ -18,8 +18,9 @@ import { BiHourglass } from 'react-icons/bi';
 import { MdDeleteForever } from 'react-icons/md';
 import { MatchRequest } from '../../api/matching';
 import MatchingTemplate, { MatchingTemplateProps } from './MatchingTemplate';
-import { useDeleteMatchRequestMutation } from '../../queries/matchRequests';
+import { useDeleteMatchRequestMutation, usePostAcceptDeclineMatchRequestMutation } from '../../queries/matchRequests';
 import React, { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const descriptions = {
   acceptedByMe: 'You have accepted your partner.',
@@ -51,9 +52,9 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
           description: descriptions[matchRequest.status],
           actions: (
             <>
-              <ChatButton />
-              <CheckButton disabled={matchRequest.status === 'acceptedByMe'} />
-              <CloseButton disabled={matchRequest.status === 'acceptedByMe'} />
+              <ChatButton disabled={true} chatGroupId="" />
+              <CheckButton matchRequestId={matchRequest.id} disabled={matchRequest.status === 'acceptedByMe'} />
+              <CloseButton matchRequestId={matchRequest.id} disabled={matchRequest.status === 'acceptedByMe'} />
             </>
           ),
         };
@@ -66,7 +67,7 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
           description: descriptions[matchRequest.status],
           actions: (
             <>
-              {matchRequest.status === 'accepted' && <ChatButton />}
+              {matchRequest.status === 'accepted' && <ChatButton chatGroupId={matchRequest.chatGroupId ?? ''} />}
               {deleteButton}
             </>
           ),
@@ -92,20 +93,47 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
   return <MatchingTemplate {...getMatchingTemplateProps()} />;
 }
 
-function ChatButton(props: HTMLChakraProps<'button'>) {
-  return <IconButton aria-label="Chat" fontSize="25" icon={<IoChatbubblesOutline />} {...props} />;
+function ChatButton({ chatGroupId, ...props }: HTMLChakraProps<'button'> & { chatGroupId: string }) {
+  return (
+    <Link to={`/chat/${chatGroupId}`}>
+      <IconButton aria-label="Chat" fontSize="25" icon={<IoChatbubblesOutline />} {...props} />
+    </Link>
+  );
 }
 
-function CheckButton(props: HTMLChakraProps<'button'>) {
-  return <IconButton aria-label="Check" fontSize="25" color="green" icon={<IoMdCheckmark />} {...props} />;
+function CheckButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & { matchRequestId: string }) {
+  const mutation = usePostAcceptDeclineMatchRequestMutation(matchRequestId);
+  return (
+    <IconButton
+      aria-label="Check"
+      fontSize="25"
+      color="green"
+      icon={<IoMdCheckmark />}
+      onClick={() => mutation.mutate({ accepted: true })}
+      isLoading={mutation.isLoading}
+      {...props}
+    />
+  );
 }
 
-function CloseButton(props: HTMLChakraProps<'button'>) {
-  return <IconButton aria-label="Close" fontSize="25" color="red" icon={<IoMdClose />} {...props} />;
+function CloseButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & { matchRequestId: string }) {
+  const mutation = usePostAcceptDeclineMatchRequestMutation(matchRequestId);
+
+  return (
+    <IconButton
+      aria-label="Close"
+      fontSize="25"
+      color="red"
+      icon={<IoMdClose />}
+      onClick={() => mutation.mutate({ accepted: false })}
+      isLoading={mutation.isLoading}
+      {...props}
+    />
+  );
 }
 
-function DeleteButton(props: HTMLChakraProps<'button'> & { matchRequestId: string }) {
-  const mutation = useDeleteMatchRequestMutation(props.matchRequestId);
+function DeleteButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & { matchRequestId: string }) {
+  const mutation = useDeleteMatchRequestMutation(matchRequestId);
   const [isOpen, setIsOpen] = useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef<any>();
@@ -134,7 +162,7 @@ function DeleteButton(props: HTMLChakraProps<'button'> & { matchRequestId: strin
                 ml={3}
                 onClick={() => {
                   mutation.mutateAsync();
-                  onClose;
+                  onClose();
                 }}>
                 Yes, delete it
               </Button>
