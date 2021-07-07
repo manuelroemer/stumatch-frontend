@@ -1,6 +1,6 @@
 import { HTMLChakraProps, StackDivider, VStack } from '@chakra-ui/react';
 import { me } from '../../api/conventions';
-import { useGetAllUserChatGroupsQuery } from '../../queries/chatGroups';
+import { useGetAllUserChatGroupsQuery, useUserChatGroupSocketQueryInvalidation } from '../../queries/chatGroups';
 import ChatGroupItem from './ChatGroupItem';
 import { getFullName } from '../../utils/userUtils';
 import { ChatGroup } from '../../api/chatGroups';
@@ -15,7 +15,14 @@ export interface ChatGroupContainerProps extends HTMLChakraProps<'div'> {
 
 export default function ChatGroupContainer({ chatGroupId, chatGroupFilter, ...rest }: ChatGroupContainerProps) {
   const { isLoading, data } = useGetAllUserChatGroupsQuery(me);
-  const filteredData = data?.result.filter((chatGroup) => filterChatGroup(chatGroup, chatGroupFilter));
+  const chatGroups = data?.result
+    .filter((chatGroup) => filterChatGroup(chatGroup, chatGroupFilter))
+    .sort((a, b) => {
+      const dateA = a.lastMessage?.createdOn ?? a.createdOn;
+      const dateB = b.lastMessage?.createdOn ?? b.createdOn;
+      return dateB.localeCompare(dateA);
+    });
+  useUserChatGroupSocketQueryInvalidation();
 
   return (
     <VStack h="100%" divider={<StackDivider />} spacing="0" overflowY="auto" {...rest}>
@@ -23,12 +30,12 @@ export default function ChatGroupContainer({ chatGroupId, chatGroupFilter, ...re
         range(5).map((i) => (
           <ImageTitleDescriptionSkeleton key={i} w="100%" p="2" imageSize="12" textSize="4" imageTextSpacing="2" />
         ))}
-      {filteredData &&
-        filteredData.length > 0 &&
-        filteredData.map((chatGroup) => (
+      {chatGroups &&
+        chatGroups.length > 0 &&
+        chatGroups.map((chatGroup) => (
           <ChatGroupItem key={chatGroup.id} chatGroup={chatGroup} isSelected={chatGroupId === chatGroup.id} />
         ))}
-      {filteredData && filteredData.length === 0 && (
+      {chatGroups && chatGroups.length === 0 && (
         <NoChatGroupsEmptyState size="xs" emptyDueToFiltering={data?.result.length !== 0} />
       )}
     </VStack>

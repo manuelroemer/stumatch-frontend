@@ -14,6 +14,8 @@ export interface ChatMessagePost {
   textContent: string;
 }
 
+export type ChatMessagePut = ChatMessagePost;
+
 export function getAllChatGroupChatMessages(
   chatGroupId: string,
   options?: CursorPaginationQueryOptions,
@@ -28,6 +30,25 @@ export function getAllChatGroupChatMessages(
 export function postChatGroupChatMessage(chatGroupId: string, body: ChatMessagePost, init?: StumatchFetchInit) {
   return stumatchFetch<ApiResult<ChatMessage>>(`/api/v1/chatGroups/${chatGroupId}/chatMessages`, {
     body,
+    method: 'POST',
+    ...init,
+  });
+}
+
+export function getChatMessage(id: string, init?: StumatchFetchInit) {
+  return stumatchFetch<ApiResult<ChatMessage>>(`/api/v1/chatMessages/${id}`, init);
+}
+
+export function putChatMessage(id: string, body: ChatMessagePut, init?: StumatchFetchInit) {
+  return stumatchFetch<ApiResult<ChatMessage>>(`/api/v1/chatMessages/${id}`, { method: 'PUT', body, ...init });
+}
+
+export function deleteChatMessage(id: string, init?: StumatchFetchInit) {
+  return stumatchFetch<ApiResult<ChatMessage>>(`/api/v1/chatMessages/${id}`, { method: 'DELETE', ...init });
+}
+
+export function postChatMessageRead(chatMessageId: string, init?: StumatchFetchInit) {
+  return stumatchFetch<ApiResult<ChatMessage>>(`/api/v1/chatMessages/${chatMessageId}/read`, {
     method: 'POST',
     ...init,
   });
