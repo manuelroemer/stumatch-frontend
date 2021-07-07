@@ -58,25 +58,21 @@ export default function NavBarProfileItem() {
             <PopoverCloseButton />
             <PopoverHeader>Profile</PopoverHeader>
             <PopoverBody>
-              <Center>
+              <Center p="3">
                 <Avatar name={userName} />
               </Center>
               <Divider />
-              <Flex>
-                <HStack>
-                  <VStack align="left">
-                    <Text>{userName}</Text>
-                    <Text>{user.email}</Text>
-                  </VStack>
-                  <Spacer />
-                  <Button size="xs" variant="link">
-                    Edit
-                  </Button>
-                </HStack>
-              </Flex>
+              <VStack p="3">
+                <Text>{userName}</Text>
+                <Text>{user.email}</Text>
+                <StackDivider />
+                <Button variant="link">Edit</Button>
+              </VStack>
             </PopoverBody>
-            <PopoverFooter>
-              <Button onClick={logout}>Logout</Button>
+            <PopoverFooter p="2">
+              <Flex justify="flex-end">
+                <Button onClick={logout}>Logout</Button>
+              </Flex>
             </PopoverFooter>
           </PopoverContent>
         </>
