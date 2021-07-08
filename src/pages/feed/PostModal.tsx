@@ -103,7 +103,7 @@ export default function PostModal({ isOpen, onClose }: PostModalProps): JSX.Elem
             </VStack>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} type="submit" isLoading={mutation.isLoading}>
+            <Button onClick={onClose} colorScheme="blue" mr={3} type="submit" isLoading={mutation.isLoading}>
               Create
             </Button>
             <Button onClick={onClose}>Cancel</Button>
