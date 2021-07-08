@@ -16,10 +16,10 @@ import {
   WrapItem,
   Tooltip,
 } from '@chakra-ui/react';
-import React from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { HiHashtag } from 'react-icons/hi';
-import { postPost } from '../../api/post';
+import { PostPost } from '../../api/post';
 import { usePostMutation } from '../../queries/posts';
 
 export interface PostModalProps {
@@ -28,8 +28,8 @@ export interface PostModalProps {
 }
 
 export default function PostModal({ isOpen, onClose }: PostModalProps): JSX.Element {
-  const [validCategory, setValidCategory] = React.useState(true);
-  const form = useForm<postPost>();
+  const [validCategory, setValidCategory] = useState(true);
+  const form = useForm<PostPost>();
   const mutation = usePostMutation();
 
   const onSubmit = form.handleSubmit(async (postPost) => {
@@ -45,10 +45,6 @@ export default function PostModal({ isOpen, onClose }: PostModalProps): JSX.Elem
           <ModalCloseButton />
           <ModalBody>
             <VStack align="flex-start" spacing="10">
-              {console.log('form' + form.getValues('title'))}
-              {console.log('form' + form.getValues('content'))}
-              {console.log('form' + form.getValues('authorId'))}
-
               <FormControl isRequired>
                 <FormLabel>Title</FormLabel>
                 <Textarea
@@ -81,7 +77,7 @@ export default function PostModal({ isOpen, onClose }: PostModalProps): JSX.Elem
                     isOpen={!validCategory}
                     bg="red.600">
                     <HStack>
-                      <Icon aria-lable="hashtag" as={HiHashtag} />
+                      <Icon aria-label="hashtag" as={HiHashtag} />
                       <Textarea
                         onChange={(e: any) => {
                           setValidCategory(/^(\d|\w+)$/.test(e.target.value));

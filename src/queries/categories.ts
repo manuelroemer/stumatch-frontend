@@ -5,6 +5,4 @@ const key = 'categories';
 
 export function useGetAllCategoriesQuery() {
   return useQuery([key], () => getAllCategories().then((res) => res.data));
-
-  // return useQuery([key], () => getAllCategories().then((res) => res.data));
 }

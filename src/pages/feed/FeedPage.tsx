@@ -10,7 +10,7 @@ import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptio
 import { me } from '../../api/conventions';
 import range from 'lodash-es/range';
 import PostContainer from './PostContainer';
-import React from 'react';
+import { useState } from 'react';
 import { BiPlus } from 'react-icons/bi';
 import PostModal from './PostModal';
 import { useGetAllCategoriesQuery } from '../../queries/categories';
@@ -19,8 +19,8 @@ export default function FeedPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = usePageQueryParameter();
   const [pageSize, setPageSize] = usePageSizeQueryParameter();
-  const [pageSort, setPageSort] = React.useState('desc');
-  const [pageFilter, setPageFilter] = React.useState('');
+  const [pageSort, setPageSort] = useState('desc');
+  const [pageFilter, setPageFilter] = useState('');
   const { isLoading, data } = useGetAllPostsQuery(me, {
     page,
     pageSize,

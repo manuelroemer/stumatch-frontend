@@ -10,7 +10,7 @@ export function useGetAllUserChatGroupsQuery(userId: string) {
 }
 
 export function useGetChatGroupQuery(id: string, options?: UseQueryOptions<unknown, unknown, ApiResult<ChatGroup>>) {
-  return useQuery([chatGroupsQueryKey, id], () => getChatGroup(id).then((res) => res.data), options);
+  return useQuery([chatGroupsQueryKey, id], () => getChatGroup(id).then((res: any) => res.data), options);
 }
 
 export function useUserChatGroupSocketQueryInvalidation() {

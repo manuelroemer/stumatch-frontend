@@ -13,7 +13,7 @@ export interface Post extends ApiObject {
   category: string;
 }
 
-export interface postPost extends ApiObject {
+export interface PostPost extends ApiObject {
   title: string;
   content: string;
   authorId: string;
@@ -30,6 +30,6 @@ export function getAllCategories(init?: StumatchFetchInit) {
   return stumatchFetch<ApiResult<Array<string>>>(`/api/v1/categories`, init);
 }
 
-export function postPost(body: postPost, init?: StumatchFetchInit) {
+export function PostPost(body: PostPost, init?: StumatchFetchInit) {
   return stumatchFetch<Post>(`/api/v1/posts`, { body, method: 'POST', ...init });
 }
