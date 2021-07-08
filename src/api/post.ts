@@ -17,8 +17,6 @@ export interface PostPost extends ApiObject {
   title: string;
   content: string;
   authorId: string;
-  likes?: number;
-  comments?: number;
   category: string;
 }
 
