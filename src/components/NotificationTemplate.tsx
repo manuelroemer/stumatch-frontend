@@ -1,16 +1,4 @@
-import {
-  Center,
-  Flex,
-  Grid,
-  Box,
-  Heading,
-  IconButton,
-  Text,
-  Icon,
-  HStack,
-  Tooltip,
-  HTMLChakraProps,
-} from '@chakra-ui/react';
+import { Center, Flex, Grid, Box, Heading, IconButton, Text, HStack, Tooltip, HTMLChakraProps } from '@chakra-ui/react';
 import ReactTimeago from 'react-timeago';
 import { IoMailOutline, IoMailOpenOutline } from 'react-icons/io5';
 import { AiOutlineDelete } from 'react-icons/ai';
