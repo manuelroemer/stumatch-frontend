@@ -16,10 +16,27 @@ export interface Me extends User {
   email: string;
 }
 
+export interface UserPost {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  facultyId?: string;
+  studyProgramId?: string;
+  immatriculatedOn?: {
+    startingSemester?: string;
+    startingYear?: number;
+  };
+}
+
 export function getAllUsers(options?: QueryOptions, init?: StumatchFetchInit) {
   return stumatchFetch<PaginationApiResult<User>>(`/api/v1/users?${qs(options)}`, init);
 }
 
 export function getUser(id: string, init?: StumatchFetchInit) {
   return stumatchFetch<ApiResult<User>>(`/api/v1/users/${id}`, init);
+}
+
+export function postUser(body: UserPost, init?: StumatchFetchInit) {
+  return stumatchFetch<User>(`/api/v1/users`, { body, method: 'POST', ...init });
 }

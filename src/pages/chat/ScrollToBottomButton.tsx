@@ -2,7 +2,7 @@ import { IconButton, Tooltip } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { RefObject } from 'react';
 import { BiChevronDown } from 'react-icons/bi';
-import { isScrolledToBottom, scrollToBottom } from '../../utils/scrollUtils';
+import { scrollToBottom } from '../../utils/scrollUtils';
 
 export interface ScrollToBottomButtonProps {
   containerRef: RefObject<HTMLElement>;
@@ -11,7 +11,7 @@ export interface ScrollToBottomButtonProps {
 export default function ScrollToBottomButton({ containerRef }: ScrollToBottomButtonProps) {
   const [isVisible, setIsVisible] = useState(false);
   const evaluateVisibility = () =>
-    setIsVisible(containerRef.current ? !isScrolledToBottom(containerRef.current) : false);
+    setIsVisible(!!(containerRef.current && !isChatContainerScrolledToBottom(containerRef.current)));
 
   useEffect(() => {
     evaluateVisibility();
@@ -27,8 +27,8 @@ export default function ScrollToBottomButton({ containerRef }: ScrollToBottomBut
         size="lg"
         rounded="full"
         position="absolute"
-        right="12"
-        bottom="12"
+        right="20"
+        bottom="40"
         shadow="lg"
         onClick={() => {
           if (containerRef.current) {
@@ -38,4 +38,8 @@ export default function ScrollToBottomButton({ containerRef }: ScrollToBottomBut
       />
     </Tooltip>
   ) : null;
+}
+
+function isChatContainerScrolledToBottom(element: HTMLElement) {
+  return element.scrollTop === 0;
 }

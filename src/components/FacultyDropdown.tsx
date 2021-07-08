@@ -1,16 +1,23 @@
 import { FormControl, FormLabel, FormHelperText } from '@chakra-ui/form-control';
 import { Select } from '@chakra-ui/react';
 import { ChangeEvent, useState } from 'react';
-import { UseFormReturn } from 'react-hook-form';
-import { Faculty, StudyProgram } from '../../api/faculty';
-import { MatchRequestPost } from '../../api/matching';
+import { Faculty, StudyProgram } from '../api/faculty';
 
 export interface FacultyDropdownProps {
   facultyData: Array<Faculty>;
-  form: UseFormReturn<MatchRequestPost>;
+  facultyDescription: string;
+  studyProgramDescription: string;
+  onFacultyChanged(faculty?: Faculty): void;
+  onStudyProgramChanged(studyProgram?: StudyProgram): void;
 }
 
-export default function FacultyDropdown({ facultyData, form }: FacultyDropdownProps) {
+export default function FacultyDropdown({
+  facultyData,
+  facultyDescription,
+  studyProgramDescription,
+  onFacultyChanged,
+  onStudyProgramChanged,
+}: FacultyDropdownProps) {
   const [selectedFaculty, setSelectedFaculty] = useState<Faculty | undefined>(undefined);
   const [selectedStudyProgram, setSelectedStudyProgram] = useState<StudyProgram | undefined>(undefined);
   const studyPrograms = facultyData
@@ -21,21 +28,21 @@ export default function FacultyDropdown({ facultyData, form }: FacultyDropdownPr
     const faculty = facultyData.find((faculty) => e.target.value === faculty.id);
     setSelectedFaculty(faculty);
     setSelectedStudyProgram(undefined);
-    form.setValue('facultyId', faculty?.id);
-    form.setValue('studyProgramId', undefined);
+    onFacultyChanged(faculty);
+    onStudyProgramChanged(undefined);
   };
 
   const handleStudyProgramChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedStudyProgram = studyPrograms.find((studyProgram) => e.target.value === studyProgram.id);
     setSelectedStudyProgram(selectedStudyProgram);
-    form.setValue('studyProgramId', selectedStudyProgram?.id);
+    onStudyProgramChanged(selectedStudyProgram);
 
     if (selectedStudyProgram) {
       const associatedFaculty = facultyData.find((faculty) =>
         faculty.studyPrograms.some((studyProgram) => studyProgram.id === selectedStudyProgram?.id),
       );
       setSelectedFaculty(associatedFaculty);
-      form.setValue('facultyId', associatedFaculty?.id);
+      onFacultyChanged(associatedFaculty);
     }
   };
 
@@ -54,7 +61,7 @@ export default function FacultyDropdown({ facultyData, form }: FacultyDropdownPr
             </option>
           ))}
         </Select>
-        <FormHelperText>Select the faculty you would like to meet.</FormHelperText>
+        <FormHelperText>{facultyDescription}</FormHelperText>
       </FormControl>
 
       <FormControl>
@@ -70,7 +77,7 @@ export default function FacultyDropdown({ facultyData, form }: FacultyDropdownPr
             </option>
           ))}
         </Select>
-        <FormHelperText>Select the study program you would like to meet.</FormHelperText>
+        <FormHelperText>{studyProgramDescription}</FormHelperText>
       </FormControl>
     </>
   );
