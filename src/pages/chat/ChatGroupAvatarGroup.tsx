@@ -1,7 +1,7 @@
-import { AvatarGroup, Avatar } from '@chakra-ui/react';
+import { AvatarGroup } from '@chakra-ui/react';
 import { ChatGroup } from '../../api/chatGroups';
+import UserAvatar from '../../components/UserAvatar';
 import { useCurrentUser } from '../../stores/userStore';
-import { getFullName } from '../../utils/userUtils';
 import { getOtherParticipants } from './utils';
 
 export interface ChatGroupAvatarGroupProps {
@@ -16,7 +16,7 @@ export default function ChatGroupAvatarGroup({ chatGroup, maxAvatars = 2 }: Chat
   return (
     <AvatarGroup max={maxAvatars} size={otherParticipants.length > 1 ? 'xs' : 'md'}>
       {otherParticipants.map((user) => (
-        <Avatar key={user.id} name={getFullName(user)} />
+        <UserAvatar key={user.id} userId={user.id} />
       ))}
     </AvatarGroup>
   );

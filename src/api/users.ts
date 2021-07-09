@@ -9,6 +9,7 @@ export interface User extends ApiObject {
   email?: string;
   firstName: string;
   lastName: string;
+  profileImageBlobId?: string;
   roles: Array<UserRole>;
 }
 
