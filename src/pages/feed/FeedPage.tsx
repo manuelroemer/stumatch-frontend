@@ -5,12 +5,15 @@ import RequireRoles from '../../components/RequireRoles';
 import FloatingCard from '../../components/FloatingCard';
 import Pagination from '../../components/Pagination';
 import { useGetAllPostsQuery } from '../../queries/posts';
-import { usePageQueryParameter, usePageSizeQueryParameter } from '../../utils/useQueryParameter';
+import {
+  usePageQueryParameter,
+  usePageSizeQueryParameter,
+  useStringQueryParameter,
+} from '../../utils/useQueryParameter';
 import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptionSkeleton';
 import { me } from '../../api/conventions';
 import range from 'lodash-es/range';
 import PostContainer from './PostContainer';
-import { useState } from 'react';
 import { BiPlus } from 'react-icons/bi';
 import PostModal from './PostModal';
 import { useGetAllCategoriesQuery } from '../../queries/categories';
@@ -19,8 +22,8 @@ export default function FeedPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = usePageQueryParameter();
   const [pageSize, setPageSize] = usePageSizeQueryParameter();
-  const [pageSort, setPageSort] = useState('desc');
-  const [pageFilter, setPageFilter] = useState('');
+  const [pageSort, setPageSort] = useStringQueryParameter('sort', 'desc');
+  const [pageFilter, setPageFilter] = useStringQueryParameter('filter', '');
   const { isLoading, data } = useGetAllPostsQuery(me, {
     page,
     pageSize,
@@ -42,7 +45,7 @@ export default function FeedPage() {
         <VStack>
           <HStack width="full" justifyContent="space-between">
             <Text>Category:</Text>
-            <Select onChange={(e) => setPageFilter(e.target.value === 'all' ? '' : e.target.value)} defaultValue="all">
+            <Select onChange={(e) => setPageFilter(e.target.value === 'all' ? '' : e.target.value)} value={pageFilter}>
               <option value="all">All</option>
               {categoryData?.result.map((i) => (
                 <option key={i} value={i}>
@@ -52,13 +55,13 @@ export default function FeedPage() {
             </Select>
             <Spacer></Spacer>
             <Text minWidth="max-content">Sort by:</Text>
-            <Select onChange={(e) => setPageSort(e.target.value)} defaultValue="desc">
+            <Select onChange={(e) => setPageSort(e.target.value)} value={pageSort}>
               <option value="desc">Descending</option>
               <option value="asc">Ascending</option>
             </Select>
             <Spacer></Spacer>
             <Text>Show:</Text>
-            <Select onChange={(e) => setPageSize(parseInt(e.target.value))} defaultValue="10">
+            <Select onChange={(e) => setPageSize(parseInt(e.target.value))} value={pageSize}>
               <option value="5">5</option>
               <option value="10">10</option>
               <option value="20">20</option>
@@ -74,7 +77,7 @@ export default function FeedPage() {
             <>
               {data?.result.map((post) => (
                 <FloatingCard key={post.id}>
-                  <PostContainer post={post} />
+                  <PostContainer setPageFilter={setPageFilter} post={post} />
                 </FloatingCard>
               ))}
             </>

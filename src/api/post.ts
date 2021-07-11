@@ -24,6 +24,10 @@ export function getAllPosts(userId: string, options?: QueryOptions, init?: Stuma
   return stumatchFetch<PaginationApiResult<Post>>(`/api/v1/posts?${qs(options)}`, init);
 }
 
+export function getPostByID(postId: string, init?: StumatchFetchInit) {
+  return stumatchFetch<ApiResult<Post>>(`/api/v1/posts/${postId}`, init);
+}
+
 export function getAllCategories(init?: StumatchFetchInit) {
   return stumatchFetch<ApiResult<Array<string>>>(`/api/v1/categories`, init);
 }
