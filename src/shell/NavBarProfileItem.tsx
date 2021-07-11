@@ -66,7 +66,7 @@ export default function NavBarProfileItem() {
                 <Text>{userName}</Text>
                 <Text>{user.email}</Text>
                 <StackDivider />
-                <Button variant="link">Edit</Button>
+                <Button variant="link">Show Profile</Button>
               </VStack>
             </PopoverBody>
             <PopoverFooter p="2">
