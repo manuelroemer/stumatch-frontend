@@ -22,8 +22,6 @@ import { useCurrentUser, useUserStore } from '../stores/userStore';
 import UserAvatar from '../components/UserAvatar';
 import { getFullName } from '../utils/userUtils';
 
-const pageSize = 20;
-
 export default function NavBarProfileItem() {
   const logout = useUserStore((state) => state.logout);
   const user = useCurrentUser();
