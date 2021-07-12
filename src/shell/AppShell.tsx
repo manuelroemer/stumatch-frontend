@@ -8,6 +8,7 @@ import FeedPage from '../pages/feed/FeedPage';
 import MatchingPage from '../pages/matching/MatchingPage';
 import NotificationPage from '../pages/notifications/NotificationPage';
 import NavBar from './NavBar';
+import ProfilePage from '../pages/profile/ProfilePage';
 
 export default function AppShell() {
   return (
@@ -18,6 +19,7 @@ export default function AppShell() {
       <Route exact path={routes.advertising} component={AdvertisingPage} />
       <Route exact path={routes.administration} component={AdministrationPage} />
       <Route exact path={routes.notifications} component={NotificationPage} />
+      <Route exact path={routes.profile} component={ProfilePage} />
       <Route path={routes.chatGroup} component={ChatPage} />
     </Flex>
   );

@@ -7,4 +7,5 @@ export const routes = {
   notifications: '/notifications',
   chat: '/chat',
   chatGroup: '/chat/:chatGroupId?',
+  profile: '/profile',
 } as const;
