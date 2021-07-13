@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, HStack, Icon, Text } from '@chakra-ui/react';
+import { Box, Flex, HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
 import ReactTimeago from 'react-timeago';
@@ -14,25 +14,29 @@ export default function CommentContainer({ comment }: CommentContainerProps) {
 
   return (
     <Box as="article" mt={['4', '4', '4']} rounded="md" boxShadow="base" p="3">
-      <Grid templateRows="repeat(2, 1fr)" templateColumns="repeat(20, 1fr)" gap={4}>
-        <GridItem rowSpan={1} colSpan={20}>
-          <Text>{comment.content}</Text>
-        </GridItem>
-        <GridItem rowSpan={1} colSpan={20}>
-          <HStack spacing="5">
-            <HStack>
-              <Icon aria-lable="Author" as={CgProfile} />
-              <Text>
-                {user?.result.lastName}, {user?.result.firstName}
-              </Text>
-            </HStack>
-            <HStack>
-              <Icon aria-lable="Ago" as={AiOutlineClockCircle} />
-              <ReactTimeago date={comment.createdOn} component={(props) => <Text {...props} />} />
+      <VStack alignContent="flex-start" spacing="5">
+        <Flex w="100%" justifyContent="flex-start">
+          <HStack>
+            <Text>{comment.content}</Text>
+          </HStack>
+        </Flex>
+        <Flex w="100%" justifyContent="flex-start">
+          <HStack>
+            <HStack spacing="5">
+              <HStack>
+                <Icon aria-lable="Author" as={CgProfile} />
+                <Text>
+                  {user?.result.lastName}, {user?.result.firstName}
+                </Text>
+              </HStack>
+              <HStack>
+                <Icon aria-lable="Ago" as={AiOutlineClockCircle} />
+                <ReactTimeago date={comment.createdOn} component={(props) => <Text {...props} />} />
+              </HStack>
             </HStack>
           </HStack>
-        </GridItem>
-      </Grid>
+        </Flex>
+      </VStack>
     </Box>
   );
 }
