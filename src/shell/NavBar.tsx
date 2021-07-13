@@ -7,6 +7,7 @@ import NavBarNotificationItem from './NavBarNotificationItem';
 import logo from '../assets/logo.svg';
 import { Link } from 'react-router-dom';
 import { IoChatbubblesOutline } from 'react-icons/io5';
+import NavBarProfileItem from './NavBarProfileItem';
 
 export default function NavBar() {
   const logout = useUserStore((state) => state.logout);
@@ -42,6 +43,7 @@ export default function NavBar() {
           <Icon as={IoChatbubblesOutline} />
         </Link>
         <NavBarNotificationItem />
+        <NavBarProfileItem />
         <Text w="10rem" noOfLines={1}>
           Hello {user.firstName} {user.lastName}!
         </Text>
