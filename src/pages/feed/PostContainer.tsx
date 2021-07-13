@@ -4,7 +4,7 @@ import { AiOutlineClockCircle, AiOutlinePicture } from 'react-icons/ai';
 import { BiCommentDetail } from 'react-icons/bi';
 import { HiHashtag } from 'react-icons/hi';
 import { CgProfile } from 'react-icons/cg';
-import { Grid, GridItem, IconButton, Icon, Link } from '@chakra-ui/react';
+import { Grid, GridItem, Icon, Link } from '@chakra-ui/react';
 import ReactTimeago from 'react-timeago';
 import { routes } from '../../constants';
 import { useHistory } from 'react-router';
@@ -55,8 +55,8 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
             <LikeButton post={post}></LikeButton>
           </HStack>
           <HStack>
-            <IconButton size="sm" aria-label="Comment" icon={<BiCommentDetail />} />
-            <Text>{post.comments}</Text>
+            <Icon size="sm" aria-label="Comment" as={BiCommentDetail} />
+            <Text>{post.comments.length}</Text>
           </HStack>
           <HStack>
             <SharePopOver permalink={window.location.href + '/' + post.id} />

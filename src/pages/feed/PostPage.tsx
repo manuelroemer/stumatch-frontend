@@ -1,5 +1,5 @@
 import { useGetPostByIDQuery } from '../../queries/posts';
-import { HStack, Text, Heading, Flex, Box, IconButton, Icon } from '@chakra-ui/react';
+import { HStack, Text, Heading, Flex, Box, Icon, Divider, Textarea, VStack, Button, Center } from '@chakra-ui/react';
 import { useParams } from 'react-router';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { BiCommentDetail } from 'react-icons/bi';
@@ -8,6 +8,12 @@ import { CgProfile } from 'react-icons/cg';
 import ReactTimeago from 'react-timeago';
 import SharePopOver from './SharePopOver';
 import LikeButton from './LikeButton';
+import CommentContainer from './CommentContainer';
+import { useState } from 'react';
+import { useGetCommentsQuery, usePostCommentMutation } from '../../queries/comments';
+import { usePageQueryParameter } from '../../utils/useQueryParameter';
+import Pagination from '../../components/Pagination';
+import { NoCommentsEmptyState } from '../../components/EmptyStates';
 
 interface RouteParams {
   postId: string;
@@ -16,6 +22,19 @@ interface RouteParams {
 export default function PostPage() {
   const { postId } = useParams<RouteParams>();
   const { isLoading, data } = useGetPostByIDQuery(postId);
+  const [commentContent, setCommentContent] = useState('');
+  const mutationPost = usePostCommentMutation(postId);
+  const [page, setPage] = usePageQueryParameter();
+  const { data: commentData } = useGetCommentsQuery(postId, {
+    page,
+    pageSize: 10,
+    sort: 'createdOn:desc',
+  });
+
+  const handleSubmit = () => {
+    mutationPost.mutate({ content: commentContent });
+    setCommentContent('');
+  };
 
   return (
     <>
@@ -57,14 +76,45 @@ export default function PostPage() {
                   <LikeButton post={data?.result}></LikeButton>
                 </HStack>
                 <HStack>
-                  <IconButton size="sm" aria-label="Comment" icon={<BiCommentDetail />} />
-                  <Text>{data?.result.comments}</Text>
+                  <Icon aria-label="Comment" as={BiCommentDetail} />
+                  <Text>{commentData?.result.length}</Text>
                 </HStack>
                 <HStack>
                   <SharePopOver permalink={window.location.href} />
                   <Text>Share</Text>
                 </HStack>
               </HStack>
+            </Box>
+
+            <Box as="article" mt={['4', '4', '8']} rounded="md" boxShadow="base" p="6">
+              <VStack>
+                <Flex w="100%" alignContent="flex-start">
+                  <Heading as="h1" size="md" mb="0">
+                    Comments
+                  </Heading>
+                </Flex>
+                <Divider />
+                <Textarea
+                  value={commentContent}
+                  onChange={(e) => setCommentContent(e.target.value)}
+                  placeholder="Type your comment here..."
+                  size="md"
+                />
+                <Flex w="100%" justifyContent="flex-end">
+                  <Button onClick={handleSubmit} colorScheme="blue">
+                    Submit comment
+                  </Button>
+                </Flex>
+              </VStack>
+              {commentData?.result.map((comment) => (
+                <CommentContainer key={comment.id} comment={comment}></CommentContainer>
+              ))}
+              {commentData && commentData.result.length > 0 && (
+                <Center mt="10">
+                  <Pagination currentPage={commentData.page} pages={commentData.pages} onPageChanged={setPage} />
+                </Center>
+              )}
+              {commentData && commentData.result.length === 0 && <NoCommentsEmptyState />}
             </Box>
           </Box>
         </Flex>
