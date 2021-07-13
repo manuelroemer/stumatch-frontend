@@ -1,13 +1,13 @@
 import { useGetPostByIDQuery } from '../../queries/posts';
 import { HStack, Text, Heading, Flex, Box, IconButton, Icon } from '@chakra-ui/react';
 import { useParams } from 'react-router';
-import { FcLikePlaceholder } from 'react-icons/fc';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { BiCommentDetail } from 'react-icons/bi';
 import { HiHashtag } from 'react-icons/hi';
 import { CgProfile } from 'react-icons/cg';
 import ReactTimeago from 'react-timeago';
 import SharePopOver from './SharePopOver';
+import LikeButton from './LikeButton';
 
 interface RouteParams {
   postId: string;
@@ -54,8 +54,7 @@ export default function PostPage() {
                   <Text>{data?.result.category}</Text>
                 </HStack>
                 <HStack>
-                  <IconButton size="sm" aria-label="Like" icon={<FcLikePlaceholder />} />
-                  <Text>{data?.result.likes}</Text>
+                  <LikeButton post={data?.result}></LikeButton>
                 </HStack>
                 <HStack>
                   <IconButton size="sm" aria-label="Comment" icon={<BiCommentDetail />} />
