@@ -1,5 +1,4 @@
 import {
-  Box,
   Center,
   Divider,
   Popover,
@@ -17,7 +16,6 @@ import {
   PopoverBody,
   Flex,
 } from '@chakra-ui/react';
-import { IoPersonCircleOutline } from 'react-icons/io5';
 import { useCurrentUser, useUserStore } from '../stores/userStore';
 import UserAvatar from '../components/UserAvatar';
 import { getFullName } from '../utils/userUtils';
@@ -29,9 +27,12 @@ export default function NavBarProfileItem() {
   return (
     <Popover isLazy strategy="fixed">
       <PopoverTrigger>
-        <Box pos="relative">
-          <IconButton aria-label="Profile" variant="ghost" icon={<IoPersonCircleOutline />} />
-        </Box>
+        <IconButton
+          aria-label="User Avatar"
+          icon={<UserAvatar size="sm" cursor="pointer" />}
+          rounded="full"
+          variant="ghost"
+        />
       </PopoverTrigger>
       <PopoverContent>
         <PopoverArrow />
@@ -42,8 +43,8 @@ export default function NavBarProfileItem() {
             <UserAvatar />
           </Center>
           <Divider />
-          <VStack p="3">
-            <Text>{getFullName(user)}</Text>
+          <VStack p="3" spacing="1">
+            <Text fontWeight="bold">{getFullName(user)}</Text>
             <Text>{user.email}</Text>
             <StackDivider />
             <Button variant="link">Show Profile</Button>

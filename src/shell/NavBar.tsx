@@ -1,7 +1,6 @@
-import { Box, chakra, HStack, Flex, Button, Text, Icon } from '@chakra-ui/react';
+import { Box, chakra, HStack, Flex, Icon } from '@chakra-ui/react';
 import RequireRoles from '../components/RequireRoles';
 import { routes } from '../constants';
-import { useCurrentUser, useUserStore } from '../stores/userStore';
 import NavBarItem from './NavBarItem';
 import NavBarNotificationItem from './NavBarNotificationItem';
 import logo from '../assets/logo.svg';
@@ -10,9 +9,6 @@ import { IoChatbubblesOutline } from 'react-icons/io5';
 import NavBarProfileItem from './NavBarProfileItem';
 
 export default function NavBar() {
-  const logout = useUserStore((state) => state.logout);
-  const user = useCurrentUser();
-
   return (
     <Flex
       as="nav"
@@ -44,10 +40,6 @@ export default function NavBar() {
         </Link>
         <NavBarNotificationItem />
         <NavBarProfileItem />
-        <Text w="10rem" noOfLines={1}>
-          Hello {user.firstName} {user.lastName}!
-        </Text>
-        <Button onClick={logout}>Logout</Button>
       </HStack>
     </Flex>
   );
