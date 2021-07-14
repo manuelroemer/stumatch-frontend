@@ -29,6 +29,8 @@ export default function NotificationSelector({ notification, ...rest }: Notifica
     onMarkAsRead: markAsReadMutation.mutate,
     onMarkAsUnread: markAsUnreadMutation.mutate,
     onDelete: deleteMutation.mutate,
+    title: notification.title,
+    content: notification.content,
     ...rest,
   } as const;
 
@@ -37,40 +39,30 @@ export default function NotificationSelector({ notification, ...rest }: Notifica
       case 'text':
         return {
           ...baseNotificationTemplateProps,
-          title: notification.title ?? '',
-          content: notification.content ?? '',
           emoji: '💬',
           onClick: undefined,
         };
       case 'matchRequestAcceptedByPartner':
         return {
           ...baseNotificationTemplateProps,
-          title: 'Match Request Accepted',
-          content: 'Your partner has accepted you. :)',
           emoji: '🥳',
           onClick: undefined,
         };
       case 'matchRequestDeclinedByPartner':
         return {
           ...baseNotificationTemplateProps,
-          title: 'Match Request Declined',
-          content: 'Your partner has declined you. :(',
           emoji: '😢',
           onClick: undefined,
         };
       case 'matchRequestAccepted':
         return {
           ...baseNotificationTemplateProps,
-          title: 'You have a new friend!',
-          content: 'Name is now your friend!',
           emoji: '👫',
           onClick: undefined,
         };
       case 'matchRequestFoundMatch':
         return {
           ...baseNotificationTemplateProps,
-          title: 'New Match!',
-          content: 'We have found a new match.',
           emoji: '👋',
           onClick: undefined,
         };
