@@ -3,6 +3,7 @@ import { ApiResult, PaginationApiResult } from './apiResult';
 import { ApiObject, QueryOptions } from './conventions';
 import { stumatchFetch, StumatchFetchInit } from './fetch';
 import { Like } from './like';
+import { Comment } from './comment';
 import { User } from './users';
 
 export interface Post extends ApiObject {
@@ -10,7 +11,7 @@ export interface Post extends ApiObject {
   content: string;
   author: User;
   likes: Array<Like>;
-  comments: number;
+  comments: Array<Comment>;
   category: string;
 }
 
