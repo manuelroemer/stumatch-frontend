@@ -10,6 +10,7 @@ import NotificationPage from '../pages/notifications/NotificationPage';
 import NavBar from './NavBar';
 import PostPage from '../pages/feed/PostPage';
 import friendsListPage from '../pages/friendsList/friendsListPage';
+import ContactPage from '../pages/contact/ContactPage';
 
 export default function AppShell() {
   return (
@@ -23,6 +24,7 @@ export default function AppShell() {
       <Route exact path={routes.notifications} component={NotificationPage} />
       <Route exact path={routes.friendsList} component={friendsListPage} />
       <Route path={routes.chatGroup} component={ChatPage} />
+      <Route path={routes.contact} component={ContactPage} />
     </Flex>
   );
 }

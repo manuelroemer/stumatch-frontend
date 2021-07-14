@@ -9,4 +9,5 @@ export const routes = {
   chatGroup: '/chat/:chatGroupId?',
   postPage: '/feed/:postId',
   friendsList: '/friends',
+  contact: '/contact',
 } as const;

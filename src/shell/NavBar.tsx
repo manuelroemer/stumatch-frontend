@@ -1,4 +1,4 @@
-import { Box, chakra, HStack, Flex, Icon } from '@chakra-ui/react';
+import { Box, Image, HStack, Flex, Icon } from '@chakra-ui/react';
 import RequireRoles from '../components/RequireRoles';
 import { routes } from '../constants';
 import NavBarItem from './NavBarItem';
@@ -21,7 +21,7 @@ export default function NavBar() {
       align="center"
       justify="space-between">
       <Box>
-        <chakra.img src={logo} height="8" alt="sTUMatch Logo" />
+        <Image src={logo} height="8" alt="sTUMatch Logo" />
       </Box>
       <HStack grow={2} w="100%" mx="16" spacing="8">
         <NavBarItem title="Feed" to={routes.feed} />
