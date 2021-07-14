@@ -6,11 +6,11 @@ export interface Like extends ApiObject {
   userId: string;
 }
 
-export interface postLike {
+export interface LikePost {
   postId: string;
 }
 
-export function postLike(body: postLike, init?: StumatchFetchInit) {
+export function postLike(body: LikePost, init?: StumatchFetchInit) {
   return stumatchFetch<Like>(`/api/v1/posts/likes`, { body, method: 'POST', ...init });
 }
 

@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { deleteLike, postLike } from '../api/like';
+import { deleteLike, LikePost, postLike } from '../api/like';
 
 export const likesQueryKey = 'likes';
 
 export function usePostLikeMutation() {
   const client = useQueryClient();
-  return useMutation((body: postLike) => postLike(body).then((res) => res.data), {
+  return useMutation((body: LikePost) => postLike(body).then((res) => res.data), {
     onSuccess: () => client.invalidateQueries(likesQueryKey),
   });
 }
