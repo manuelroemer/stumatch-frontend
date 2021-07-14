@@ -19,7 +19,7 @@ export default function AdministrationPage() {
     <Grid h="100%" gridTemplateColumns="24rem minmax(0, 1fr)">
       <Flex as="aside" borderRight="1px" borderRightColor="gray.200" direction="column">
         <ChatGroupHeader />
-        <ChatGroupFilter filter={chatGroupFilter} onFilterChanged={setChatGroupFilter} />
+        <ChatGroupFilter onFilterChanged={setChatGroupFilter} />
         <ChatGroupContainer chatGroupId={chatGroupId} chatGroupFilter={chatGroupFilter} />
       </Flex>
       <Flex as="main" direction="column">
