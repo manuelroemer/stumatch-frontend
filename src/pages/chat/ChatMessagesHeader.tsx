@@ -1,25 +1,24 @@
 import { IconButton, Heading, Spacer, Tooltip } from '@chakra-ui/react';
 import { IoNotificationsOffOutline, IoNotificationsOutline } from 'react-icons/io5';
-import { useGetChatGroupQuery, usePutChatGroupMutation } from '../../queries/chatGroups';
+import { ChatGroup } from '../../api/chatGroups';
+import { usePutChatGroupMutation } from '../../queries/chatGroups';
 import { useCurrentUser } from '../../stores/userStore';
 import ChatGroupAvatarGroup from './ChatGroupAvatarGroup';
 import ChatHeader from './ChatHeader';
 import { getChatGroupTitle } from './utils';
 
 export interface ChatMessagesHeader {
-  chatGroupId: string;
+  chatGroup: ChatGroup;
 }
 
-export default function ChatMessagesHeader({ chatGroupId }: ChatMessagesHeader) {
+export default function ChatMessagesHeader({ chatGroup }: ChatMessagesHeader) {
   const currentUser = useCurrentUser();
-  const chatGroupQuery = useGetChatGroupQuery(chatGroupId);
   const putChatGroupMutation = usePutChatGroupMutation();
-  const chatGroup = chatGroupQuery.data?.result;
 
   const handleMuteClicked = () => {
     putChatGroupMutation.mutate({
-      id: chatGroupId,
-      body: { mutedByMe: !chatGroup!.mutedByMe },
+      id: chatGroup.id,
+      body: { mutedByMe: !chatGroup.mutedByMe },
     });
   };
 
