@@ -10,8 +10,8 @@ export interface Post extends ApiObject {
   title: string;
   content: string;
   author: User;
-  likes: [Like];
-  comments: [Comment];
+  likes: Array<Like>;
+  comments: Array<Comment>;
   category: string;
 }
 

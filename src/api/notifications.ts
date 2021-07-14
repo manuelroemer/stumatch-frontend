@@ -13,8 +13,28 @@ export interface TextNotification extends BaseNotification<'text'> {
   title?: string;
   content?: string;
 }
+export interface AcceptedMatchRequestNotification extends BaseNotification<'matchRequestAcceptedByPartner'> {
+  matchRequestId: string;
+}
 
-export type Notification = TextNotification;
+export interface DeclinedMatchRequestNotification extends BaseNotification<'matchRequestDeclinedByPartner'> {
+  matchRequestId: string;
+}
+
+export interface FriendRequestAcceptedNotification extends BaseNotification<'matchRequestAccepted'> {
+  friendsListEntryId: string;
+}
+
+export interface FoundMatchNotification extends BaseNotification<'matchRequestFoundMatch'> {
+  matchRequestId: string;
+}
+
+export type Notification =
+  | TextNotification
+  | AcceptedMatchRequestNotification
+  | DeclinedMatchRequestNotification
+  | FriendRequestAcceptedNotification
+  | FoundMatchNotification;
 
 export interface NotificationPut {
   id?: string;

@@ -38,46 +38,45 @@ export default function PostPage() {
 
   return (
     <>
-      {isLoading ? (
-        <> </>
-      ) : (
+      {isLoading && <>{/* TODO: Loading animation. */}</>}
+      {data && data.result && (
         <Flex as="main" px="8" py="4" justify="center" my="8">
           <Box w={['95%', '90%', '80%', '75%']}>
             <Flex justify="space-between">
               <Box as="header">
                 <Heading as="h1" mb="0">
-                  {data?.result.title}
+                  {data.result.title}
                 </Heading>
               </Box>
             </Flex>
             <Box as="article" mt={['4', '4', '8']}>
-              {data?.result.content}
+              {data.result.content}
             </Box>
             <Box as="article" mt={['4', '4', '8']} rounded="md" boxShadow="base" p="6">
               <HStack h="100%" justifyContent="space-between">
                 <HStack>
                   <Icon aria-lable="Author" as={CgProfile} />
                   <Text>
-                    {data?.result.author.firstName}, {data?.result.author.lastName}
+                    {data.result.author.firstName}, {data.result.author.lastName}
                   </Text>
                 </HStack>
                 <HStack>
                   <Icon aria-lable="Ago" as={AiOutlineClockCircle} />
                   <ReactTimeago
-                    date={!data?.result.createdOn ? '' : data?.result.createdOn}
+                    date={!data.result.createdOn ? '' : data.result.createdOn}
                     component={(props) => <Text {...props} />}
                   />
                 </HStack>
                 <HStack>
                   <Icon aria-label="Category" as={HiHashtag} />
-                  <Text>{data?.result.category}</Text>
+                  <Text>{data.result.category}</Text>
                 </HStack>
                 <HStack>
-                  <LikeButton post={data?.result}></LikeButton>
+                  <LikeButton post={data.result}></LikeButton>
                 </HStack>
                 <HStack>
                   <Icon aria-label="Comment" as={BiCommentDetail} />
-                  <Text>{commentData?.result.length}</Text>
+                  <Text>{data.result.comments.length}</Text>
                 </HStack>
                 <HStack>
                   <SharePopOver permalink={window.location.href} />
@@ -107,7 +106,7 @@ export default function PostPage() {
                 </Flex>
               </VStack>
               {commentData?.result.map((comment) => (
-                <CommentContainer key={comment.id} comment={comment}></CommentContainer>
+                <CommentContainer key={comment.id} comment={comment} />
               ))}
               {commentData && commentData.result.length > 0 && (
                 <Center mt="10">

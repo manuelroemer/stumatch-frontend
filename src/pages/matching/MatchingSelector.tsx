@@ -2,7 +2,6 @@ import {
   IconButton,
   Icon,
   Center,
-  Avatar,
   HTMLChakraProps,
   AlertDialog,
   AlertDialogBody,
@@ -21,6 +20,7 @@ import MatchingTemplate, { MatchingTemplateProps } from './MatchingTemplate';
 import { useDeleteMatchRequestMutation, usePostAcceptDeclineMatchRequestMutation } from '../../queries/matchRequests';
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import UserAvatar from '../../components/UserAvatar';
 
 const descriptions = {
   acceptedByMe: 'You have accepted your partner.',
@@ -28,7 +28,7 @@ const descriptions = {
   matched: 'We have found a match.',
   accepted: 'You are now friends!',
   declinedByMe: 'You have declined your partner.',
-  declinedByPartner: 'Your partner as declined you. :(',
+  declinedByPartner: 'Your partner has declined you. :(',
   pending: 'We are searching for a match ...',
 };
 
@@ -39,7 +39,7 @@ export interface MatchingSelectorProps {
 export default function MatchingSelector({ matchRequest }: MatchingSelectorProps) {
   const getMatchingTemplateProps = (): MatchingTemplateProps => {
     const partnerName = `${matchRequest.partner?.firstName} ${matchRequest.partner?.lastName}`;
-    const partnerAvatar = <Avatar name={partnerName} bg="gray.300" />;
+    const partnerAvatar = <UserAvatar userId={matchRequest.partner?.id} />;
     const deleteButton = <DeleteButton matchRequestId={matchRequest.id} />;
 
     switch (matchRequest.status) {
@@ -52,7 +52,7 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
           description: descriptions[matchRequest.status],
           actions: (
             <>
-              <ChatButton disabled={true} chatGroupId="" />
+              <ChatButton chatGroupId="matchRequest.chatGroupId ?? ''" />
               <CheckButton matchRequestId={matchRequest.id} disabled={matchRequest.status === 'acceptedByMe'} />
               <CloseButton matchRequestId={matchRequest.id} disabled={matchRequest.status === 'acceptedByMe'} />
             </>

@@ -51,7 +51,7 @@ export default function MatchingModal({ isOpen, onClose }: MatchingModalProps) {
             </ModalBody>
 
             <ModalFooter>
-              <Button colorScheme="primary" mr={3} type="submit" isLoading={mutation.isLoading}>
+              <Button colorScheme="primary" mr={3} type="submit" isLoading={mutation.isLoading} onClick={onClose}>
                 Create
               </Button>
               <Button onClick={onClose} isLoading={mutation.isLoading}>
