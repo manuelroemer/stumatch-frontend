@@ -26,7 +26,6 @@ export default function ChatGroupItem({ chatGroup, isSelected }: ChatGroupItemPr
       templateRows="1fr 1fr"
       templateColumns="auto minmax(0, 1fr) auto"
       w="100%"
-      spacing="2"
       p="2"
       cursor="pointer"
       bg={isSelected ? 'gray.300' : undefined}
