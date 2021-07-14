@@ -16,7 +16,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import range from 'lodash-es/range';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { User } from '../api/users';
 import { useGetAllUserFriendsListEntriesQuery } from '../queries/friendsListEntries';
 import { useCurrentUser } from '../stores/userStore';
@@ -63,6 +63,8 @@ export default function FriendsListPickerModal({
       onClose();
     }
   };
+
+  useEffect(() => setSelectedUsers([]), [isOpen]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

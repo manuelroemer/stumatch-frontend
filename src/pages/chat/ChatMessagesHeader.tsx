@@ -1,26 +1,46 @@
-import { Heading } from '@chakra-ui/react';
-import { useGetChatGroupQuery } from '../../queries/chatGroups';
+import { IconButton, Heading, Spacer, Tooltip } from '@chakra-ui/react';
+import { IoNotificationsOffOutline, IoNotificationsOutline } from 'react-icons/io5';
+import { ChatGroup } from '../../api/chatGroups';
+import { usePutChatGroupMutation } from '../../queries/chatGroups';
 import { useCurrentUser } from '../../stores/userStore';
 import ChatGroupAvatarGroup from './ChatGroupAvatarGroup';
 import ChatHeader from './ChatHeader';
 import { getChatGroupTitle } from './utils';
 
 export interface ChatMessagesHeader {
-  chatGroupId: string;
+  chatGroup: ChatGroup;
 }
 
-export default function ChatMessagesHeader({ chatGroupId }: ChatMessagesHeader) {
+export default function ChatMessagesHeader({ chatGroup }: ChatMessagesHeader) {
   const currentUser = useCurrentUser();
-  const { data } = useGetChatGroupQuery(chatGroupId);
+  const putChatGroupMutation = usePutChatGroupMutation();
+
+  const handleMuteClicked = () => {
+    putChatGroupMutation.mutate({
+      id: chatGroup.id,
+      body: { mutedByMe: !chatGroup.mutedByMe },
+    });
+  };
 
   return (
     <ChatHeader>
-      {data && (
+      {chatGroup && (
         <>
-          <ChatGroupAvatarGroup chatGroup={data.result} />
+          <ChatGroupAvatarGroup chatGroup={chatGroup} />
           <Heading as="h2" size="sm" fontWeight="semibold" isTruncated ml="4">
-            {getChatGroupTitle(data.result, currentUser)}
+            {getChatGroupTitle(chatGroup, currentUser)}
           </Heading>
+          <Spacer />
+          <Tooltip label={chatGroup.mutedByMe ? 'Unmute this chat' : 'Mute this chat'} hasArrow>
+            <IconButton
+              aria-label={chatGroup.mutedByMe ? 'Unmute this chat' : 'Mute this chat'}
+              variant="ghost"
+              rounded="full"
+              icon={chatGroup.mutedByMe ? <IoNotificationsOffOutline /> : <IoNotificationsOutline />}
+              onClick={handleMuteClicked}
+              isLoading={putChatGroupMutation.isLoading}
+            />
+          </Tooltip>
         </>
       )}
     </ChatHeader>

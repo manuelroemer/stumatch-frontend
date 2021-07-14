@@ -1,6 +1,8 @@
+import { Center, Spinner } from '@chakra-ui/react';
 import { useCallback } from 'react';
 import { useState } from 'react';
 import { ChatMessage } from '../../api/chatMessages';
+import { useGetChatGroupQuery } from '../../queries/chatGroups';
 import { usePostChatGroupChatMessageMutation, usePutChatMessageMutation } from '../../queries/chatMessages';
 import ChatMessageInputLayout from './ChatMessageInputLayout';
 import ChatMessagesContainer from './ChatMessagesContainer';
@@ -13,6 +15,7 @@ export interface ChatAreaProps {
 export default function ChatArea({ chatGroupId }: ChatAreaProps) {
   const [message, setMessage] = useState('');
   const [messageToEdit, setMessageToEdit] = useState<ChatMessage | null>(null);
+  const chatGroupQuery = useGetChatGroupQuery(chatGroupId);
   const postChatMessageMutation = usePostChatGroupChatMessageMutation(chatGroupId);
   const putChatMessageMutation = usePutChatMessageMutation();
 
@@ -44,15 +47,24 @@ export default function ChatArea({ chatGroupId }: ChatAreaProps) {
 
   return (
     <>
-      <ChatMessagesHeader chatGroupId={chatGroupId} />
-      <ChatMessagesContainer chatGroupId={chatGroupId} onChatMessageEdit={handleChatMessageEdit} />
-      <ChatMessageInputLayout
-        initialMessage={message}
-        isSending={postChatMessageMutation.isLoading || putChatMessageMutation.isLoading}
-        isEditing={!!messageToEdit}
-        onSendClicked={handleSendClicked}
-        onCancelEditClicked={cancelEditing}
-      />
+      {chatGroupQuery.isLoading && (
+        <Center h="100%">
+          <Spinner emptyColor="gray.200" color="primary.500" size="xl" />
+        </Center>
+      )}
+      {chatGroupQuery.data && (
+        <>
+          <ChatMessagesHeader chatGroup={chatGroupQuery.data.result} />
+          <ChatMessagesContainer chatGroup={chatGroupQuery.data.result} onChatMessageEdit={handleChatMessageEdit} />
+          <ChatMessageInputLayout
+            initialMessage={message}
+            isSending={postChatMessageMutation.isLoading || putChatMessageMutation.isLoading}
+            isEditing={!!messageToEdit}
+            onSendClicked={handleSendClicked}
+            onCancelEditClicked={cancelEditing}
+          />
+        </>
+      )}
     </>
   );
 }

@@ -2,14 +2,16 @@ import { qs } from '../utils/qs';
 import { ApiResult, PaginationApiResult } from './apiResult';
 import { ApiObject, QueryOptions } from './conventions';
 import { stumatchFetch, StumatchFetchInit } from './fetch';
+import { Like } from './like';
+import { Comment } from './comment';
 import { User } from './users';
 
 export interface Post extends ApiObject {
   title: string;
   content: string;
   author: User;
-  likes: number;
-  comments: number;
+  likes: Array<Like>;
+  comments: Array<Comment>;
   category: string;
 }
 

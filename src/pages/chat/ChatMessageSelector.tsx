@@ -5,17 +5,21 @@ import { useCurrentUser } from '../../stores/userStore';
 import { HiChevronDown } from 'react-icons/hi';
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import { useDeleteChatMessageMutation } from '../../queries/chatMessages';
+import { ChatGroup } from '../../api/chatGroups';
+import { getFullName } from '../../utils/userUtils';
 
 export interface ChatMessageSelectorProps {
   chatMessage: ChatMessage;
+  chatGroup: ChatGroup;
   onChatMessageEdit(chatMessage: ChatMessage): void;
 }
 
-export default function ChatMessageSelector({ chatMessage, onChatMessageEdit }: ChatMessageSelectorProps) {
+export default function ChatMessageSelector({ chatMessage, chatGroup, onChatMessageEdit }: ChatMessageSelectorProps) {
   const currentUser = useCurrentUser();
   const deleteChatMessageMutation = useDeleteChatMessageMutation(chatMessage.id);
   const isWrittenByCurrentUser = chatMessage.userId === currentUser.id;
   const textColor = isWrittenByCurrentUser ? 'white' : undefined;
+  const author = chatGroup.activeParticipants.find((participant) => participant.id === chatMessage.userId);
 
   return (
     <Flex justify={isWrittenByCurrentUser ? 'flex-end' : 'flex-start'}>
@@ -26,6 +30,9 @@ export default function ChatMessageSelector({ chatMessage, onChatMessageEdit }: 
           </Text>
         ) : (
           <>
+            {author && !isWrittenByCurrentUser && chatGroup.activeParticipants.length > 2 && (
+              <Text layerStyle="hint">{getFullName(author)}</Text>
+            )}
             <Flex alignItems="flex-start">
               <Text flexGrow={1} minW={0} whiteSpace="pre-line" color={textColor}>
                 {chatMessage.textContent}

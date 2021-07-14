@@ -1,6 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import { useRef } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { ChatGroup } from '../../api/chatGroups';
 import { ChatMessage } from '../../api/chatMessages';
 import { NoChatMessagesEmptyState } from '../../components/EmptyStates';
 import {
@@ -12,15 +13,16 @@ import ChatMessagesSkeleton from './ChatMessagesSkeleton';
 import ScrollToBottomButton from './ScrollToBottomButton';
 
 export interface ChatMessagesContainerProps {
-  chatGroupId: string;
+  chatGroup: ChatGroup;
   onChatMessageEdit(chatMessage: ChatMessage): void;
 }
 
-export default function ChatMessagesContainer({ chatGroupId, onChatMessageEdit }: ChatMessagesContainerProps) {
+export default function ChatMessagesContainer({ chatGroup, onChatMessageEdit }: ChatMessagesContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { isLoading, data, fetchPreviousPage, hasPreviousPage } =
-    useInfiniteGetAllChatGroupChatMessagesQuery(chatGroupId);
-  useChatMessageSocketQueryInvalidation(chatGroupId);
+  const { isLoading, data, fetchPreviousPage, hasPreviousPage } = useInfiniteGetAllChatGroupChatMessagesQuery(
+    chatGroup.id,
+  );
+  useChatMessageSocketQueryInvalidation(chatGroup.id);
 
   // Due to the 'column-reverse' hack we must also reverse the order in which messages are rendered.
   // Otherwise they are displayed bottom-to-top.
@@ -53,6 +55,7 @@ export default function ChatMessagesContainer({ chatGroupId, onChatMessageEdit }
               <ChatMessageSelector
                 key={chatMessage.id}
                 chatMessage={chatMessage}
+                chatGroup={chatGroup}
                 onChatMessageEdit={onChatMessageEdit}
               />
             ))}

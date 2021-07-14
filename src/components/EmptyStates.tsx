@@ -97,3 +97,14 @@ export function NoPostsEmptyState(props?: EmptyStateProps) {
     <EmptyState imgSrc={socialSerenity} title="No Posts" description="There are no posts at the moment." {...props} />
   );
 }
+
+export function NoCommentsEmptyState(props?: EmptyStateProps) {
+  return (
+    <EmptyState
+      imgSrc={socialSerenity}
+      title="No Comments"
+      description="There are no comments at the moment."
+      {...props}
+    />
+  );
+}

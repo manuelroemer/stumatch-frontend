@@ -1,16 +1,16 @@
 import { Post } from '../../api/post';
 import { Heading, Text, Flex, HStack } from '@chakra-ui/layout';
-import { FcLikePlaceholder } from 'react-icons/fc';
 import { AiOutlineClockCircle, AiOutlinePicture } from 'react-icons/ai';
 import { BiCommentDetail } from 'react-icons/bi';
 import { HiHashtag } from 'react-icons/hi';
 import { CgProfile } from 'react-icons/cg';
-import { Grid, GridItem, IconButton, Icon, Link } from '@chakra-ui/react';
+import { Grid, GridItem, Icon, Link } from '@chakra-ui/react';
 import ReactTimeago from 'react-timeago';
 import { routes } from '../../constants';
 import { useHistory } from 'react-router';
 import { Dispatch } from 'react';
 import SharePopOver from './SharePopOver';
+import LikeButton from './LikeButton';
 
 export interface PostContainerProps {
   post: Post;
@@ -25,7 +25,7 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
     <Grid templateRows="repeat(2, 1fr)" templateColumns="repeat(14, 1fr)" gap={2}>
       <GridItem rowSpan={2} colSpan={2}>
         <Flex h="100%" align="center">
-          <Icon aria-lable="Picture" as={AiOutlinePicture} w="80%" h="80%" />
+          <Icon aria-label="Picture" as={AiOutlinePicture} w="80%" h="80%" />
         </Flex>
       </GridItem>
       <GridItem rowSpan={1} colSpan={12}>
@@ -38,13 +38,13 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
       <GridItem rowSpan={1} colSpan={11}>
         <HStack h="100%" justifyContent="space-between">
           <HStack>
-            <Icon aria-lable="Author" as={CgProfile} />
+            <Icon aria-label="Author" as={CgProfile} />
             <Text>
               {post.author.lastName}, {post.author.firstName}
             </Text>
           </HStack>
           <HStack>
-            <Icon aria-lable="Ago" as={AiOutlineClockCircle} />
+            <Icon aria-label="Ago" as={AiOutlineClockCircle} />
             <ReactTimeago date={post.createdOn} component={(props) => <Text {...props} />} />
           </HStack>
           <HStack>
@@ -52,12 +52,11 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
             <Link onClick={() => setPageFilter(post.category)}>{post.category}</Link>
           </HStack>
           <HStack>
-            <IconButton size="sm" aria-label="Like" icon={<FcLikePlaceholder />} />
-            <Text>{post.likes}</Text>
+            <LikeButton post={post}></LikeButton>
           </HStack>
           <HStack>
-            <IconButton size="sm" aria-label="Comment" icon={<BiCommentDetail />} />
-            <Text>{post.comments}</Text>
+            <Icon size="sm" aria-label="Comment" as={BiCommentDetail} />
+            <Text>{post.comments.length}</Text>
           </HStack>
           <HStack>
             <SharePopOver permalink={window.location.href + '/' + post.id} />
