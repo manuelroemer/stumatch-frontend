@@ -27,28 +27,29 @@ export default function SemesterSelection({ form }: SemesterSelectionProps) {
   const max = Math.max(1, +(maxValue ?? 1));
 
   useEffect(() => {
-    const adjustedMax = max < min ? min : max;
-    setMinValue(min);
-    setMaxValue(adjustedMax);
-    form.setValue('minSemester', min);
-    form.setValue('maxSemester', adjustedMax);
-  }, [minValue]);
+    if (isFilteringBySemester) {
+      const adjustedMax = max < min ? min : max;
+      setMinValue(min);
+      setMaxValue(adjustedMax);
+      form.setValue('minSemester', min);
+      form.setValue('maxSemester', adjustedMax);
+    }
+  }, [minValue, isFilteringBySemester]);
 
   useEffect(() => {
-    const adjustedMin = max < min ? max : min;
-    setMinValue(adjustedMin);
-    setMaxValue(max);
-    form.setValue('minSemester', adjustedMin);
-    form.setValue('maxSemester', max);
-  }, [maxValue]);
+    if (isFilteringBySemester) {
+      const adjustedMin = max < min ? max : min;
+      setMinValue(adjustedMin);
+      setMaxValue(max);
+      form.setValue('minSemester', adjustedMin);
+      form.setValue('maxSemester', max);
+    }
+  }, [maxValue, isFilteringBySemester]);
 
   useEffect(() => {
     if (!isFilteringBySemester) {
       form.setValue('minSemester', undefined);
       form.setValue('maxSemester', undefined);
-    } else {
-      form.setValue('minSemester', min);
-      form.setValue('maxSemester', max);
     }
   }, [isFilteringBySemester]);
 

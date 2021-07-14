@@ -25,11 +25,16 @@ export interface FriendRequestAcceptedNotification extends BaseNotification<'mat
   friendsListEntryId: string;
 }
 
+export interface FoundMatchNotification extends BaseNotification<'matchRequestFoundMatch'> {
+  matchRequestId: string;
+}
+
 export type Notification =
   | TextNotification
   | AcceptedMatchRequestNotification
   | DeclinedMatchRequestNotification
-  | FriendRequestAcceptedNotification;
+  | FriendRequestAcceptedNotification
+  | FoundMatchNotification;
 
 export interface NotificationPut {
   id?: string;

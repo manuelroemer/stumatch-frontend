@@ -47,7 +47,7 @@ export default function NotificationSelector({ notification, ...rest }: Notifica
           ...baseNotificationTemplateProps,
           title: 'Match Request Accepted',
           content: 'Your partner has accepted you. :)',
-          emoji: '🎉',
+          emoji: '🥳',
           onClick: undefined,
         };
       case 'matchRequestDeclinedByPartner':
@@ -64,6 +64,14 @@ export default function NotificationSelector({ notification, ...rest }: Notifica
           title: 'You have a new friend!',
           content: 'Name is now your friend!',
           emoji: '👫',
+          onClick: undefined,
+        };
+      case 'matchRequestFoundMatch':
+        return {
+          ...baseNotificationTemplateProps,
+          title: 'New Match!',
+          content: 'We have found a new match.',
+          emoji: '👋',
           onClick: undefined,
         };
       default:
