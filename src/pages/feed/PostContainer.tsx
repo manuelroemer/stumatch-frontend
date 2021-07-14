@@ -1,6 +1,5 @@
 import { Post } from '../../api/post';
 import { Heading, Text, Flex, HStack } from '@chakra-ui/layout';
-import { FcLikePlaceholder } from 'react-icons/fc';
 import { AiOutlineClockCircle, AiOutlinePicture } from 'react-icons/ai';
 import { BiCommentDetail } from 'react-icons/bi';
 import { HiHashtag } from 'react-icons/hi';
@@ -11,6 +10,7 @@ import { routes } from '../../constants';
 import { useHistory } from 'react-router';
 import { Dispatch } from 'react';
 import SharePopOver from './SharePopOver';
+import LikeButton from './LikeButton';
 
 export interface PostContainerProps {
   post: Post;
@@ -52,8 +52,7 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
             <Link onClick={() => setPageFilter(post.category)}>{post.category}</Link>
           </HStack>
           <HStack>
-            <IconButton size="sm" aria-label="Like" icon={<FcLikePlaceholder />} />
-            <Text>{post.likes}</Text>
+            <LikeButton post={post}></LikeButton>
           </HStack>
           <HStack>
             <IconButton size="sm" aria-label="Comment" icon={<BiCommentDetail />} />
