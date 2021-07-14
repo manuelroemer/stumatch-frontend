@@ -4,7 +4,6 @@ import {
   Divider,
   Popover,
   PopoverTrigger,
-  IconButton,
   PopoverContent,
   PopoverArrow,
   PopoverCloseButton,
@@ -23,6 +22,7 @@ import { routes } from '../constants';
 import { NoNotificationsEmptyState } from '../components/EmptyStates';
 import range from 'lodash-es/range';
 import ImageTitleDescriptionSkeleton from '../components/ImageTitleDescriptionSkeleton';
+import NavBarIconButton from './NavBarIconButton';
 
 const pageSize = 20;
 
@@ -37,11 +37,12 @@ export default function NavBarNotificationItem() {
       {({ onClose }) => (
         <>
           <PopoverTrigger>
-            <Box pos="relative">
-              <IconButton aria-label="Notifications" variant="ghost" icon={<IoNotificationsOutline />} />
-              {hasUnreadNotifications && (
-                <Box rounded="full" bg="primary.500" w="2" h="2" position="absolute" top="1.5" right="1.5" />
-              )}
+            <Box>
+              <NavBarIconButton
+                aria-label="Notifications"
+                icon={<IoNotificationsOutline />}
+                showIndicator={hasUnreadNotifications}
+              />
             </Box>
           </PopoverTrigger>
           <PopoverContent w={['xs', 'lg']} h={['xs', 'lg']}>

@@ -1,12 +1,11 @@
-import { Box, chakra, HStack, Flex, Icon } from '@chakra-ui/react';
+import { Box, chakra, HStack, Flex } from '@chakra-ui/react';
 import RequireRoles from '../components/RequireRoles';
 import { routes } from '../constants';
 import NavBarItem from './NavBarItem';
 import NavBarNotificationItem from './NavBarNotificationItem';
 import logo from '../assets/logo.svg';
-import { Link } from 'react-router-dom';
-import { IoChatbubblesOutline } from 'react-icons/io5';
 import NavBarProfileItem from './NavBarProfileItem';
+import NavBarChatItem from './NavBarChatItem';
 
 export default function NavBar() {
   return (
@@ -35,9 +34,7 @@ export default function NavBar() {
         </RequireRoles>
       </HStack>
       <HStack spacing="4">
-        <Link to={routes.chat}>
-          <Icon as={IoChatbubblesOutline} />
-        </Link>
+        <NavBarChatItem />
         <NavBarNotificationItem />
         <NavBarProfileItem />
       </HStack>
