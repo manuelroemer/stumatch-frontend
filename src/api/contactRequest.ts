@@ -6,14 +6,15 @@ import { stumatchFetch, StumatchFetchInit } from './fetch';
 export interface ContactRequest extends ApiObject {
   name: string;
   email: string;
-  type: string;
+  type: 'role' | 'featureBug' | 'other';
   message: string;
+  status: 'Open' | 'In Progress' | 'Closed';
 }
 
 export interface ContactRequestPost {
   name: string;
   email: string;
-  type: string;
+  type: 'role' | 'featureBug' | 'other';
   message: string;
 }
 

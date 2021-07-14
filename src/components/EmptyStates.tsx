@@ -44,6 +44,17 @@ export function NoMatchRequestsEmptyState(props?: EmptyStateProps) {
   );
 }
 
+export function NoContactRequestsEmptyState(props?: EmptyStateProps) {
+  return (
+    <EmptyState
+      imgSrc={socialSerenity}
+      title="No Contact Requests"
+      description="You have no contact requests at the moment."
+      {...props}
+    />
+  );
+}
+
 export function NoChatMessagesEmptyState(props?: EmptyStateProps) {
   return (
     <EmptyState
