@@ -8,7 +8,7 @@ export interface ContactRequest extends ApiObject {
   email: string;
   type: 'role' | 'featureBug' | 'other';
   message: string;
-  status: 'Open' | 'In Progress' | 'Closed';
+  status: 'open' | 'inProgress' | 'closed';
 }
 
 export interface ContactRequestPost {
