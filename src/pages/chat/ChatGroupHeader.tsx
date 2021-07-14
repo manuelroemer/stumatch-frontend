@@ -4,14 +4,19 @@ import UserAvatar from '../../components/UserAvatar';
 import ChatHeader from './ChatHeader';
 import { BiPlus } from 'react-icons/bi';
 import { User } from '../../api/users';
+import { usePostChatGroupMutation } from '../../queries/chatGroups';
+import { useHistory } from 'react-router';
+import { routes } from '../../constants';
 
 export default function ChatGroupHeader() {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const createChatGroupMutation = usePostChatGroupMutation();
+  const history = useHistory();
 
-  const handleChatGroupSubmit = (users: Array<User>) => {
-    // TODO: Post ChatGroup in BE.
-    console.log(users);
-    return new Promise<void>((res) => setTimeout(res, 3000));
+  const handleChatGroupSubmit = async (users: Array<User>) => {
+    const activeParticipantIds = users.map((user) => user.id!);
+    const res = await createChatGroupMutation.mutateAsync({ activeParticipantIds });
+    history.push(`${routes.chat}/${res.result.id}`);
   };
 
   return (
