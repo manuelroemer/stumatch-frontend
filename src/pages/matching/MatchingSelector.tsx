@@ -1,16 +1,4 @@
-import {
-  IconButton,
-  Icon,
-  Center,
-  HTMLChakraProps,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
-  Button,
-} from '@chakra-ui/react';
+import { IconButton, Icon, Center, HTMLChakraProps } from '@chakra-ui/react';
 import { IoChatbubblesOutline } from 'react-icons/io5';
 import { IoMdCheckmark, IoMdClose } from 'react-icons/io';
 import { BiHourglass } from 'react-icons/bi';
@@ -18,9 +6,9 @@ import { MdDeleteForever } from 'react-icons/md';
 import { MatchRequest } from '../../api/matching';
 import MatchingTemplate, { MatchingTemplateProps } from './MatchingTemplate';
 import { useDeleteMatchRequestMutation, usePostAcceptDeclineMatchRequestMutation } from '../../queries/matchRequests';
-import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import UserAvatar from '../../components/UserAvatar';
+import { useDeleteConfirmationModal } from '../../components/DeleteConfirmationModal';
 
 const descriptions = {
   acceptedByMe: 'You have accepted your partner.',
@@ -134,42 +122,24 @@ function CloseButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & {
 
 function DeleteButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & { matchRequestId: string }) {
   const mutation = useDeleteMatchRequestMutation(matchRequestId);
-  const [isOpen, setIsOpen] = useState(false);
-  const onClose = () => setIsOpen(false);
-  const cancelRef = useRef<any>();
+  const deleteModal = useDeleteConfirmationModal();
   return (
     <>
       <IconButton
         aria-label="Delete"
         fontSize="25"
         icon={<MdDeleteForever />}
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          deleteModal.show({
+            header: 'Remove Match Request ',
+            cancelText: 'No, keep it',
+            confirmText: 'Yes, delete it',
+            onConfirm: () => mutation.mutateAsync(),
+          });
+        }}
         {...props}
       />
-      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Remove Match Request
-            </AlertDialogHeader>
-            <AlertDialogBody>Are you sure? You can not undo this action afterwards.</AlertDialogBody>
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
-                No, keep it
-              </Button>
-              <Button
-                colorScheme="red"
-                ml={3}
-                onClick={() => {
-                  mutation.mutateAsync();
-                  onClose();
-                }}>
-                Yes, delete it
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+      {deleteModal.modal}
     </>
   );
 }

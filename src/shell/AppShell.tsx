@@ -9,6 +9,7 @@ import MatchingPage from '../pages/matching/MatchingPage';
 import NotificationPage from '../pages/notifications/NotificationPage';
 import NavBar from './NavBar';
 import PostPage from '../pages/feed/PostPage';
+import friendsListPage from '../pages/friendsList/friendsListPage';
 
 export default function AppShell() {
   return (
@@ -20,6 +21,7 @@ export default function AppShell() {
       <Route exact path={routes.advertising} component={AdvertisingPage} />
       <Route exact path={routes.administration} component={AdministrationPage} />
       <Route exact path={routes.notifications} component={NotificationPage} />
+      <Route exact path={routes.friendsList} component={friendsListPage} />
       <Route path={routes.chatGroup} component={ChatPage} />
     </Flex>
   );

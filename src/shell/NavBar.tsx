@@ -6,6 +6,7 @@ import NavBarNotificationItem from './NavBarNotificationItem';
 import logo from '../assets/logo.svg';
 import { Link } from 'react-router-dom';
 import { IoChatbubblesOutline } from 'react-icons/io5';
+import { HiOutlineUserGroup } from 'react-icons/hi';
 import NavBarProfileItem from './NavBarProfileItem';
 
 export default function NavBar() {
@@ -37,6 +38,9 @@ export default function NavBar() {
       <HStack spacing="4">
         <Link to={routes.chat}>
           <Icon as={IoChatbubblesOutline} />
+        </Link>
+        <Link to={routes.friendsList}>
+          <Icon as={HiOutlineUserGroup} />
         </Link>
         <NavBarNotificationItem />
         <NavBarProfileItem />
