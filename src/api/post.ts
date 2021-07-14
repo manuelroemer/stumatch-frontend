@@ -9,7 +9,7 @@ export interface Post extends ApiObject {
   title: string;
   content: string;
   author: User;
-  likes: [Like];
+  likes: Array<Like>;
   comments: number;
   category: string;
 }
