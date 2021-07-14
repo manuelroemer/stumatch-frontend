@@ -9,11 +9,11 @@ export interface Comment extends ApiObject {
   content: string;
 }
 
-export interface postComment {
+export interface CommentPost {
   content: string;
 }
 
-export function postComment(id: string, body: postComment, init?: StumatchFetchInit) {
+export function postComment(id: string, body: CommentPost, init?: StumatchFetchInit) {
   return stumatchFetch<Comment>(`/api/v1/posts/comments/${id}`, { body, method: 'POST', ...init });
 }
 

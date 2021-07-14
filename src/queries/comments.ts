@@ -1,12 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { QueryOptions } from '../api/conventions';
-import { getComments, postComment } from '../api/comment';
+import { getComments, postComment, CommentPost } from '../api/comment';
 
 export const commentsQueryKey = 'comments';
 
 export function usePostCommentMutation(id: string) {
   const client = useQueryClient();
-  return useMutation((body: postComment) => postComment(id, body).then((res) => res.data), {
+  return useMutation((body: CommentPost) => postComment(id, body).then((res) => res.data), {
     onSuccess: () => client.invalidateQueries(commentsQueryKey),
   });
 }
