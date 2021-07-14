@@ -38,11 +38,6 @@ export default function ContactPage() {
   const onSubmit = handleSubmit(async (contactRequestPost) => {
     await mutation.mutateAsync(contactRequestPost);
     reset();
-    unregister('name');
-    unregister('email');
-    unregister('type');
-    unregister('message');
-
     toast({
       title: 'Request sent successfully.',
       description: "We've sent your request.",

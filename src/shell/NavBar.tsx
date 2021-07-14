@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { HiOutlineUserGroup } from 'react-icons/hi';
 import NavBarProfileItem from './NavBarProfileItem';
 import NavBarChatItem from './NavBarChatItem';
+import NavBarIconButton from './NavBarIconButton';
 
 export default function NavBar() {
   return (
@@ -37,7 +38,7 @@ export default function NavBar() {
       </HStack>
       <HStack spacing="4">
         <Link to={routes.friendsList}>
-          <Icon as={HiOutlineUserGroup} />
+          <NavBarIconButton aria-label="My Friends" icon={<HiOutlineUserGroup />} showIndicator={false} />
         </Link>
         <NavBarChatItem />
         <NavBarNotificationItem />

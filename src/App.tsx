@@ -36,7 +36,7 @@ export default function App() {
                     path={routes.root}
                     render={() => (hasLoggedInUser ? <Redirect to={routes.feed} /> : <LandingPage />)}
                   />
-                  {!hasLoggedInUser && <Route path={routes.contact} component={ContactPage} />}
+                  {!hasLoggedInUser && <Route exact path={routes.contact} component={ContactPage} />}
                   <Route render={() => (hasLoggedInUser ? <AppShell /> : <Redirect to={routes.root} />)} />
                 </Switch>
               </BrowserRouter>
