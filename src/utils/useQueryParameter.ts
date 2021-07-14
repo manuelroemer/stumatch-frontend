@@ -25,6 +25,15 @@ export function useQueryParameter<T>(
   return [param, setAndWriteQuery];
 }
 
+export function useStringQueryParameter(name: string, fallbackValue: string): [string, Dispatch<string>] {
+  return useQueryParameter<string>(
+    name,
+    fallbackValue,
+    (s) => s,
+    (s) => s,
+  );
+}
+
 export function useNumberQueryParameter(name: string, fallbackValue: number): [number, Dispatch<number>] {
   const serialize = (value: number) => value.toString();
   const deserialize = (value: string) => (isNaN(+value) ? fallbackValue : +value);
