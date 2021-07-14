@@ -1,12 +1,11 @@
 import { IoChatbubblesOutline } from 'react-icons/io5';
-import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 import { me } from '../api/conventions';
 import { routes } from '../constants';
 import { useGetAllUserChatGroupsQuery, useUserChatGroupSocketQueryInvalidation } from '../queries/chatGroups';
 import NavBarIconButton from './NavBarIconButton';
 
 export default function NavBarChatItem() {
-  const history = useHistory();
   const { data: chatGroups } = useGetAllUserChatGroupsQuery(me);
   const hasUnreadChatMessages =
     chatGroups?.result.some((chatGroup) => !chatGroup.mutedByMe && chatGroup.unreadMessages > 0) ?? false;
@@ -14,11 +13,8 @@ export default function NavBarChatItem() {
   useUserChatGroupSocketQueryInvalidation();
 
   return (
-    <NavBarIconButton
-      aria-label="Chat"
-      icon={<IoChatbubblesOutline />}
-      showIndicator={hasUnreadChatMessages}
-      onClick={() => history.push(routes.chat)}
-    />
+    <Link to={routes.chat}>
+      <NavBarIconButton aria-label="Chat" icon={<IoChatbubblesOutline />} showIndicator={hasUnreadChatMessages} />
+    </Link>
   );
 }
