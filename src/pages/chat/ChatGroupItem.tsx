@@ -1,4 +1,5 @@
-import { Heading, Flex, Tag, Center, Text, Grid, Tooltip } from '@chakra-ui/react';
+import { Heading, Flex, Tag, Center, Text, Grid, Tooltip, Icon } from '@chakra-ui/react';
+import { IoNotificationsOffOutline } from 'react-icons/io5';
 import { useHistory } from 'react-router';
 import ReactTimeago from 'react-timeago';
 import { ChatGroup } from '../../api/chatGroups';
@@ -59,13 +60,14 @@ export default function ChatGroupItem({ chatGroup, isSelected }: ChatGroupItemPr
           </Text>
         )}
       </Flex>
-      {!isSelected && newMessages > 0 && (
-        <Flex gridRow="2" gridColumn="3" justify="flex-end" align="center">
+      <Flex gridRow="2" gridColumn="3" justify="flex-end" align="center">
+        {!isSelected && !chatGroup.mutedByMe && newMessages > 0 && (
           <Tag colorScheme="primary" size="sm" rounded="full">
             {newMessages > 99 ? '99+' : newMessages}
           </Tag>
-        </Flex>
-      )}
+        )}
+        {chatGroup.mutedByMe && <Icon as={IoNotificationsOffOutline} layerStyle="hint" />}
+      </Flex>
     </Grid>
   );
 }
