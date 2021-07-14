@@ -55,13 +55,13 @@ export default function PostPage() {
             <Box as="article" mt={['4', '4', '8']} rounded="md" boxShadow="base" p="6">
               <HStack h="100%" justifyContent="space-between">
                 <HStack>
-                  <Icon aria-lable="Author" as={CgProfile} />
+                  <Icon aria-label="Author" as={CgProfile} />
                   <Text>
                     {data.result.author.firstName}, {data.result.author.lastName}
                   </Text>
                 </HStack>
                 <HStack>
-                  <Icon aria-lable="Ago" as={AiOutlineClockCircle} />
+                  <Icon aria-label="Ago" as={AiOutlineClockCircle} />
                   <ReactTimeago
                     date={!data.result.createdOn ? '' : data.result.createdOn}
                     component={(props) => <Text {...props} />}

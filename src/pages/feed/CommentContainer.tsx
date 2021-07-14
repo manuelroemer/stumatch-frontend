@@ -24,13 +24,13 @@ export default function CommentContainer({ comment }: CommentContainerProps) {
           <HStack>
             <HStack spacing="5">
               <HStack>
-                <Icon aria-lable="Author" as={CgProfile} />
+                <Icon aria-label="Author" as={CgProfile} />
                 <Text>
                   {user?.result.lastName}, {user?.result.firstName}
                 </Text>
               </HStack>
               <HStack>
-                <Icon aria-lable="Ago" as={AiOutlineClockCircle} />
+                <Icon aria-label="Ago" as={AiOutlineClockCircle} />
                 <ReactTimeago date={comment.createdOn} component={(props) => <Text {...props} />} />
               </HStack>
             </HStack>
