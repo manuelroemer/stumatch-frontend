@@ -1,1 +1,3 @@
-export function VerifyAdvertisementsPage() { return(null) }
+export function VerifyAdvertisementsPage() {
+  return null;
+}

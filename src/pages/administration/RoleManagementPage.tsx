@@ -1,1 +1,3 @@
-export function RoleManagementPage() {return(null)}
+export function RoleManagementPage() {
+  return null;
+}
