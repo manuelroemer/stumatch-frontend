@@ -15,11 +15,24 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
+import { UserPut } from '../../api/users';
 import DefaultPageLayout from '../../components/DefaultPageLayout';
+import FacultyDropdown from '../../components/FacultyDropdown';
 import UserAvatar from '../../components/UserAvatar';
+import { useGetAllFacultiesQuery } from '../../queries/faculties';
 import { useCurrentUser } from '../../stores/userStore';
 
 export default function ProfilePage() {
+  const { isLoading, data } = useGetAllFacultiesQuery();
+  const {
+    register,
+    unregister,
+    setValue,
+    getValues,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<UserPut>();
   const user = useCurrentUser();
   return (
     <DefaultPageLayout header="Your Profile">
@@ -40,8 +53,21 @@ export default function ProfilePage() {
         <Spacer />
         <FormControl mt={5}>
           <FormLabel>E-Mail</FormLabel>
-          <Input type="email" defaultValue={user.email} />
+          <Input
+            {...register('email', { required: true, maxLength: 320, pattern: /^\S+@\S+/ })}
+            placeholder="Your E-Mail Address"
+            type="email"
+            defaultValue={user.email}
+          />
         </FormControl>
+        <FacultyDropdown
+          facultyData={data?.result ?? []}
+          facultyDescription="Select your faculty."
+          studyProgramDescription="Select your study program."
+          onFacultyChanged={(faculty) => setValue('facultyId', faculty?.id)}
+          onStudyProgramChanged={(studyProgram) => setValue('studyProgramId', studyProgram?.id)}
+        />
+
         <HStack mt={10}>
           <Button colorScheme="blue" type="submit">
             Save

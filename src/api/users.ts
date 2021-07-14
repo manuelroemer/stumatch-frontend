@@ -30,6 +30,18 @@ export interface UserPost {
   };
 }
 
+export interface UserPut {
+  email: string;
+  firstName: string;
+  lastName: string;
+  facultyId?: string;
+  studyProgramId?: string;
+  immatriculatedOn?: {
+    startingSemester?: string;
+    startingYear?: number;
+  };
+}
+
 export function getAllUsers(options?: QueryOptions, init?: StumatchFetchInit) {
   return stumatchFetch<PaginationApiResult<User>>(`/api/v1/users?${qs(options)}`, init);
 }
@@ -40,4 +52,8 @@ export function getUser(id: string, init?: StumatchFetchInit) {
 
 export function postUser(body: UserPost, init?: StumatchFetchInit) {
   return stumatchFetch<User>(`/api/v1/users`, { body, method: 'POST', ...init });
+}
+
+export function putUser(body: UserPut, init?: StumatchFetchInit) {
+  return stumatchFetch<User>(`/api/v1/users`, { body, method: 'PUT', ...init });
 }
