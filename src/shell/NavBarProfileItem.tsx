@@ -15,10 +15,13 @@ import {
   PopoverFooter,
   PopoverBody,
   Flex,
+  Link,
 } from '@chakra-ui/react';
 import { useCurrentUser, useUserStore } from '../stores/userStore';
 import UserAvatar from '../components/UserAvatar';
 import { getFullName } from '../utils/userUtils';
+import { routes } from '../constants';
+import { Link as RouterLink } from 'react-router-dom';
 
 export default function NavBarProfileItem() {
   const logout = useUserStore((state) => state.logout);
@@ -47,7 +50,9 @@ export default function NavBarProfileItem() {
             <Text fontWeight="bold">{getFullName(user)}</Text>
             <Text>{user.email}</Text>
             <StackDivider />
-            <Button variant="link">Show Profile</Button>
+            <Button variant="link" as={RouterLink} to={routes.profile}>
+              Show Profile
+            </Button>
           </VStack>
         </PopoverBody>
         <PopoverFooter p="2">
