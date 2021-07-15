@@ -1,4 +1,4 @@
-import { IconButton, Icon, Center, HTMLChakraProps, Badge, HStack, useColorModeValue } from '@chakra-ui/react';
+import { IconButton, Icon, Center, HTMLChakraProps, Badge, HStack, useColorModeValue, Text } from '@chakra-ui/react';
 import { IoChatbubblesOutline } from 'react-icons/io5';
 import { IoMdCheckmark, IoMdClose } from 'react-icons/io';
 import { BiHourglass } from 'react-icons/bi';
@@ -9,6 +9,9 @@ import { useDeleteMatchRequestMutation, usePostAcceptDeclineMatchRequestMutation
 import { Link } from 'react-router-dom';
 import UserAvatar from '../../components/UserAvatar';
 import { useDeleteConfirmationModal } from '../../components/DeleteConfirmationModal';
+import Confetti from 'react-confetti';
+import { useState } from 'react';
+import { useConfetti } from '../../utils/useConfetti';
 
 const descriptions = {
   acceptedByMe: 'You have accepted your partner.',
@@ -25,11 +28,13 @@ export interface MatchingSelectorProps {
 }
 
 export default function MatchingSelector({ matchRequest }: MatchingSelectorProps) {
+  const colorBg = useColorModeValue('gray.300', 'gray.600');
+  const { show, confetti, isVisible } = useConfetti();
+
   const getMatchingTemplateProps = (): MatchingTemplateProps => {
     const partnerName = `${matchRequest.partner?.firstName} ${matchRequest.partner?.lastName}`;
     const partnerAvatar = <UserAvatar userId={matchRequest.partner?.id} />;
     const deleteButton = <DeleteButton matchRequestId={matchRequest.id} />;
-    const colorBg = useColorModeValue('gray.300', 'gray.600');
 
     switch (matchRequest.status) {
       case 'matched':
@@ -56,6 +61,9 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
           description: descriptions[matchRequest.status],
           actions: (
             <>
+              {matchRequest.status === 'accepted' && (
+                <IconButton isDisabled={isVisible} aria-label="confetti" onClick={show} icon={<Text>🎊</Text>} />
+              )}
               {matchRequest.status === 'accepted' && <ChatButton chatGroupId={matchRequest.chatGroupId ?? ''} />}
               {deleteButton}
             </>
@@ -80,7 +88,10 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
   };
 
   return (
+    <>
     <MatchingTemplate filters={<MatchRequestFilters matchRequest={matchRequest} />} {...getMatchingTemplateProps()} />
+    {confetti}
+    </>
   );
 }
 
