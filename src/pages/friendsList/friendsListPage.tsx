@@ -10,6 +10,7 @@ import { getFullName } from '../../utils/userUtils';
 import { MdDeleteForever } from 'react-icons/md';
 import range from 'lodash-es/range';
 import { useDeleteConfirmationModal } from '../../components/DeleteConfirmationModal';
+import { NoFriendsEmptyState } from '../../components/EmptyStates';
 
 export default function friendsListPage() {
   const { isLoading, data } = useGetAllUserFriendsListEntriesQuery(me);
@@ -55,6 +56,7 @@ export default function friendsListPage() {
           {deleteModal.modal}
         </Tbody>
       </Table>
+      {data && data.result.length === 0 && <NoFriendsEmptyState />}
     </DefaultPageLayout>
   );
 }
