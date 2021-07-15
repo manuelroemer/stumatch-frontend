@@ -9,7 +9,6 @@ import { useDeleteMatchRequestMutation, usePostAcceptDeclineMatchRequestMutation
 import { Link } from 'react-router-dom';
 import UserAvatar from '../../components/UserAvatar';
 import { useDeleteConfirmationModal } from '../../components/DeleteConfirmationModal';
-import { useGetAllFacultiesQuery } from '../../queries/faculties';
 
 const descriptions = {
   acceptedByMe: 'You have accepted your partner.',

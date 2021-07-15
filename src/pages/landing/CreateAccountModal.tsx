@@ -181,14 +181,16 @@ export default function CreateAccountModal({ isOpen, onClose }: CreateAccountMod
               <Text opacity="0.5">
                 By signing up, you agree to our
                 <Link to={routes.termsOfUse}>
+                  {' '}
                   <Button variant="link" colorScheme="primary">
                     Terms
-                  </Button>
+                  </Button>{' '}
                 </Link>
                 and
                 <Link to={routes.privacyPolicy}>
+                  {' '}
                   <Button variant="link" colorScheme="primary">
-                    Privacy Policy
+                    Privacy Policy.
                   </Button>
                 </Link>
               </Text>
