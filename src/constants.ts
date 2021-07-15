@@ -13,3 +13,5 @@ export const routes = {
   termsOfUse: '/terms',
   privacyPolicy: '/privacyPolicy',
 } as const;
+
+export const emailRegex = /^\S+@\S+\.\S+$/;

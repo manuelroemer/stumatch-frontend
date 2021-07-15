@@ -1,4 +1,4 @@
-import { IconButton, Icon, Center, HTMLChakraProps } from '@chakra-ui/react';
+import { IconButton, Icon, Center, HTMLChakraProps, Badge, HStack } from '@chakra-ui/react';
 import { IoChatbubblesOutline } from 'react-icons/io5';
 import { IoMdCheckmark, IoMdClose } from 'react-icons/io';
 import { BiHourglass } from 'react-icons/bi';
@@ -78,7 +78,29 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
     }
   };
 
-  return <MatchingTemplate {...getMatchingTemplateProps()} />;
+  return (
+    <MatchingTemplate filters={<MatchRequestFilters matchRequest={matchRequest} />} {...getMatchingTemplateProps()} />
+  );
+}
+
+function MatchRequestFilters({ matchRequest }: { matchRequest: MatchRequest }) {
+  return (
+    <HStack>
+      <Badge variant="solid" colorScheme="blue">
+        {matchRequest.faculty?.name}
+      </Badge>
+
+      <Badge ml="2" variant="solid" colorScheme="blue">
+        {matchRequest.studyProgram?.name}
+      </Badge>
+
+      {matchRequest.minSemester && (
+        <Badge ml="2" variant="solid" colorScheme="cyan">
+          Semester: {matchRequest.minSemester} - {matchRequest.maxSemester}
+        </Badge>
+      )}
+    </HStack>
+  );
 }
 
 function ChatButton({ chatGroupId, ...props }: HTMLChakraProps<'button'> & { chatGroupId: string }) {

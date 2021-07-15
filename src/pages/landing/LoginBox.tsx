@@ -3,6 +3,7 @@ import { Button, Divider, Input, FormControl, FormErrorMessage, Box, Heading, us
 import { useState } from 'react';
 import { useUserStore } from '../../stores/userStore';
 import CreateAccountModal from './CreateAccountModal';
+import { emailRegex } from '../../constants';
 
 interface LoginFormData {
   email: string;
@@ -43,7 +44,7 @@ export default function LoginBox() {
           <Input
             placeholder="Your E-Mail Address"
             autoFocus
-            {...register('email', { required: true, maxLength: 320, pattern: /^\S+@\S+/ })}
+            {...register('email', { required: true, maxLength: 320, pattern: emailRegex })}
           />
           <FormErrorMessage>Please enter a valid E-Mail address.</FormErrorMessage>
         </FormControl>
