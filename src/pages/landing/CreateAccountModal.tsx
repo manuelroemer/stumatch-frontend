@@ -16,6 +16,8 @@ import {
   NumberInput,
   NumberInputField,
   FormErrorMessage,
+  Avatar,
+  FormHelperText,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { UserPost } from '../../api/users';
@@ -23,6 +25,8 @@ import { useGetAllFacultiesQuery } from '../../queries/faculties';
 import FacultyDropdown from '../../components/FacultyDropdown';
 import { usePostUserMutation } from '../../queries/users';
 import { useUserStore } from '../../stores/userStore';
+import { useImagePicker } from '../../utils/useImagePicker';
+import { useEffect } from 'react';
 
 export interface CreateAccountModalProps {
   isOpen: boolean;
@@ -33,19 +37,21 @@ export default function CreateAccountModal({ isOpen, onClose }: CreateAccountMod
   const { isLoading, data } = useGetAllFacultiesQuery();
   const {
     register,
-    unregister,
     setValue,
     getValues,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<UserPost>();
   const mutation = usePostUserMutation();
   const login = useUserStore((state) => state.login);
+  const profileImagePicker = useImagePicker();
 
   const onSubmit = handleSubmit(async (userPost) => {
     if (!userPost.immatriculatedOn?.startingSemester || !userPost.immatriculatedOn?.startingYear) {
       userPost.immatriculatedOn = undefined;
     }
+
     await mutation.mutateAsync(userPost);
     onClose();
     await login(userPost.email, userPost.password);
@@ -54,22 +60,21 @@ export default function CreateAccountModal({ isOpen, onClose }: CreateAccountMod
   const validateImmatriculatedOn = () => {
     const startingYear = getValues('immatriculatedOn.startingYear');
     const startingSemester = getValues('immatriculatedOn.startingSemester');
-
     return !((!!startingSemester && !startingYear) || (!startingSemester && !!startingYear));
   };
 
-  const reset = () => {
-    unregister('email');
-    unregister('password');
-    unregister('firstName');
-    unregister('lastName');
-    unregister('immatriculatedOn.startingSemester');
-    unregister('immatriculatedOn.startingYear');
+  const handleClose = () => {
+    reset();
+    profileImagePicker.clear();
     onClose();
   };
 
+  useEffect(() => {
+    return setValue('profileImageBlob', profileImagePicker.base64Data);
+  }, [profileImagePicker.base64Data]);
+
   return (
-    <Modal isOpen={isOpen} size="xl" onClose={reset}>
+    <Modal isOpen={isOpen} size="xl" onClose={handleClose}>
       <ModalOverlay />
       <ModalContent>
         {!isLoading && (
@@ -78,6 +83,16 @@ export default function CreateAccountModal({ isOpen, onClose }: CreateAccountMod
             <ModalCloseButton />
             <ModalBody>
               <VStack align="flex-start" spacing="5">
+                <FormControl>
+                  <FormLabel>Profile Picture</FormLabel>
+                  <Avatar
+                    size="lg"
+                    cursor="pointer"
+                    src={profileImagePicker.src}
+                    onClick={profileImagePicker.pickImage}
+                  />
+                  <FormHelperText>Click on the avatar to change the image (max 12 MB).</FormHelperText>
+                </FormControl>
                 <FormControl isInvalid={!!errors.email} isRequired>
                   <FormLabel>E-Mail</FormLabel>
                   <Input
@@ -153,7 +168,7 @@ export default function CreateAccountModal({ isOpen, onClose }: CreateAccountMod
               <Button colorScheme="primary" mr={3} type="submit" isLoading={mutation.isLoading}>
                 Create
               </Button>
-              <Button onClick={reset} isLoading={mutation.isLoading}>
+              <Button onClick={handleClose} isLoading={mutation.isLoading}>
                 Cancel
               </Button>
             </ModalFooter>

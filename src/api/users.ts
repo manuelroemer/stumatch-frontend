@@ -28,6 +28,7 @@ export interface UserPost {
     startingSemester?: string;
     startingYear?: number;
   };
+  profileImageBlob?: string;
 }
 
 export function getAllUsers(options?: QueryOptions, init?: StumatchFetchInit) {
