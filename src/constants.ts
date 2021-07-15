@@ -10,4 +10,6 @@ export const routes = {
   postPage: '/feed/:postId',
   friendsList: '/friends',
   contact: '/contact',
+  termsOfUse: '/terms',
+  privacyPolicy: '/privacyPolicy',
 } as const;

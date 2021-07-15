@@ -11,6 +11,8 @@ import NavBar from './NavBar';
 import PostPage from '../pages/feed/PostPage';
 import friendsListPage from '../pages/friendsList/friendsListPage';
 import ContactPage from '../pages/contact/ContactPage';
+import { TermsOfUsePage } from '../components/TermsOfUsePage';
+import { PrivacyPolicyPage } from '../components/PrivacyPolicyPage';
 
 export default function AppShell() {
   return (
@@ -25,6 +27,8 @@ export default function AppShell() {
       <Route exact path={routes.friendsList} component={friendsListPage} />
       <Route path={routes.chatGroup} component={ChatPage} />
       <Route path={routes.contact} component={ContactPage} />
+      <Route path={routes.termsOfUse} component={TermsOfUsePage} />
+      <Route path={routes.privacyPolicy} component={PrivacyPolicyPage} />
     </Flex>
   );
 }

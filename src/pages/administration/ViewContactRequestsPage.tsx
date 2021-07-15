@@ -13,6 +13,7 @@ import {
   AccordionPanel,
   chakra,
   Link,
+  Badge,
 } from '@chakra-ui/react';
 import { range } from 'lodash-es';
 import FloatingCard from '../../components/FloatingCard';
@@ -52,7 +53,13 @@ export function ViewContactRequestsPage() {
                               {getDisplayDataForType(contactRequest.type).displayType}]{' '}
                             </chakra.span>
                             by {contactRequest.name}{' '}
-                            <Link href={`mailto:${contactRequest.email}`}>({contactRequest.email})</Link>
+                            <Link href={`mailto:${contactRequest.email}`}>({contactRequest.email})</Link>{' '}
+                            <Badge
+                              ml="2"
+                              variant="solid"
+                              colorScheme={getStatusForDisplay(contactRequest.status).color}>
+                              {getStatusForDisplay(contactRequest.status).text}
+                            </Badge>
                           </Heading>
                         </Box>
                         <AccordionIcon />
@@ -109,4 +116,21 @@ function getDisplayDataForType(type: ContactRequest['type']) {
       displayType: 'Other',
     },
   }[type];
+}
+
+function getStatusForDisplay(status: ContactRequest['status']) {
+  return {
+    open: {
+      text: 'New',
+      color: 'green',
+    },
+    inProgress: {
+      text: 'In Progress',
+      color: 'orange',
+    },
+    closed: {
+      text: 'Closed',
+      color: 'gray',
+    },
+  }[status];
 }
