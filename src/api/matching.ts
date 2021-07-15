@@ -3,6 +3,7 @@ import { qs } from '../utils/qs';
 import { PaginationApiResult } from './apiResult';
 import { ApiObject, QueryOptions } from './conventions';
 import { stumatchFetch, StumatchFetchInit } from './fetch';
+import { Faculty, StudyProgram } from './faculty';
 export interface MatchRequest extends ApiObject {
   partner?: User;
   status:
@@ -14,6 +15,10 @@ export interface MatchRequest extends ApiObject {
     | 'declinedByPartner'
     | 'matched';
   chatGroupId?: string;
+  faculty?: Faculty;
+  studyProgram?: StudyProgram;
+  minSemester?: number;
+  maxSemester?: number;
 }
 
 export interface MatchRequestPost {
