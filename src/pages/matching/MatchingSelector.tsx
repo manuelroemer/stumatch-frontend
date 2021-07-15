@@ -1,4 +1,4 @@
-import { IconButton, Icon, Center, HTMLChakraProps, Badge, Text, HStack } from '@chakra-ui/react';
+import { IconButton, Icon, Center, HTMLChakraProps, Badge, HStack } from '@chakra-ui/react';
 import { IoChatbubblesOutline } from 'react-icons/io5';
 import { IoMdCheckmark, IoMdClose } from 'react-icons/io';
 import { BiHourglass } from 'react-icons/bi';
