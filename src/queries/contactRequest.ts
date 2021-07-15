@@ -1,6 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { ContactRequestPost, getAllContactRequests, postContactRequest } from '../api/contactRequest';
+import {
+  ContactRequestPost,
+  ContactRequestPut,
+  getAllContactRequests,
+  postContactRequest,
+  putContactRequest,
+} from '../api/contactRequest';
 import { QueryOptions } from '../api/conventions';
+import { PutMutationData } from './types';
 
 export const contactRequestsQueryKey = 'contactRequest';
 
@@ -13,4 +20,17 @@ export function usePostContactRequestMutation() {
   return useMutation((body: ContactRequestPost) => postContactRequest(body).then((res) => res.data), {
     onSuccess: () => client.invalidateQueries(contactRequestsQueryKey),
   });
+}
+
+export function usePutContactRequestMutation() {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ({ id, body }: PutMutationData<ContactRequestPut>) => putContactRequest(id, body).then((res) => res.data),
+    {
+      onSuccess: (data) => {
+        queryClient.setQueryData([contactRequestsQueryKey, data.result.id], () => data);
+        queryClient.invalidateQueries(contactRequestsQueryKey);
+      },
+    },
+  );
 }

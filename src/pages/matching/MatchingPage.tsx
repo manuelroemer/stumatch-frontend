@@ -7,7 +7,10 @@ import { BiPlus } from 'react-icons/bi';
 import MatchingSelector from './MatchingSelector';
 import MatchingModal from './MatchingModal';
 import Pagination from '../../components/Pagination';
-import { useGetAllUserMatchRequestsQuery } from '../../queries/matchRequests';
+import {
+  useGetAllUserMatchRequestsQuery,
+  useUserMatchRequestSocketQueryInvalidation,
+} from '../../queries/matchRequests';
 import { usePageQueryParameter, usePageSizeQueryParameter } from '../../utils/useQueryParameter';
 import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptionSkeleton';
 import { me } from '../../api/conventions';
@@ -18,6 +21,7 @@ export default function MatchingPage() {
   const [page, setPage] = usePageQueryParameter();
   const [pageSize] = usePageSizeQueryParameter();
   const { isLoading, data } = useGetAllUserMatchRequestsQuery(me, { page, pageSize, sort: 'modifiedOn:desc' });
+  useUserMatchRequestSocketQueryInvalidation();
 
   return (
     <RequireRoles roles={['student', 'admin']} fallback={<AccessDeniedEmptyState />}>
