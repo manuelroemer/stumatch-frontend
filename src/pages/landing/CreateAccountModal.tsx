@@ -27,6 +27,7 @@ import { usePostUserMutation } from '../../queries/users';
 import { useUserStore } from '../../stores/userStore';
 import { useImagePicker } from '../../utils/useImagePicker';
 import { useEffect } from 'react';
+import { emailRegex } from '../../constants';
 
 export interface CreateAccountModalProps {
   isOpen: boolean;
@@ -96,7 +97,7 @@ export default function CreateAccountModal({ isOpen, onClose }: CreateAccountMod
                 <FormControl isInvalid={!!errors.email} isRequired>
                   <FormLabel>E-Mail</FormLabel>
                   <Input
-                    {...register('email', { required: true, maxLength: 320, pattern: /^\S+@\S+/ })}
+                    {...register('email', { required: true, maxLength: 320, pattern: emailRegex })}
                     placeholder="Your E-Mail Address"
                     type="email"
                   />

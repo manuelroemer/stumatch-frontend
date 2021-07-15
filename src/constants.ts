@@ -11,3 +11,5 @@ export const routes = {
   friendsList: '/friends',
   contact: '/contact',
 } as const;
+
+export const emailRegex = /^\S+@\S+\.\S+$/;
