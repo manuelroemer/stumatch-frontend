@@ -16,6 +16,8 @@ import {
   NumberInput,
   NumberInputField,
   FormErrorMessage,
+  Text,
+  Flex,
   Avatar,
   FormHelperText,
 } from '@chakra-ui/react';
@@ -25,6 +27,8 @@ import { useGetAllFacultiesQuery } from '../../queries/faculties';
 import FacultyDropdown from '../../components/FacultyDropdown';
 import { usePostUserMutation } from '../../queries/users';
 import { useUserStore } from '../../stores/userStore';
+import { routes } from '../../constants';
+import { Link } from 'react-router-dom';
 import { useImagePicker } from '../../utils/useImagePicker';
 import { useEffect } from 'react';
 import { emailRegex } from '../../constants';
@@ -173,6 +177,22 @@ export default function CreateAccountModal({ isOpen, onClose }: CreateAccountMod
                 Cancel
               </Button>
             </ModalFooter>
+            <Flex justify="center" h="16" align="center">
+              <Text opacity="0.5">
+                By signing up, you agree to our
+                <Link to={routes.termsOfUse}>
+                  <Button variant="link" colorScheme="primary">
+                    Terms
+                  </Button>
+                </Link>
+                and
+                <Link to={routes.privacyPolicy}>
+                  <Button variant="link" colorScheme="primary">
+                    Privacy Policy
+                  </Button>
+                </Link>
+              </Text>
+            </Flex>
           </form>
         )}
       </ModalContent>

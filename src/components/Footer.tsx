@@ -32,12 +32,16 @@ export default function Footer() {
             </Link>
           </HStack>
           <HStack spacing="4">
-            <Button colorScheme="primary" variant="link">
-              Terms of Use
-            </Button>
-            <Button colorScheme="primary" variant="link">
-              Privacy Policy
-            </Button>
+            <Link to={routes.termsOfUse}>
+              <Button colorScheme="primary" variant="link">
+                Terms and Conditions
+              </Button>
+            </Link>
+            <Link to={routes.privacyPolicy}>
+              <Button colorScheme="primary" variant="link">
+                Privacy Policy
+              </Button>
+            </Link>
           </HStack>
         </VStack>
         <Text fontSize="sm" opacity="0.4">

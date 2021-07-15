@@ -1,11 +1,11 @@
-import { Box, Image, HStack, Flex, Icon } from '@chakra-ui/react';
+import { Box, Image, HStack, Flex } from '@chakra-ui/react';
 import RequireRoles from '../components/RequireRoles';
 import { routes } from '../constants';
 import NavBarItem from './NavBarItem';
 import NavBarNotificationItem from './NavBarNotificationItem';
 import logo from '../assets/logo.svg';
 import { Link } from 'react-router-dom';
-import { HiOutlineUserGroup } from 'react-icons/hi';
+import { RiContactsLine } from 'react-icons/ri';
 import NavBarProfileItem from './NavBarProfileItem';
 import NavBarChatItem from './NavBarChatItem';
 import NavBarIconButton from './NavBarIconButton';
@@ -22,7 +22,7 @@ export default function NavBar() {
       align="center"
       justify="space-between">
       <Box>
-        <Image src={logo} height="8" alt="sTUMatch Logo" />
+        <Image src={logo} height="10" alt="sTUMatch Logo" />
       </Box>
       <HStack grow={2} w="100%" mx="16" spacing="8">
         <NavBarItem title="Feed" to={routes.feed} />
@@ -36,9 +36,9 @@ export default function NavBar() {
           <NavBarItem title="Administration" to={routes.administration} />
         </RequireRoles>
       </HStack>
-      <HStack spacing="4">
+      <HStack spacing="4" justify="center">
         <Link to={routes.friendsList}>
-          <NavBarIconButton aria-label="My Friends" icon={<HiOutlineUserGroup />} showIndicator={false} />
+          <NavBarIconButton aria-label="My Friends" icon={<RiContactsLine />} showIndicator={false} />
         </Link>
         <NavBarChatItem />
         <NavBarNotificationItem />

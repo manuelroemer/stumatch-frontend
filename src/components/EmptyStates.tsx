@@ -49,7 +49,24 @@ export function NoContactRequestsEmptyState(props?: EmptyStateProps) {
     <EmptyState
       imgSrc={socialSerenity}
       title="No Contact Requests"
-      description="You have no contact requests at the moment."
+      description="There are no contact requests at the moment."
+      {...props}
+    />
+  );
+}
+
+export function NoUserEmptyState(props?: EmptyStateProps) {
+  return (
+    <EmptyState imgSrc={socialSerenity} title="No User" description="There are no users at the moment." {...props} />
+  );
+}
+
+export function NoFriendsEmptyState(props?: EmptyStateProps) {
+  return (
+    <EmptyState
+      imgSrc={socialSerenity}
+      title="No Friends"
+      description="You have no friends in your list at the moment."
       {...props}
     />
   );
