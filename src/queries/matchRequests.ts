@@ -8,6 +8,7 @@ import {
   postMatchRequest,
   postMatchRequestAcceptOrDeclinePost,
 } from '../api/matching';
+import { useResourceChangedEventEffect } from '../sockets/resourceChangedEvent';
 
 export const matchRequestsQueryKey = 'matchRequests';
 
@@ -39,4 +40,14 @@ export function usePostAcceptDeclineMatchRequestMutation(id: string) {
       onSuccess: () => client.invalidateQueries(matchRequestsQueryKey),
     },
   );
+}
+
+export function useUserMatchRequestSocketQueryInvalidation() {
+  const queryClient = useQueryClient();
+  useResourceChangedEventEffect((event) => {
+    console.log(event);
+    if (event.resourceType === 'matchRequest') {
+      queryClient.invalidateQueries(matchRequestsQueryKey);
+    }
+  });
 }

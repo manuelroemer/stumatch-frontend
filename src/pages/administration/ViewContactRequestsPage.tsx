@@ -18,7 +18,7 @@ import { range } from 'lodash-es';
 import FloatingCard from '../../components/FloatingCard';
 import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptionSkeleton';
 import Pagination from '../../components/Pagination';
-import { useGetAllContactRequestsQuery } from '../../queries/contactRequest';
+import { useGetAllContactRequestsQuery, usePutContactRequestMutation } from '../../queries/contactRequest';
 import { usePageQueryParameter, usePageSizeQueryParameter } from '../../utils/useQueryParameter';
 import { ContactRequest } from '../../api/contactRequest';
 import { NoContactRequestsEmptyState } from '../../components/EmptyStates';
@@ -27,6 +27,7 @@ export function ViewContactRequestsPage() {
   const [page, setPage] = usePageQueryParameter();
   const [pageSize] = usePageSizeQueryParameter();
   const { isLoading, data } = useGetAllContactRequestsQuery({ page, pageSize, sort: 'createdOn:desc' });
+  const mutation = usePutContactRequestMutation();
   return (
     <>
       <VStack spacing="5">
@@ -65,9 +66,17 @@ export function ViewContactRequestsPage() {
                     </AccordionItem>
                   </Accordion>
 
-                  <Select variant="filled" placeholder="Open" w="36" mr="2">
-                    <option>In Progress</option>
-                    <option>Closed</option>
+                  <Select
+                    variant="filled"
+                    w="40"
+                    mr="2"
+                    value={contactRequest.status}
+                    onChange={async (e) => {
+                      mutation.mutate({ id: contactRequest.id, body: { status: e.target.value as any } });
+                    }}>
+                    <option value="open">Open</option>
+                    <option value="inProgress">In Progress</option>
+                    <option value="closed">Closed</option>
                   </Select>
                 </Flex>
               </FloatingCard>
@@ -80,7 +89,7 @@ export function ViewContactRequestsPage() {
           <Pagination currentPage={data.page} pages={data.pages} onPageChanged={setPage} />
         </Center>
       )}
-      {data && data.result.length === 0 && <NoContactRequestsEmptyState />})
+      {data && data.result.length === 0 && <NoContactRequestsEmptyState />}
     </>
   );
 }
