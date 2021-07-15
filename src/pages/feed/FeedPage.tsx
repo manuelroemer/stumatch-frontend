@@ -17,10 +17,12 @@ import PostContainer from './PostContainer';
 import { BiPlus } from 'react-icons/bi';
 import PostModal from './PostModal';
 import { useGetAllCategoriesQuery } from '../../queries/categories';
+import { useCurrentUser } from '../../stores/userStore';
 
 export default function FeedPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = usePageQueryParameter();
+  const currentUser = useCurrentUser();
   const [pageSize, setPageSize] = usePageSizeQueryParameter();
   const [pageSort, setPageSort] = useStringQueryParameter('sort', 'desc');
   const [pageFilter, setPageFilter] = useStringQueryParameter('filter', '');
@@ -38,9 +40,13 @@ export default function FeedPage() {
         header="Feed"
         subHeader="What happened at your university?"
         actions={
-          <Button onClick={onOpen} colorScheme="primary" leftIcon={<BiPlus />} size="md">
-            Create New
-          </Button>
+          currentUser.roles.includes('admin') ? (
+            <Button onClick={onOpen} colorScheme="primary" leftIcon={<BiPlus />} size="md">
+              Create New
+            </Button>
+          ) : (
+            <></>
+          )
         }>
         <VStack>
           <HStack width="full" justifyContent="space-between">
