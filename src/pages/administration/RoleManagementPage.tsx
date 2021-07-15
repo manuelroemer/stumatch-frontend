@@ -1,11 +1,22 @@
-import { VStack, Center, HStack, Flex, Link, Spacer, Checkbox, CheckboxGroup, IconButton, useRadio, useId, toast, useToast } from '@chakra-ui/react';
-import { identity, range } from 'lodash-es';
+import {
+  VStack,
+  Center,
+  HStack,
+  Flex,
+  Link,
+  Spacer,
+  Checkbox,
+  CheckboxGroup,
+  IconButton,
+  useToast,
+} from '@chakra-ui/react';
+import { range } from 'lodash-es';
 import { NoUserEmptyState } from '../../components/EmptyStates';
 import FloatingCard from '../../components/FloatingCard';
 import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptionSkeleton';
 import Pagination from '../../components/Pagination';
 import UserAvatar from '../../components/UserAvatar';
-import { useGetAllUsersQuery, usePutUserMutation, usersQueryKey } from '../../queries/users';
+import { useGetAllUsersQuery, usePutUserMutation } from '../../queries/users';
 import { usePageQueryParameter, usePageSizeQueryParameter } from '../../utils/useQueryParameter';
 import { getFullName } from '../../utils/userUtils';
 import { FiSave } from 'react-icons/fi';
