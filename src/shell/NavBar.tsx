@@ -1,4 +1,4 @@
-import { Box, Image, HStack, Flex, Icon, IconButton } from '@chakra-ui/react';
+import { Box, Image, HStack, Flex } from '@chakra-ui/react';
 import RequireRoles from '../components/RequireRoles';
 import { routes } from '../constants';
 import NavBarItem from './NavBarItem';
@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { RiContactsLine } from 'react-icons/ri';
 import NavBarProfileItem from './NavBarProfileItem';
 import NavBarChatItem from './NavBarChatItem';
+import NavBarIconButton from './NavBarIconButton';
 
 export default function NavBar() {
   return (
@@ -37,7 +38,7 @@ export default function NavBar() {
       </HStack>
       <HStack spacing="4" justify="center">
         <Link to={routes.friendsList}>
-          <IconButton aria-label="friendslist" variant="ghost" icon={<RiContactsLine />} />
+          <NavBarIconButton aria-label="My Friends" icon={<RiContactsLine />} showIndicator={false} />
         </Link>
         <NavBarChatItem />
         <NavBarNotificationItem />

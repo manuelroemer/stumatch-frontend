@@ -38,9 +38,9 @@ export default function App() {
                     path={routes.root}
                     render={() => (hasLoggedInUser ? <Redirect to={routes.feed} /> : <LandingPage />)}
                   />
-                  {!hasLoggedInUser && <Route path={routes.contact} component={ContactPage} />}
-                  {!hasLoggedInUser && <Route path={routes.termsOfUse} component={TermsOfUsePage} />}
-                  {!hasLoggedInUser && <Route path={routes.privacyPolicy} component={PrivacyPolicyPage} />}
+                  {!hasLoggedInUser && <Route exact path={routes.contact} component={ContactPage} />}
+                  {!hasLoggedInUser && <Route exact path={routes.termsOfUse} component={TermsOfUsePage} />}
+                  {!hasLoggedInUser && <Route exact path={routes.privacyPolicy} component={PrivacyPolicyPage} />}
                   <Route render={() => (hasLoggedInUser ? <AppShell /> : <Redirect to={routes.root} />)} />
                 </Switch>
               </BrowserRouter>

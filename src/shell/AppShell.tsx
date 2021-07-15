@@ -25,10 +25,10 @@ export default function AppShell() {
       <Route exact path={routes.administration} component={AdministrationPage} />
       <Route exact path={routes.notifications} component={NotificationPage} />
       <Route exact path={routes.friendsList} component={friendsListPage} />
+      <Route exact path={routes.contact} component={ContactPage} />
       <Route path={routes.chatGroup} component={ChatPage} />
-      <Route path={routes.contact} component={ContactPage} />
-      <Route path={routes.termsOfUse} component={TermsOfUsePage} />
-      <Route path={routes.privacyPolicy} component={PrivacyPolicyPage} />
+      <Route exact path={routes.termsOfUse} component={TermsOfUsePage} />
+      <Route exact path={routes.privacyPolicy} component={PrivacyPolicyPage} />
     </Flex>
   );
 }
