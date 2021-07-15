@@ -1,4 +1,4 @@
-import { IconButton, Icon, Center, HTMLChakraProps, Badge, HStack } from '@chakra-ui/react';
+import { IconButton, Icon, Center, HTMLChakraProps, Badge, HStack, useColorModeValue } from '@chakra-ui/react';
 import { IoChatbubblesOutline } from 'react-icons/io5';
 import { IoMdCheckmark, IoMdClose } from 'react-icons/io';
 import { BiHourglass } from 'react-icons/bi';
@@ -29,6 +29,7 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
     const partnerName = `${matchRequest.partner?.firstName} ${matchRequest.partner?.lastName}`;
     const partnerAvatar = <UserAvatar userId={matchRequest.partner?.id} />;
     const deleteButton = <DeleteButton matchRequestId={matchRequest.id} />;
+    const colorBg = useColorModeValue('gray.300', 'gray.600');
 
     switch (matchRequest.status) {
       case 'matched':
@@ -64,7 +65,7 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
         return {
           leftChildren: (
             <>
-              <Center w="12" h="12" bg="gray.300" borderRadius="full">
+              <Center w="12" h="12" bg={colorBg} borderRadius="full">
                 <Icon as={BiHourglass} w="8" h="8" color="white" />
               </Center>
             </>
@@ -117,7 +118,7 @@ function CheckButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & {
     <IconButton
       aria-label="Check"
       fontSize="25"
-      color="green"
+      color="green.400"
       icon={<IoMdCheckmark />}
       onClick={() => mutation.mutate({ accepted: true })}
       isLoading={mutation.isLoading}

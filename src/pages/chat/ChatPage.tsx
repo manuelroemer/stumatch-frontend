@@ -1,4 +1,4 @@
-import { Flex, Grid } from '@chakra-ui/react';
+import { Flex, Grid, useColorModeValue } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useParams } from 'react-router';
 import { NoChatGroupSelectedEmptyState } from '../../components/EmptyStates';
@@ -14,10 +14,11 @@ interface RouteParams {
 export default function AdministrationPage() {
   const { chatGroupId } = useParams<RouteParams>();
   const [chatGroupFilter, setChatGroupFilter] = useState('');
+  const colorBg = useColorModeValue('gray.200', 'gray.600');
 
   return (
     <Grid h="100%" gridTemplateColumns="24rem minmax(0, 1fr)">
-      <Flex as="aside" borderRight="1px" borderRightColor="gray.200" direction="column">
+      <Flex as="aside" borderRight="1px" borderRightColor={colorBg} direction="column">
         <ChatGroupHeader />
         <ChatGroupFilter onFilterChanged={setChatGroupFilter} />
         <ChatGroupContainer chatGroupId={chatGroupId} chatGroupFilter={chatGroupFilter} />
