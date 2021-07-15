@@ -17,7 +17,7 @@ export default function AdvertisementContainer({ advertisement }: AdvertisementC
   const handleClick = () => history.push(`${routes.advertising}/${advertisement.id}`);
 
   return (
-    <Grid templateRows="repeat(2, 1fr)" templateColumns="repeat(14, 1fr)" gap={2}>
+    <Grid templateRows="repeat(3, 1fr)" templateColumns="repeat(14, 1fr)" gap={2}>
       <GridItem rowSpan={2} colSpan={2}>
         <Flex h="100%" align="center">
           <Icon aria-label="Picture" as={AiOutlinePicture} w="80%" h="80%" />
