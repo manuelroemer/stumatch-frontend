@@ -5,6 +5,8 @@ import { Faculty, StudyProgram } from '../api/faculty';
 
 export interface FacultyDropdownProps {
   facultyData: Array<Faculty>;
+  initialFacultyId?: string;
+  initialStudyProgramId?: string;
   facultyDescription: string;
   studyProgramDescription: string;
   onFacultyChanged(faculty?: Faculty): void;
@@ -15,21 +17,32 @@ export default function FacultyDropdown({
   facultyData,
   facultyDescription,
   studyProgramDescription,
+  initialFacultyId,
+  initialStudyProgramId,
   onFacultyChanged,
   onStudyProgramChanged,
 }: FacultyDropdownProps) {
-  const [selectedFaculty, setSelectedFaculty] = useState<Faculty | undefined>(undefined);
-  const [selectedStudyProgram, setSelectedStudyProgram] = useState<StudyProgram | undefined>(undefined);
+  const initialFaculty = facultyData.find((faculty) => faculty.id === initialFacultyId);
+  const initialStudyProgram = initialFaculty?.studyPrograms.find(
+    (studyPrograms) => studyPrograms.id === initialStudyProgramId,
+  );
+  const [selectedFaculty, setSelectedFaculty] = useState<Faculty | undefined>(initialFaculty);
+  const [selectedStudyProgram, setSelectedStudyProgram] = useState<StudyProgram | undefined>(initialStudyProgram);
   const studyPrograms = facultyData
     .filter((faculty) => selectedFaculty === undefined || faculty.id === selectedFaculty.id)
     .flatMap((faculty) => faculty.studyPrograms);
 
+  console.info(initialFacultyId);
+  console.info(initialStudyProgramId);
+  console.info(selectedFaculty);
+  console.info(selectedStudyProgram);
   const handleFacultyChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const faculty = facultyData.find((faculty) => e.target.value === faculty.id);
     setSelectedFaculty(faculty);
     setSelectedStudyProgram(undefined);
     onFacultyChanged(faculty);
     onStudyProgramChanged(undefined);
+    console.info('called');
   };
 
   const handleStudyProgramChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -43,8 +56,14 @@ export default function FacultyDropdown({
       );
       setSelectedFaculty(associatedFaculty);
       onFacultyChanged(associatedFaculty);
+      console.info('called2');
     }
   };
+
+  console.info('test', initialFacultyId);
+  console.info('test', initialStudyProgramId);
+  console.info('test', selectedFaculty);
+  console.info('test', selectedStudyProgram);
 
   return (
     <>

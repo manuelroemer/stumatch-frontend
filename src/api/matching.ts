@@ -29,6 +29,8 @@ export interface MatchRequestPost {
   maxSemester?: number;
 }
 
+export type MatchRequestPut = MatchRequestPost;
+
 export interface MatchRequestAcceptOrDeclinePost {
   accepted: boolean;
 }
@@ -43,6 +45,10 @@ export function deleteMatchRequest(id: string, init?: StumatchFetchInit) {
 
 export function postMatchRequest(body: MatchRequestPost, init?: StumatchFetchInit) {
   return stumatchFetch<MatchRequest>(`/api/v1/matchRequests`, { body, method: 'POST', ...init });
+}
+
+export function putMatchRequest(id: string, body: MatchRequestPut, init?: StumatchFetchInit) {
+  return stumatchFetch<MatchRequest>(`/api/v1/matchRequests/${id}`, { body, method: 'PUT', ...init });
 }
 
 export function postMatchRequestAcceptOrDeclinePost(

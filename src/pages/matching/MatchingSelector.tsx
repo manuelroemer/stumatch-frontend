@@ -1,14 +1,16 @@
-import { IconButton, Icon, Center, HTMLChakraProps, Badge, HStack } from '@chakra-ui/react';
+import { IconButton, Icon, Center, HTMLChakraProps, Badge, HStack, useDisclosure, Tooltip } from '@chakra-ui/react';
 import { IoChatbubblesOutline } from 'react-icons/io5';
 import { IoMdCheckmark, IoMdClose } from 'react-icons/io';
 import { BiHourglass } from 'react-icons/bi';
 import { MdDeleteForever } from 'react-icons/md';
+import { FaRegEdit } from 'react-icons/fa';
 import { MatchRequest } from '../../api/matching';
 import MatchingTemplate, { MatchingTemplateProps } from './MatchingTemplate';
 import { useDeleteMatchRequestMutation, usePostAcceptDeclineMatchRequestMutation } from '../../queries/matchRequests';
 import { Link } from 'react-router-dom';
 import UserAvatar from '../../components/UserAvatar';
 import { useDeleteConfirmationModal } from '../../components/DeleteConfirmationModal';
+import MatchingModal from './MatchingModal';
 
 const descriptions = {
   acceptedByMe: 'You have accepted your partner.',
@@ -71,7 +73,12 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
           ),
           title: 'Pending...',
           description: descriptions[matchRequest.status],
-          actions: deleteButton,
+          actions: (
+            <>
+              <EditButton matchRequest={matchRequest} />
+              {deleteButton}{' '}
+            </>
+          ),
         };
       default:
         throw new Error('Unknown State');
@@ -162,6 +169,19 @@ function DeleteButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & 
         {...props}
       />
       {deleteModal.modal}
+    </>
+  );
+}
+
+function EditButton({ matchRequest, ...props }: HTMLChakraProps<'button'> & { matchRequest: MatchRequest }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  return (
+    <>
+      <Tooltip label={'Edit Match Request'}>
+        <IconButton aria-label="Edit" fontSize="25" icon={<FaRegEdit />} onClick={onOpen} {...props} />
+      </Tooltip>
+
+      <MatchingModal isUpdate={true} isOpen={isOpen} onClose={onClose} matchRequest={matchRequest} />
     </>
   );
 }

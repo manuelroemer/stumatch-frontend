@@ -8,6 +8,7 @@ export interface Faculty extends ApiObject {
 }
 
 export interface StudyProgram {
+  _id?: string;
   id: string;
   name: string;
 }
