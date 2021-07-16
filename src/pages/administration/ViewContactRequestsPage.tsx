@@ -121,7 +121,7 @@ function getDisplayDataForType(type: ContactRequest['type']) {
 function getStatusForDisplay(status: ContactRequest['status']) {
   return {
     open: {
-      text: 'New',
+      text: 'Open',
       color: 'green',
     },
     inProgress: {
