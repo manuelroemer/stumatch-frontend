@@ -9,8 +9,6 @@ import { useDeleteMatchRequestMutation, usePostAcceptDeclineMatchRequestMutation
 import { Link } from 'react-router-dom';
 import UserAvatar from '../../components/UserAvatar';
 import { useDeleteConfirmationModal } from '../../components/DeleteConfirmationModal';
-import Confetti from 'react-confetti';
-import { useState } from 'react';
 import { useConfetti } from '../../utils/useConfetti';
 
 const descriptions = {
@@ -89,8 +87,8 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
 
   return (
     <>
-    <MatchingTemplate filters={<MatchRequestFilters matchRequest={matchRequest} />} {...getMatchingTemplateProps()} />
-    {confetti}
+      <MatchingTemplate filters={<MatchRequestFilters matchRequest={matchRequest} />} {...getMatchingTemplateProps()} />
+      {confetti}
     </>
   );
 }

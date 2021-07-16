@@ -14,7 +14,11 @@ export default function NavBarChatItem() {
 
   return (
     <Link to={routes.chat}>
-      <NavBarIconButton aria-label="Chat" icon={<IoChatbubblesOutline />} showIndicator={hasUnreadChatMessages} />
+      <NavBarIconButton
+        aria-label="Chat"
+        icon={<IoChatbubblesOutline size="18" />}
+        showIndicator={hasUnreadChatMessages}
+      />
     </Link>
   );
 }

@@ -49,11 +49,11 @@ export default function NavBar() {
           showIndicator={false}
           variant="ghost"
           onClick={toggleColorMode}
-          icon={colorMode === 'light' ? <FaMoon color="gray" /> : <FiSun />}>
+          icon={colorMode === 'light' ? <FaMoon color="gray" size="18" /> : <FiSun size="18" />}>
           {colorMode === 'light' ? 'Dark' : 'Light'}
         </NavBarIconButton>
         <Link to={routes.friendsList}>
-          <NavBarIconButton aria-label="My Friends" icon={<RiContactsLine />} showIndicator={false} />
+          <NavBarIconButton aria-label="My Friends" icon={<RiContactsLine size="18" />} showIndicator={false} />
         </Link>
         <NavBarChatItem />
         <NavBarNotificationItem />

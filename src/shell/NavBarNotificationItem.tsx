@@ -40,7 +40,7 @@ export default function NavBarNotificationItem() {
             <Box>
               <NavBarIconButton
                 aria-label="Notifications"
-                icon={<IoNotificationsOutline />}
+                icon={<IoNotificationsOutline size="18" />}
                 showIndicator={hasUnreadNotifications}
               />
             </Box>
