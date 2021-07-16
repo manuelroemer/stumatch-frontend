@@ -26,7 +26,7 @@ import { User } from '../../api/users';
 export function RoleManagementPage() {
   const [page, setPage] = usePageQueryParameter();
   const [pageSize] = usePageSizeQueryParameter();
-  const { isLoading, data } = useGetAllUsersQuery({ page, pageSize, sort: 'firstName:asc' });
+  const { isLoading, data } = useGetAllUsersQuery({ page, pageSize, sort: 'firstName:asc, lastName:asc' });
 
   return (
     <>

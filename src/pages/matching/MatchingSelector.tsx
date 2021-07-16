@@ -1,4 +1,14 @@
-import { IconButton, Icon, Center, HTMLChakraProps, Badge, HStack, useColorModeValue, Text } from '@chakra-ui/react';
+import {
+  IconButton,
+  Icon,
+  Center,
+  HTMLChakraProps,
+  Badge,
+  HStack,
+  useColorModeValue,
+  Text,
+  Tooltip,
+} from '@chakra-ui/react';
 import { IoChatbubblesOutline } from 'react-icons/io5';
 import { IoMdCheckmark, IoMdClose } from 'react-icons/io';
 import { BiHourglass } from 'react-icons/bi';
@@ -45,8 +55,8 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
           actions: (
             <>
               <ChatButton chatGroupId="matchRequest.chatGroupId ?? ''" />
-              <CheckButton matchRequestId={matchRequest.id} disabled={matchRequest.status === 'acceptedByMe'} />
-              <CloseButton matchRequestId={matchRequest.id} disabled={matchRequest.status === 'acceptedByMe'} />
+              <AcceptButton matchRequestId={matchRequest.id} disabled={matchRequest.status === 'acceptedByMe'} />
+              <DeclineButton matchRequestId={matchRequest.id} disabled={matchRequest.status === 'acceptedByMe'} />
             </>
           ),
         };
@@ -60,7 +70,9 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
           actions: (
             <>
               {matchRequest.status === 'accepted' && (
-                <IconButton isDisabled={isVisible} aria-label="confetti" onClick={show} icon={<Text>🎊</Text>} />
+                <Tooltip label={'Confetti'} hasArrow>
+                  <IconButton isDisabled={isVisible} aria-label="confetti" onClick={show} icon={<Text>🎊</Text>} />
+                </Tooltip>
               )}
               {matchRequest.status === 'accepted' && <ChatButton chatGroupId={matchRequest.chatGroupId ?? ''} />}
               {deleteButton}
@@ -116,39 +128,45 @@ function MatchRequestFilters({ matchRequest }: { matchRequest: MatchRequest }) {
 function ChatButton({ chatGroupId, ...props }: HTMLChakraProps<'button'> & { chatGroupId: string }) {
   return (
     <Link to={`/chat/${chatGroupId}`}>
-      <IconButton aria-label="Chat" fontSize="25" icon={<IoChatbubblesOutline />} {...props} />
+      <Tooltip label={'Chat'} hasArrow>
+        <IconButton aria-label="Chat" fontSize="25" icon={<IoChatbubblesOutline />} {...props} />
+      </Tooltip>
     </Link>
   );
 }
 
-function CheckButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & { matchRequestId: string }) {
+function AcceptButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & { matchRequestId: string }) {
   const mutation = usePostAcceptDeclineMatchRequestMutation(matchRequestId);
   return (
-    <IconButton
-      aria-label="Check"
-      fontSize="25"
-      color="green.400"
-      icon={<IoMdCheckmark />}
-      onClick={() => mutation.mutate({ accepted: true })}
-      isLoading={mutation.isLoading}
-      {...props}
-    />
+    <Tooltip label={'Accept Partner'} hasArrow>
+      <IconButton
+        aria-label="Accept"
+        fontSize="25"
+        color="green.400"
+        icon={<IoMdCheckmark />}
+        onClick={() => mutation.mutate({ accepted: true })}
+        isLoading={mutation.isLoading}
+        {...props}
+      />
+    </Tooltip>
   );
 }
 
-function CloseButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & { matchRequestId: string }) {
+function DeclineButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & { matchRequestId: string }) {
   const mutation = usePostAcceptDeclineMatchRequestMutation(matchRequestId);
 
   return (
-    <IconButton
-      aria-label="Close"
-      fontSize="25"
-      color="red"
-      icon={<IoMdClose />}
-      onClick={() => mutation.mutate({ accepted: false })}
-      isLoading={mutation.isLoading}
-      {...props}
-    />
+    <Tooltip label={'Decline Partner'} hasArrow>
+      <IconButton
+        aria-label="Decline"
+        fontSize="25"
+        color="red"
+        icon={<IoMdClose />}
+        onClick={() => mutation.mutate({ accepted: false })}
+        isLoading={mutation.isLoading}
+        {...props}
+      />
+    </Tooltip>
   );
 }
 
@@ -157,20 +175,23 @@ function DeleteButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & 
   const deleteModal = useDeleteConfirmationModal();
   return (
     <>
-      <IconButton
-        aria-label="Delete"
-        fontSize="25"
-        icon={<MdDeleteForever />}
-        onClick={() => {
-          deleteModal.show({
-            header: 'Remove Match Request ',
-            cancelText: 'No, keep it',
-            confirmText: 'Yes, delete it',
-            onConfirm: () => mutation.mutateAsync(),
-          });
-        }}
-        {...props}
-      />
+      <Tooltip label={'Delete'} hasArrow>
+        <IconButton
+          aria-label="Delete"
+          fontSize="25"
+          icon={<MdDeleteForever />}
+          onClick={() => {
+            deleteModal.show({
+              header: 'Remove Match Request ',
+              cancelText: 'No, keep it',
+              confirmText: 'Yes, delete it',
+              onConfirm: () => mutation.mutateAsync(),
+            });
+          }}
+          {...props}
+        />
+      </Tooltip>
+
       {deleteModal.modal}
     </>
   );

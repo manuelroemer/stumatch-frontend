@@ -45,13 +45,14 @@ export default function NavBar() {
       </HStack>
       <HStack spacing="4" justify="center">
         <NavBarIconButton
-          aria-label="colorMode"
+          aria-label={colorMode === 'light' ? 'Dark Mode' : 'Light Mode'}
           showIndicator={false}
           variant="ghost"
           onClick={toggleColorMode}
           icon={colorMode === 'light' ? <FaMoon color="gray" size="18" /> : <FiSun size="18" />}>
           {colorMode === 'light' ? 'Dark' : 'Light'}
         </NavBarIconButton>
+
         <Link to={routes.friendsList}>
           <NavBarIconButton aria-label="My Friends" icon={<RiContactsLine size="18" />} showIndicator={false} />
         </Link>
