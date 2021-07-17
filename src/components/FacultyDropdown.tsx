@@ -32,17 +32,12 @@ export default function FacultyDropdown({
     .filter((faculty) => selectedFaculty === undefined || faculty.id === selectedFaculty.id)
     .flatMap((faculty) => faculty.studyPrograms);
 
-  console.info(initialFacultyId);
-  console.info(initialStudyProgramId);
-  console.info(selectedFaculty);
-  console.info(selectedStudyProgram);
   const handleFacultyChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const faculty = facultyData.find((faculty) => e.target.value === faculty.id);
     setSelectedFaculty(faculty);
     setSelectedStudyProgram(undefined);
     onFacultyChanged(faculty);
     onStudyProgramChanged(undefined);
-    console.info('called');
   };
 
   const handleStudyProgramChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -56,14 +51,8 @@ export default function FacultyDropdown({
       );
       setSelectedFaculty(associatedFaculty);
       onFacultyChanged(associatedFaculty);
-      console.info('called2');
     }
   };
-
-  console.info('test', initialFacultyId);
-  console.info('test', initialStudyProgramId);
-  console.info('test', selectedFaculty);
-  console.info('test', selectedStudyProgram);
 
   return (
     <>
