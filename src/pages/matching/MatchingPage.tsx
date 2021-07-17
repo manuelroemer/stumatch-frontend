@@ -58,7 +58,7 @@ export default function MatchingPage() {
         )}
         {data && data.result.length === 0 && <NoMatchRequestsEmptyState />}
       </DefaultPageLayout>
-      <MatchingModal isOpen={isOpen} onClose={onClose} />
+      <MatchingModal isUpdate={false} isOpen={isOpen} onClose={onClose} />
     </RequireRoles>
   );
 }

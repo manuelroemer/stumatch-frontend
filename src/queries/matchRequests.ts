@@ -5,10 +5,13 @@ import {
   getAllUserMatchRequests,
   MatchRequestAcceptOrDeclinePost,
   MatchRequestPost,
+  MatchRequestPut,
   postMatchRequest,
   postMatchRequestAcceptOrDeclinePost,
+  putMatchRequest,
 } from '../api/matching';
 import { useResourceChangedEventEffect } from '../sockets/resourceChangedEvent';
+import { PutMutationData } from './types';
 
 export const matchRequestsQueryKey = 'matchRequests';
 
@@ -30,6 +33,16 @@ export function usePostMatchRequestMutation() {
   return useMutation((body: MatchRequestPost) => postMatchRequest(body).then((res) => res.data), {
     onSuccess: () => client.invalidateQueries(matchRequestsQueryKey),
   });
+}
+
+export function usePutMatchRequestMutation() {
+  const client = useQueryClient();
+  return useMutation(
+    ({ id, body }: PutMutationData<MatchRequestPut>) => putMatchRequest(id, body).then((res) => res.data),
+    {
+      onSuccess: () => client.invalidateQueries(matchRequestsQueryKey),
+    },
+  );
 }
 
 export function usePostAcceptDeclineMatchRequestMutation(id: string) {
