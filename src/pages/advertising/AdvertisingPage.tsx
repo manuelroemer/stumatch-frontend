@@ -3,12 +3,12 @@ import { range } from 'lodash-es';
 import { BiPlus } from 'react-icons/bi';
 import { me } from '../../api/conventions';
 import DefaultPageLayout from '../../components/DefaultPageLayout';
-import { AccessDeniedEmptyState, NoPostsEmptyState } from '../../components/EmptyStates';
+import { AccessDeniedEmptyState, NoAdvertisementsEmptyState, NoPostsEmptyState } from '../../components/EmptyStates';
 import FloatingCard from '../../components/FloatingCard';
 import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptionSkeleton';
 import Pagination from '../../components/Pagination';
 import RequireRoles from '../../components/RequireRoles';
-import { useGetAllAdvertisementsQuery } from '../../queries/advertisements';
+import { useGetAdvertisementsByUserQuery, useGetAllAdvertisementsQuery } from '../../queries/advertisements';
 import {
   usePageQueryParameter,
   usePageSizeQueryParameter,
@@ -23,7 +23,7 @@ export default function AdvertisingPage() {
   const [pageSize, setPageSize] = usePageSizeQueryParameter();
   const [pageSort, setPageSort] = useStringQueryParameter('sort', 'desc');
   //const [pageFilter, setPageFilter] = useStringQueryParameter('filter', '');
-  const { isLoading, data } = useGetAllAdvertisementsQuery(me, {
+  const { isLoading, data } = useGetAdvertisementsByUserQuery(me, {
     page,
     pageSize,
     sort: 'createdOn:' + pageSort,
@@ -77,8 +77,7 @@ export default function AdvertisingPage() {
             <Pagination currentPage={data.page} pages={data.pages} onPageChanged={setPage} />
           </Center>
         )}
-        {data && data.result.length === 0 && <NoPostsEmptyState />}
-        <Text>Todo.</Text>
+        {data && data.result.length === 0 && <NoAdvertisementsEmptyState />}
       </DefaultPageLayout>
       <PostModal isOpen={isOpen} onClose={onClose} />
     </RequireRoles>

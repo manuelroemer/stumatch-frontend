@@ -8,20 +8,31 @@ import { User } from './users';
 
 export interface Advertisement extends ApiObject {
   title: string;
+  shortDescription: string;
   content: string;
   author: User;
+  facultyId: string;
   status: string;
 }
 
 export interface PostAdvertisement extends ApiObject {
   title: string;
+  shortDescription: string;
   content: string;
   authorId: string;
+  facultyId: string;
   category: string;
 }
 
 export function getAllAdvertisements(userId: string, options?: QueryOptions, init?: StumatchFetchInit) {
   return stumatchFetch<PaginationApiResult<Advertisement>>(`/api/v1/advertisements?${qs(options)}`, init);
+}
+
+export function getAdvertisementsByUser(userId: string, options?: QueryOptions, init?: StumatchFetchInit) {
+  return stumatchFetch<PaginationApiResult<Advertisement>>(
+    `/api/v1/users/${userId}/advertisements?${qs(options)}`,
+    init,
+  );
 }
 
 export function getAdvertisementByID(advertisementId: string, init?: StumatchFetchInit) {

@@ -108,3 +108,14 @@ export function NoCommentsEmptyState(props?: EmptyStateProps) {
     />
   );
 }
+
+export function NoAdvertisementsEmptyState(props?: EmptyStateProps) {
+  return (
+    <EmptyState
+      imgSrc={socialSerenity}
+      title="No Advertisements"
+      description="There are no advertisements at the moment."
+      {...props}
+    />
+  );
+}
