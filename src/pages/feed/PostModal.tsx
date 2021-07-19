@@ -33,7 +33,6 @@ export default function PostModal({ isOpen, onClose }: PostModalProps): JSX.Elem
   const mutation = usePostMutation();
 
   const onSubmit = form.handleSubmit(async (postPost) => {
-    console.log(postPost);
     mutation.mutate(postPost);
   });
 
