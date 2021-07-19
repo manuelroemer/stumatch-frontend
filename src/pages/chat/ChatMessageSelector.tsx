@@ -1,4 +1,4 @@
-import { Box, Flex, IconButton, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
+import { Box, Flex, IconButton, Menu, MenuButton, MenuItem, MenuList, Text, useColorModeValue } from '@chakra-ui/react';
 import ReactTimeago from 'react-timeago';
 import { ChatMessage } from '../../api/chatMessages';
 import { useCurrentUser } from '../../stores/userStore';
@@ -20,10 +20,11 @@ export default function ChatMessageSelector({ chatMessage, chatGroup, onChatMess
   const isWrittenByCurrentUser = chatMessage.userId === currentUser.id;
   const textColor = isWrittenByCurrentUser ? 'white' : undefined;
   const author = chatGroup.activeParticipants.find((participant) => participant.id === chatMessage.userId);
+  const colorBg = useColorModeValue('gray.200', 'gray.700');
 
   return (
     <Flex justify={isWrittenByCurrentUser ? 'flex-end' : 'flex-start'}>
-      <Box maxW="60%" my="0.5" p="2" rounded="2xl" bg={isWrittenByCurrentUser ? 'primary.500' : 'gray.200'}>
+      <Box maxW="60%" my="0.5" p="2" rounded="2xl" bg={isWrittenByCurrentUser ? 'primary.500' : colorBg}>
         {chatMessage.isDeleted ? (
           <Text fontStyle="italic" color={textColor} opacity={0.8}>
             This message has been deleted.
@@ -70,7 +71,7 @@ export default function ChatMessageSelector({ chatMessage, chatGroup, onChatMess
                 mr="3"
                 float="left"
                 fontSize="0.6rem"
-                color={isWrittenByCurrentUser ? 'white' : 'black'}
+                color={isWrittenByCurrentUser ? 'white' : undefined}
                 opacity={0.6}>
                 Edited
               </Text>
@@ -83,7 +84,7 @@ export default function ChatMessageSelector({ chatMessage, chatGroup, onChatMess
                   mt="1"
                   float="right"
                   fontSize="0.6rem"
-                  color={isWrittenByCurrentUser ? 'white' : 'black'}
+                  color={isWrittenByCurrentUser ? 'white' : undefined}
                   opacity={0.6}
                   {...props}
                 />

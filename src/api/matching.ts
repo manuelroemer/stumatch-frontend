@@ -3,6 +3,7 @@ import { qs } from '../utils/qs';
 import { PaginationApiResult } from './apiResult';
 import { ApiObject, QueryOptions } from './conventions';
 import { stumatchFetch, StumatchFetchInit } from './fetch';
+import { Faculty, StudyProgram } from './faculty';
 export interface MatchRequest extends ApiObject {
   partner?: User;
   status:
@@ -14,6 +15,10 @@ export interface MatchRequest extends ApiObject {
     | 'declinedByPartner'
     | 'matched';
   chatGroupId?: string;
+  faculty?: Faculty;
+  studyProgram?: StudyProgram;
+  minSemester?: number;
+  maxSemester?: number;
 }
 
 export interface MatchRequestPost {
@@ -23,6 +28,8 @@ export interface MatchRequestPost {
   minSemester?: number;
   maxSemester?: number;
 }
+
+export type MatchRequestPut = MatchRequestPost;
 
 export interface MatchRequestAcceptOrDeclinePost {
   accepted: boolean;
@@ -38,6 +45,10 @@ export function deleteMatchRequest(id: string, init?: StumatchFetchInit) {
 
 export function postMatchRequest(body: MatchRequestPost, init?: StumatchFetchInit) {
   return stumatchFetch<MatchRequest>(`/api/v1/matchRequests`, { body, method: 'POST', ...init });
+}
+
+export function putMatchRequest(id: string, body: MatchRequestPut, init?: StumatchFetchInit) {
+  return stumatchFetch<MatchRequest>(`/api/v1/matchRequests/${id}`, { body, method: 'PUT', ...init });
 }
 
 export function postMatchRequestAcceptOrDeclinePost(

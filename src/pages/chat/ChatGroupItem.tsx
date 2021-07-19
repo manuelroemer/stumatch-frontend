@@ -1,4 +1,4 @@
-import { Heading, Flex, Tag, Center, Text, Grid, Tooltip, Icon } from '@chakra-ui/react';
+import { Heading, Flex, Tag, Center, Text, Grid, Tooltip, Icon, useColorModeValue } from '@chakra-ui/react';
 import { IoNotificationsOffOutline } from 'react-icons/io5';
 import { useHistory } from 'react-router';
 import ReactTimeago from 'react-timeago';
@@ -20,6 +20,8 @@ export default function ChatGroupItem({ chatGroup, isSelected }: ChatGroupItemPr
   const lastMessage = chatGroup.lastMessage?.textContent;
   const timeAgo = chatGroup.lastMessage?.createdOn ?? chatGroup.createdOn;
   const handleClick = () => history.replace(`${routes.chat}/${chatGroup.id}`);
+  const colorBgIsSelected = useColorModeValue('gray.300', 'gray.700');
+  const colorBgHover = useColorModeValue('gray.200', 'gray.600');
 
   return (
     <Grid
@@ -28,8 +30,8 @@ export default function ChatGroupItem({ chatGroup, isSelected }: ChatGroupItemPr
       w="100%"
       p="2"
       cursor="pointer"
-      bg={isSelected ? 'gray.300' : undefined}
-      _hover={!isSelected ? { bg: 'gray.200' } : undefined}
+      bg={isSelected ? colorBgIsSelected : undefined}
+      _hover={!isSelected ? { bg: colorBgHover } : undefined}
       onClick={handleClick}>
       <Center gridRow="1 / span 2" gridColumn="1" minH="12" minW="12" mr="2">
         <ChatGroupAvatarGroup chatGroup={chatGroup} />

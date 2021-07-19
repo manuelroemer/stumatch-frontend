@@ -1,4 +1,4 @@
-import { Center, Flex, Grid, Box, Heading, IconButton, Text, HStack, Tooltip, HTMLChakraProps } from '@chakra-ui/react';
+import { Center, Flex, Grid, Box, Heading, IconButton, Text, HStack, Tooltip, HTMLChakraProps, useColorModeValue } from '@chakra-ui/react';
 import ReactTimeago from 'react-timeago';
 import { IoMailOutline, IoMailOpenOutline } from 'react-icons/io5';
 import { AiOutlineDelete } from 'react-icons/ai';
@@ -44,6 +44,7 @@ export default function NotificationTemplate({
       onClick();
     }
   };
+  const colorBg = useColorModeValue('gray.200', 'gray.600');
 
   return (
     <Grid
@@ -68,7 +69,7 @@ export default function NotificationTemplate({
       />
 
       <Center gridColumn="2" gridRow="1 / span 2" my="4">
-        <Center w="14" h="14" bg="gray.200" borderRadius="full">
+        <Center w="14" h="14" bg={colorBg} borderRadius="full">
           <Text fontSize="2xl" unselectable="on" userSelect="none">
             {emoji}
           </Text>

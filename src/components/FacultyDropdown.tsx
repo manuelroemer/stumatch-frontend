@@ -5,6 +5,8 @@ import { Faculty, StudyProgram } from '../api/faculty';
 
 export interface FacultyDropdownProps {
   facultyData: Array<Faculty>;
+  initialFacultyId?: string;
+  initialStudyProgramId?: string;
   facultyDescription: string;
   studyProgramDescription: string;
   onFacultyChanged(faculty?: Faculty): void;
@@ -15,11 +17,17 @@ export default function FacultyDropdown({
   facultyData,
   facultyDescription,
   studyProgramDescription,
+  initialFacultyId,
+  initialStudyProgramId,
   onFacultyChanged,
   onStudyProgramChanged,
 }: FacultyDropdownProps) {
-  const [selectedFaculty, setSelectedFaculty] = useState<Faculty | undefined>(undefined);
-  const [selectedStudyProgram, setSelectedStudyProgram] = useState<StudyProgram | undefined>(undefined);
+  const initialFaculty = facultyData.find((faculty) => faculty.id === initialFacultyId);
+  const initialStudyProgram = initialFaculty?.studyPrograms.find(
+    (studyPrograms) => studyPrograms.id === initialStudyProgramId,
+  );
+  const [selectedFaculty, setSelectedFaculty] = useState<Faculty | undefined>(initialFaculty);
+  const [selectedStudyProgram, setSelectedStudyProgram] = useState<StudyProgram | undefined>(initialStudyProgram);
   const studyPrograms = facultyData
     .filter((faculty) => selectedFaculty === undefined || faculty.id === selectedFaculty.id)
     .flatMap((faculty) => faculty.studyPrograms);

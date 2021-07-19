@@ -28,6 +28,12 @@ export interface UserPost {
     startingSemester?: string;
     startingYear?: number;
   };
+  profileImageBlob?: string;
+}
+
+export interface UserPut {
+  id?: string;
+  roles?: Array<UserRole>;
 }
 
 export function getAllUsers(options?: QueryOptions, init?: StumatchFetchInit) {
@@ -40,4 +46,8 @@ export function getUser(id: string, init?: StumatchFetchInit) {
 
 export function postUser(body: UserPost, init?: StumatchFetchInit) {
   return stumatchFetch<User>(`/api/v1/users`, { body, method: 'POST', ...init });
+}
+
+export function putUser(id: string, body: UserPut, init?: StumatchFetchInit) {
+  return stumatchFetch<ApiResult<User>>(`/api/v1/users/${id}`, { method: 'PUT', body, ...init });
 }
