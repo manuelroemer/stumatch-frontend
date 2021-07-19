@@ -3,6 +3,7 @@ export const routes = {
   feed: '/feed',
   matching: '/matching',
   advertising: '/advertising',
+  advertisementPage: '/advertising/:advertisementId',
   administration: '/administration',
   notifications: '/notifications',
   chat: '/chat',

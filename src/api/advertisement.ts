@@ -12,6 +12,7 @@ export interface Advertisement extends ApiObject {
   content: string;
   author: User;
   facultyId: string;
+  studyProgramId: string;
   status: string;
 }
 
@@ -21,6 +22,7 @@ export interface PostAdvertisement extends ApiObject {
   content: string;
   authorId: string;
   facultyId: string;
+  studyProgramId: string;
   category: string;
 }
 

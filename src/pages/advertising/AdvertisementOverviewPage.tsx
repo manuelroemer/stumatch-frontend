@@ -14,10 +14,10 @@ import {
   usePageSizeQueryParameter,
   useStringQueryParameter,
 } from '../../utils/useQueryParameter';
-import PostModal from '../feed/PostModal';
 import AdvertisementContainer from './AdvertisementContainer';
+import AdvertisementModal from './AdvertisementModal';
 
-export default function AdvertisingPage() {
+export default function AdvertisementOverviewPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = usePageQueryParameter();
   const [pageSize, setPageSize] = usePageSizeQueryParameter();
@@ -40,8 +40,6 @@ export default function AdvertisingPage() {
         }>
         <VStack>
           <HStack width="full" justifyContent="space-between">
-            <Text>Category:</Text>
-
             <Spacer></Spacer>
             <Text minWidth="max-content">Sort by:</Text>
             <Select onChange={(e) => setPageSort(e.target.value)} value={pageSort}>
@@ -79,7 +77,7 @@ export default function AdvertisingPage() {
         )}
         {data && data.result.length === 0 && <NoAdvertisementsEmptyState />}
       </DefaultPageLayout>
-      <PostModal isOpen={isOpen} onClose={onClose} />
+      <AdvertisementModal isOpen={isOpen} onClose={onClose} />
     </RequireRoles>
   );
 }
