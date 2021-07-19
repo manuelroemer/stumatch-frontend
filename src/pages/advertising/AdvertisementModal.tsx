@@ -20,23 +20,27 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { HiHashtag } from 'react-icons/hi';
 import { PostAdvertisement } from '../../api/advertisement';
+import { getUser } from '../../api/users';
 import FacultyDropdown from '../../components/FacultyDropdown';
 import { useAdvertisementMutation } from '../../queries/advertisements';
 import { useGetAllFacultiesQuery } from '../../queries/faculties';
 import { usePostMutation } from '../../queries/posts';
 
-export interface PostModalProps {
+export interface AdvertisementModalProps {
   isOpen: boolean;
   onClose(): void;
 }
 
-export default function AdvertisementModal({ isOpen, onClose }: PostModalProps): JSX.Element {
+export default function AdvertisementModal({ isOpen, onClose }: AdvertisementModalProps): JSX.Element {
   const [validCategory, setValidCategory] = useState(true);
   const form = useForm<PostAdvertisement>();
   const mutation = useAdvertisementMutation();
   const { isLoading, data } = useGetAllFacultiesQuery();
+  const user = getUser('me');
 
   const onSubmit = form.handleSubmit(async (postAdvertisement) => {
+    console.log('ASDFASDFASDF');
+    console.log(postAdvertisement);
     mutation.mutate(postAdvertisement);
   });
 
@@ -65,14 +69,14 @@ export default function AdvertisementModal({ isOpen, onClose }: PostModalProps):
               <FormControl isRequired>
                 <FormLabel>Short Description</FormLabel>
                 <Textarea
+                  onChange={(e: any) => {
+                    form.setValue('shortDescription', e.target.value);
+                  }}
                   minH="unset"
                   overflow="hidden"
                   w="100%"
                   resize="none"
                   placeholder="Enter a short description"
-                  onChange={(e: any) => {
-                    form.setValue('content', e.target.value);
-                  }}
                 />
               </FormControl>
               <FormControl isRequired>
@@ -88,8 +92,8 @@ export default function AdvertisementModal({ isOpen, onClose }: PostModalProps):
                 facultyData={data?.result ?? []}
                 facultyDescription="Select your faculty."
                 studyProgramDescription="Select your study program."
-                onFacultyChanged={(faculty) => form.setValue('facultyId', faculty.id)}
-                onStudyProgramChanged={(studyProgram) => form.setValue('studyProgramId', studyProgram.id)}
+                onFacultyChanged={(faculty) => form.setValue('facultyId', faculty?.id)}
+                onStudyProgramChanged={(studyProgram) => form.setValue('studyProgramId', studyProgram?.id)}
               />
             </VStack>
           </ModalBody>

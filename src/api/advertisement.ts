@@ -11,8 +11,8 @@ export interface Advertisement extends ApiObject {
   shortDescription: string;
   content: string;
   author: User;
-  facultyId: string;
-  studyProgramId: string;
+  facultyId?: string;
+  studyProgramId?: string;
   status: string;
 }
 
@@ -21,9 +21,8 @@ export interface PostAdvertisement extends ApiObject {
   shortDescription: string;
   content: string;
   authorId: string;
-  facultyId: string;
-  studyProgramId: string;
-  category: string;
+  facultyId?: string;
+  studyProgramId?: string;
 }
 
 export function getAllAdvertisements(userId: string, options?: QueryOptions, init?: StumatchFetchInit) {
