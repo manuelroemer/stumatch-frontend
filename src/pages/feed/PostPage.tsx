@@ -50,7 +50,7 @@ export default function PostPage() {
               </Box>
             </Flex>
             <Box as="article" mt={['4', '4', '8']}>
-              {data.result.content}
+              <p style={{ whiteSpace: 'pre-wrap' }}>{data.result.content}</p>
             </Box>
             <Box as="article" mt={['4', '4', '8']} rounded="md" boxShadow="base" p="6">
               <HStack h="100%" justifyContent="space-between">

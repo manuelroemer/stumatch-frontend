@@ -18,7 +18,15 @@ export interface FilterQueryOptions {
   filter?: string;
 }
 
-export interface QueryOptions extends PaginationQueryOptions, SortQueryOptions, FilterQueryOptions {}
+export interface SearchQueryOptions {
+  search?: string;
+}
+
+export interface QueryOptions
+  extends PaginationQueryOptions,
+    SortQueryOptions,
+    FilterQueryOptions,
+    SearchQueryOptions {}
 
 export interface CursorPaginationQueryOptions<TCursor = unknown> {
   before?: TCursor;
