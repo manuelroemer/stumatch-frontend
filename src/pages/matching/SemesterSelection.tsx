@@ -17,12 +17,14 @@ import { MatchRequestPost } from '../../api/matching';
 
 export interface SemesterSelectionProps {
   form: UseFormReturn<MatchRequestPost>;
+  initialMinSemester?: number;
+  initialMaxSemester?: number;
 }
 
-export default function SemesterSelection({ form }: SemesterSelectionProps) {
-  const [isFilteringBySemester, setIsFilteringBySemester] = useState(false);
-  const [minValue, setMinValue] = useState<string | number | undefined>(undefined);
-  const [maxValue, setMaxValue] = useState<string | number | undefined>(undefined);
+export default function SemesterSelection({ form, initialMinSemester, initialMaxSemester }: SemesterSelectionProps) {
+  const [isFilteringBySemester, setIsFilteringBySemester] = useState(!!initialMinSemester || !!initialMaxSemester);
+  const [minValue, setMinValue] = useState<string | number | undefined>(initialMinSemester);
+  const [maxValue, setMaxValue] = useState<string | number | undefined>(initialMaxSemester);
   const min = Math.max(1, +(minValue ?? 1));
   const max = Math.max(1, +(maxValue ?? 1));
 

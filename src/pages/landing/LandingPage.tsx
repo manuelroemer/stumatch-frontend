@@ -6,7 +6,7 @@ import LoginBox from './LoginBox';
 export default function LandingPage() {
   return (
     <Flex minH="100%" display="flex" flexDirection="column">
-      <Flex mt="200" justify="space-between" align="center" direction="row" wrap="nowrap" px="10%">
+      <Flex mt="10%" justify="space-between" align="center" direction="row" wrap="nowrap" px="10%">
         <Stack w="60%">
           <img src={logo} alt="sTUMatch Logo" width="70%" />
           <Heading as="h2" size="md" mt="8" color="primary" opacity="0.8" fontWeight="normal" lineHeight={1.5}>

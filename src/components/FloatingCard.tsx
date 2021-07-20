@@ -1,4 +1,4 @@
-import { Box, HTMLChakraProps } from '@chakra-ui/react';
+import { Box, HTMLChakraProps, useColorModeValue } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 
 export interface FloatingCardProps extends HTMLChakraProps<'div'> {
@@ -6,8 +6,18 @@ export interface FloatingCardProps extends HTMLChakraProps<'div'> {
 }
 
 export default function FloatingCard({ children, ...rest }: FloatingCardProps) {
+  const colorBg = useColorModeValue('white', 'gray.700');
+  const colorBd = useColorModeValue('gray.50', 'gray.600');
   return (
-    <Box as="section" w="100%" borderWidth="1px" borderColor="gray.50" shadow="lg" borderRadius="md" {...rest}>
+    <Box
+      as="section"
+      w="100%"
+      borderWidth="1px"
+      borderColor={colorBd}
+      bg={colorBg}
+      shadow="lg"
+      borderRadius="md"
+      {...rest}>
       {children}
     </Box>
   );
