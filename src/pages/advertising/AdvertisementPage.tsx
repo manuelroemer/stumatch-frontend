@@ -7,9 +7,34 @@ import ReactTimeago from 'react-timeago';
 import SharePopOver from '../feed/SharePopOver';
 import { usePageQueryParameter } from '../../utils/useQueryParameter';
 import { useGetAdvertisementByIDQuery } from '../../queries/advertisements';
+import { IoCalendarOutline } from 'react-icons/io5';
+import { ApiResult } from '../../api/apiResult';
+import { Advertisement } from '../../api/advertisement';
+import { MdSubject } from 'react-icons/md';
 
 interface RouteParams {
   advertisementId: string;
+}
+
+function getTimeSpan(startDate: string, endDate: string) {
+  const options = { day: 'numeric', month: 'numeric', year: 'numeric' } as const;
+  return new Date(startDate).toLocaleDateString() + ' - ' + new Date(endDate).toLocaleDateString();
+}
+
+function getTargetGroup(data: ApiResult<Advertisement>) {
+  if (!data.result.studyProgramId) {
+    return !data.result.facultyId ? '' : data.result.faculty?.name;
+  }
+  if (!data.result.faculty) {
+    return '';
+  } else if (!data.result.studyProgramId) {
+    return data.result.faculty?.name;
+  } else {
+    const studyProgram = data.result.faculty?.studyPrograms.find(
+      (studyProgram) => studyProgram._id === data.result.studyProgramId,
+    );
+    return !studyProgram ? '' : studyProgram.name;
+  }
 }
 
 export default function AdvertisementPage() {
@@ -49,8 +74,12 @@ export default function AdvertisementPage() {
                   />
                 </HStack>
                 <HStack>
-                  <Icon aria-label="Faculty" as={HiHashtag} />
-                  <Text>{data.result.facultyId}</Text>
+                  <Icon aria-label="TimeSpan" as={IoCalendarOutline} />
+                  <Text>{getTimeSpan(data.result.startDate, data.result.endDate)}</Text>
+                </HStack>
+                <HStack>
+                  <Icon aria-label="Faculty" as={MdSubject} />
+                  <Text>{getTargetGroup(data)}</Text>
                 </HStack>
                 <HStack>
                   <SharePopOver permalink={window.location.href} />

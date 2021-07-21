@@ -15,6 +15,7 @@ import {
   Icon,
   WrapItem,
   Tooltip,
+  Input,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -25,6 +26,7 @@ import FacultyDropdown from '../../components/FacultyDropdown';
 import { useAdvertisementMutation } from '../../queries/advertisements';
 import { useGetAllFacultiesQuery } from '../../queries/faculties';
 import { usePostMutation } from '../../queries/posts';
+import { useCurrentUser } from '../../stores/userStore';
 
 export interface AdvertisementModalProps {
   isOpen: boolean;
@@ -36,10 +38,11 @@ export default function AdvertisementModal({ isOpen, onClose }: AdvertisementMod
   const form = useForm<PostAdvertisement>();
   const mutation = useAdvertisementMutation();
   const { isLoading, data } = useGetAllFacultiesQuery();
-  const user = getUser('me');
+  const userId = useCurrentUser().id;
+  form.setValue('authorId', userId);
+  const cDate = new Date();
 
   const onSubmit = form.handleSubmit(async (postAdvertisement) => {
-    console.log('ASDFASDFASDF');
     console.log(postAdvertisement);
     mutation.mutate(postAdvertisement);
   });
@@ -95,6 +98,25 @@ export default function AdvertisementModal({ isOpen, onClose }: AdvertisementMod
                 onFacultyChanged={(faculty) => form.setValue('facultyId', faculty?.id)}
                 onStudyProgramChanged={(studyProgram) => form.setValue('studyProgramId', studyProgram?.id)}
               />
+              <FormControl isRequired>
+                <FormLabel>Start Date</FormLabel>
+                <Input
+                  type="date"
+                  onChange={(e: any) => {
+                    form.setValue('startDate', removeTimeFromDate(e.target.value));
+                    console.log(e.target.value);
+                  }}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel>End Date</FormLabel>
+                <Input
+                  type="date"
+                  onChange={(e: any) => {
+                    form.setValue('endDate', removeTimeFromDate(e.target.value));
+                  }}
+                />
+              </FormControl>
             </VStack>
           </ModalBody>
           <ModalFooter>
@@ -107,4 +129,8 @@ export default function AdvertisementModal({ isOpen, onClose }: AdvertisementMod
       </ModalContent>
     </Modal>
   );
+}
+
+function removeTimeFromDate(dateString: string) {
+  return new Date(new Date(dateString).toDateString());
 }

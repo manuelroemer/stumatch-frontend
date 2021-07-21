@@ -5,6 +5,7 @@ import { stumatchFetch, StumatchFetchInit } from './fetch';
 import { Like } from './like';
 import { Comment } from './comment';
 import { User } from './users';
+import { Faculty, StudyProgram } from './faculty';
 
 export interface Advertisement extends ApiObject {
   title: string;
@@ -13,6 +14,9 @@ export interface Advertisement extends ApiObject {
   author: User;
   facultyId?: string;
   studyProgramId?: string;
+  faculty?: Faculty;
+  startDate: string;
+  endDate: string;
   status: string;
 }
 
@@ -23,6 +27,8 @@ export interface PostAdvertisement extends ApiObject {
   authorId: string;
   facultyId?: string;
   studyProgramId?: string;
+  startDate: Date;
+  endDate: Date;
 }
 
 export function getAllAdvertisements(userId: string, options?: QueryOptions, init?: StumatchFetchInit) {
