@@ -11,6 +11,7 @@ import { IoCalendarOutline } from 'react-icons/io5';
 import { ApiResult } from '../../api/apiResult';
 import { Advertisement } from '../../api/advertisement';
 import { MdSubject } from 'react-icons/md';
+import { getTargetGroup } from '../../utils/advertisementUtils';
 
 interface RouteParams {
   advertisementId: string;
@@ -21,21 +22,7 @@ function getTimeSpan(startDate: string, endDate: string) {
   return new Date(startDate).toLocaleDateString() + ' - ' + new Date(endDate).toLocaleDateString();
 }
 
-function getTargetGroup(data: ApiResult<Advertisement>) {
-  if (!data.result.studyProgramId) {
-    return !data.result.facultyId ? '' : data.result.faculty?.name;
-  }
-  if (!data.result.faculty) {
-    return '';
-  } else if (!data.result.studyProgramId) {
-    return data.result.faculty?.name;
-  } else {
-    const studyProgram = data.result.faculty?.studyPrograms.find(
-      (studyProgram) => studyProgram._id === data.result.studyProgramId,
-    );
-    return !studyProgram ? '' : studyProgram.name;
-  }
-}
+
 
 export default function AdvertisementPage() {
   const { advertisementId } = useParams<RouteParams>();
@@ -79,7 +66,7 @@ export default function AdvertisementPage() {
                 </HStack>
                 <HStack>
                   <Icon aria-label="Faculty" as={MdSubject} />
-                  <Text>{getTargetGroup(data)}</Text>
+                  <Text>{getTargetGroup(data.result)}</Text>
                 </HStack>
                 <HStack>
                   <SharePopOver permalink={window.location.href} />

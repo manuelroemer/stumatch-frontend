@@ -1,13 +1,15 @@
 import { Heading, Text, Flex, HStack } from '@chakra-ui/layout';
 import { AiOutlineClockCircle, AiOutlinePicture } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
-import { Center, Grid, GridItem, Icon, Link } from '@chakra-ui/react';
+import { Center, Grid, GridItem, Icon, IconButton, Link } from '@chakra-ui/react';
 import ReactTimeago from 'react-timeago';
 import { routes } from '../../constants';
 import { useHistory } from 'react-router';
 import { Advertisement } from '../../api/advertisement';
 import SharePopOver from '../feed/SharePopOver';
 import { HiHashtag } from 'react-icons/hi';
+import { getTargetGroup } from '../../utils/advertisementUtils';
+import { MdSubject } from 'react-icons/md';
 
 export interface AdvertisementContainerProps {
   advertisement: Advertisement;
@@ -25,11 +27,14 @@ export default function AdvertisementContainer({ advertisement }: AdvertisementC
         </Center>
       </GridItem>
       <GridItem rowSpan={1} colSpan={12}>
-        <Flex h="100%" align="flex-end">
+        <HStack h="100%" align="flex-end">
           <Heading onClick={handleClick} as="h1" lineHeight="1.4" fontSize="20" isTruncated textAlign="left">
             <Link>{advertisement.title}</Link>
           </Heading>
-        </Flex>
+          <IconButton aria-label="Edit">
+
+          </IconButton>
+        </HStack>
       </GridItem>
       <GridItem rowSpan={1} colSpan={12}>
         <Flex h="100%" align="center">
@@ -49,8 +54,8 @@ export default function AdvertisementContainer({ advertisement }: AdvertisementC
             <ReactTimeago date={advertisement.createdOn} component={(props) => <Text {...props} />} />
           </HStack>
           <HStack>
-            <Icon aria-label="Category" as={HiHashtag} />
-            <Text>{advertisement.facultyId}</Text>
+            <Icon aria-label="Category" as={MdSubject} />
+            <Text>{getTargetGroup(advertisement)}</Text>
           </HStack>
           <HStack>
             <SharePopOver permalink={window.location.href + '/' + advertisement.id} />

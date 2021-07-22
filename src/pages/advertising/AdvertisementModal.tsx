@@ -18,12 +18,13 @@ import {
   Input,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, UseFormReturn } from 'react-hook-form';
 import { HiHashtag } from 'react-icons/hi';
-import { PostAdvertisement } from '../../api/advertisement';
+import { Advertisement, PostAdvertisement, PutAdvertisement } from '../../api/advertisement';
+import { MatchRequestPut } from '../../api/matching';
 import { getUser } from '../../api/users';
 import FacultyDropdown from '../../components/FacultyDropdown';
-import { useAdvertisementMutation } from '../../queries/advertisements';
+import { usePostAdvertisementMutation, usePutAdvertisementMutation } from '../../queries/advertisements';
 import { useGetAllFacultiesQuery } from '../../queries/faculties';
 import { usePostMutation } from '../../queries/posts';
 import { useCurrentUser } from '../../stores/userStore';
@@ -31,20 +32,37 @@ import { useCurrentUser } from '../../stores/userStore';
 export interface AdvertisementModalProps {
   isOpen: boolean;
   onClose(): void;
+  isUpdate: boolean;
+  advertisement?: Advertisement;
 }
 
-export default function AdvertisementModal({ isOpen, onClose }: AdvertisementModalProps): JSX.Element {
+function removeTimeFromDate(dateString: string) {
+  return new Date(new Date(dateString).toDateString());
+}
+
+export default function AdvertisementModal({
+  isOpen,
+  onClose,
+  isUpdate,
+  advertisement,
+}: AdvertisementModalProps): JSX.Element {
   const [validCategory, setValidCategory] = useState(true);
-  const form = useForm<PostAdvertisement>();
-  const mutation = useAdvertisementMutation();
+  const form = !isUpdate ? useForm<PostAdvertisement>() : useForm<PutAdvertisement>();
+  const postMutation = usePostAdvertisementMutation();
+  const putMutation = usePutAdvertisementMutation();
   const { isLoading, data } = useGetAllFacultiesQuery();
   const userId = useCurrentUser().id;
-  form.setValue('authorId', userId);
+  if (!isUpdate) {
+    form.setValue('authorId', userId);
+  }
   const cDate = new Date();
-
-  const onSubmit = form.handleSubmit(async (postAdvertisement) => {
-    console.log(postAdvertisement);
-    mutation.mutate(postAdvertisement);
+  const onSubmit = form.handleSubmit(async (advertisementValue) => {
+    if (!isUpdate) {
+      const adValue = advertisementValue as PostAdvertisement;
+      postMutation.mutate(adValue);
+    } else {
+      putMutation.mutate({ id: advertisement!.id, body: advertisementValue });
+    }
   });
 
   return (
@@ -52,7 +70,7 @@ export default function AdvertisementModal({ isOpen, onClose }: AdvertisementMod
       <ModalOverlay />
       <ModalContent>
         <form onSubmit={onSubmit}>
-          <ModalHeader>Create a new advertisement</ModalHeader>
+          <ModalHeader>{!isUpdate ? 'Create a new advertisement' : 'Edit advertisement'}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <VStack align="flex-start" spacing="10">
@@ -67,6 +85,7 @@ export default function AdvertisementModal({ isOpen, onClose }: AdvertisementMod
                   w="100%"
                   resize="none"
                   placeholder="Please enter the advertisements' title here"
+                  defaultValue={advertisement?.title}
                 />
               </FormControl>
               <FormControl isRequired>
@@ -120,7 +139,12 @@ export default function AdvertisementModal({ isOpen, onClose }: AdvertisementMod
             </VStack>
           </ModalBody>
           <ModalFooter>
-            <Button onClick={onClose} colorScheme="blue" mr={3} type="submit" isLoading={mutation.isLoading}>
+            <Button
+              onClick={onClose}
+              colorScheme="blue"
+              mr={3}
+              type="submit"
+              isLoading={postMutation.isLoading || putMutation.isLoading}>
               Create
             </Button>
             <Button onClick={onClose}>Cancel</Button>
@@ -129,8 +153,4 @@ export default function AdvertisementModal({ isOpen, onClose }: AdvertisementMod
       </ModalContent>
     </Modal>
   );
-}
-
-function removeTimeFromDate(dateString: string) {
-  return new Date(new Date(dateString).toDateString());
 }
