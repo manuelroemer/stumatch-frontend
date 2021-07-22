@@ -36,8 +36,17 @@ export interface AdvertisementModalProps {
   advertisement?: Advertisement;
 }
 
-function removeTimeFromDate(dateString: string) {
+/* function removeTimeFromDate(dateString: string) {
   return new Date(new Date(dateString).toDateString());
+} */
+
+function getDefaultDateValue(dateString?: string) {
+  if (!dateString) {
+    return '';
+  }
+  const date = new Date(dateString as string);
+  const ret = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+  return ret;
 }
 
 export default function AdvertisementModal({
@@ -46,7 +55,6 @@ export default function AdvertisementModal({
   isUpdate,
   advertisement,
 }: AdvertisementModalProps): JSX.Element {
-  const [validCategory, setValidCategory] = useState(true);
   const form = !isUpdate ? useForm<PostAdvertisement>() : useForm<PutAdvertisement>();
   const postMutation = usePostAdvertisementMutation();
   const putMutation = usePutAdvertisementMutation();
@@ -55,7 +63,6 @@ export default function AdvertisementModal({
   if (!isUpdate) {
     form.setValue('authorId', userId);
   }
-  const cDate = new Date();
   const onSubmit = form.handleSubmit(async (advertisementValue) => {
     if (!isUpdate) {
       const adValue = advertisementValue as PostAdvertisement;
@@ -99,6 +106,7 @@ export default function AdvertisementModal({
                   w="100%"
                   resize="none"
                   placeholder="Enter a short description"
+                  defaultValue={advertisement?.shortDescription}
                 />
               </FormControl>
               <FormControl isRequired>
@@ -108,6 +116,7 @@ export default function AdvertisementModal({
                   onChange={(e: any) => {
                     form.setValue('content', e.target.value);
                   }}
+                  defaultValue={advertisement?.content}
                 />
               </FormControl>
               <FacultyDropdown
@@ -116,24 +125,28 @@ export default function AdvertisementModal({
                 studyProgramDescription="Select your study program."
                 onFacultyChanged={(faculty) => form.setValue('facultyId', faculty?.id)}
                 onStudyProgramChanged={(studyProgram) => form.setValue('studyProgramId', studyProgram?.id)}
+                initialFacultyId={advertisement?.facultyId}
+                initialStudyProgramId={advertisement?.studyProgramId}
               />
               <FormControl isRequired>
                 <FormLabel>Start Date</FormLabel>
                 <Input
                   type="date"
                   onChange={(e: any) => {
-                    form.setValue('startDate', removeTimeFromDate(e.target.value));
+                    form.setValue('startDate', e.target.value);
                     console.log(e.target.value);
                   }}
+                  defaultValue={getDefaultDateValue(advertisement?.startDate)}
                 />
               </FormControl>
-              <FormControl>
+              <FormControl isRequired>
                 <FormLabel>End Date</FormLabel>
                 <Input
                   type="date"
                   onChange={(e: any) => {
-                    form.setValue('endDate', removeTimeFromDate(e.target.value));
+                    form.setValue('endDate', e.target.value);
                   }}
+                  defaultValue={getDefaultDateValue(advertisement?.endDate)}
                 />
               </FormControl>
             </VStack>
@@ -145,7 +158,7 @@ export default function AdvertisementModal({
               mr={3}
               type="submit"
               isLoading={postMutation.isLoading || putMutation.isLoading}>
-              Create
+              {!isUpdate ? 'Create' : 'Save'}
             </Button>
             <Button onClick={onClose}>Cancel</Button>
           </ModalFooter>
