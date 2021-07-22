@@ -31,9 +31,7 @@ export default function AdvertisementContainer({ advertisement }: AdvertisementC
           <Heading onClick={handleClick} as="h1" lineHeight="1.4" fontSize="20" isTruncated textAlign="left">
             <Link>{advertisement.title}</Link>
           </Heading>
-          <IconButton aria-label="Edit">
-
-          </IconButton>
+          <IconButton aria-label="Edit"></IconButton>
         </HStack>
       </GridItem>
       <GridItem rowSpan={1} colSpan={12}>
