@@ -10,7 +10,7 @@ import NavBarProfileItem from './NavBarProfileItem';
 import NavBarChatItem from './NavBarChatItem';
 import NavBarIconButton from './NavBarIconButton';
 import { FiSun } from 'react-icons/fi';
-import { FaMoon } from 'react-icons/fA';
+import { FaMoon } from 'react-icons/fa';
 
 export default function NavBar() {
   const { colorMode, toggleColorMode } = useColorMode();
