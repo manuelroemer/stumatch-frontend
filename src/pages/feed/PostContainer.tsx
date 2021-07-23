@@ -12,6 +12,7 @@ import { Dispatch } from 'react';
 import SharePopOver from './SharePopOver';
 import LikeButton from './LikeButton';
 import { tryGetBlobUrl } from '../../api/blob';
+import PlaceHodlerPostPicture from '../../assets/sTUMatch_logo.png';
 
 export interface PostContainerProps {
   post: Post;
@@ -26,7 +27,13 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
     <Grid templateRows="repeat(2, 1fr)" templateColumns="repeat(14, 1fr)" gap={2}>
       <GridItem rowSpan={2} colSpan={2}>
         <Flex h="100%" align="center">
-          <Image boxSize="100px" objectFit="cover" alt="postImage" src={tryGetBlobUrl(post?.postImageBlobId)} />
+          <Image
+            boxSize="100px"
+            objectFit="cover"
+            alt="postImage"
+            src={tryGetBlobUrl(post?.postImageBlobId)}
+            fallbackSrc={PlaceHodlerPostPicture}
+          />
         </Flex>
       </GridItem>
       <GridItem rowSpan={1} colSpan={12}>
