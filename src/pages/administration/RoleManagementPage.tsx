@@ -9,6 +9,10 @@ import {
   CheckboxGroup,
   IconButton,
   useToast,
+  Icon,
+  Input,
+  InputGroup,
+  InputRightElement,
 } from '@chakra-ui/react';
 import { range } from 'lodash-es';
 import { NoUserEmptyState } from '../../components/EmptyStates';
@@ -17,20 +21,38 @@ import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptio
 import Pagination from '../../components/Pagination';
 import UserAvatar from '../../components/UserAvatar';
 import { useGetAllUsersQuery, usePutUserMutation } from '../../queries/users';
-import { usePageQueryParameter, usePageSizeQueryParameter } from '../../utils/useQueryParameter';
+import {
+  usePageQueryParameter,
+  usePageSizeQueryParameter,
+  useStringQueryParameter,
+} from '../../utils/useQueryParameter';
 import { getFullName } from '../../utils/userUtils';
 import { FiSave } from 'react-icons/fi';
+import { BsSearch } from 'react-icons/bs';
 import { useState } from 'react';
 import { User } from '../../api/users';
 
 export function RoleManagementPage() {
   const [page, setPage] = usePageQueryParameter();
   const [pageSize] = usePageSizeQueryParameter();
-  const { isLoading, data } = useGetAllUsersQuery({ page, pageSize, sort: 'firstName:asc, lastName:asc' });
+  const [pageFilter, setPageFilter] = useStringQueryParameter('filter', '');
+  const { isLoading, data } = useGetAllUsersQuery({
+    page,
+    pageSize,
+    filter: pageFilter,
+    sort: 'firstName:asc, lastName:asc',
+  });
 
   return (
     <>
       <VStack spacing="5">
+        <HStack w="100%">
+          <InputGroup>
+            <InputRightElement pointerEvents="none">{<Icon as={BsSearch}/>} </InputRightElement>
+            <Input type="text" placeholder="Search User..." onChange={(e) => setPageFilter(e.target.value)} />
+          </InputGroup>
+
+        </HStack>
         {isLoading ? (
           range(3).map((i) => (
             <FloatingCard key={i} p="4">
