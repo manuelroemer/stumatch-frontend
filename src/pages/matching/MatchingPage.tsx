@@ -21,7 +21,7 @@ export default function MatchingPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = usePageQueryParameter();
   const [pageSize] = usePageSizeQueryParameter();
-  const { isLoading, data } = useGetAllUserMatchRequestsQuery(me, { page, pageSize, sort: 'modifiedOn:desc' });
+  const { isLoading, data } = useGetAllUserMatchRequestsQuery(me, { page, pageSize, sort: `modifiedOn:desc` });
   useUserMatchRequestSocketQueryInvalidation();
 
   return (

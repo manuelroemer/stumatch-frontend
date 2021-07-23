@@ -14,24 +14,56 @@ import {
   chakra,
   Link,
   Badge,
+  HStack,
+  Spacer,
 } from '@chakra-ui/react';
 import { range } from 'lodash-es';
 import FloatingCard from '../../components/FloatingCard';
 import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptionSkeleton';
 import Pagination from '../../components/Pagination';
 import { useGetAllContactRequestsQuery, usePutContactRequestMutation } from '../../queries/contactRequest';
-import { usePageQueryParameter, usePageSizeQueryParameter } from '../../utils/useQueryParameter';
+import {
+  usePageQueryParameter,
+  usePageSizeQueryParameter,
+  useStringQueryParameter,
+} from '../../utils/useQueryParameter';
 import { ContactRequest } from '../../api/contactRequest';
 import { NoContactRequestsEmptyState } from '../../components/EmptyStates';
 
 export function ViewContactRequestsPage() {
   const [page, setPage] = usePageQueryParameter();
   const [pageSize] = usePageSizeQueryParameter();
-  const { isLoading, data } = useGetAllContactRequestsQuery({ page, pageSize, sort: 'createdOn:desc' });
+  const [pageSort, setPageSort] = useStringQueryParameter('sort', 'desc');
+  const [pageFilter, setPageFilter] = useStringQueryParameter('filter', '');
+  const { isLoading, data } = useGetAllContactRequestsQuery({
+    page,
+    pageSize,
+    filter: pageFilter,
+    sort: `createdOn:${pageSort}`,
+  });
   const mutation = usePutContactRequestMutation();
   return (
     <>
       <VStack spacing="5">
+        <HStack w="100%" justify="flex-start" spacing="3">
+          <Text>Status: </Text>
+          <Select
+            onChange={(e) => setPageFilter(e.target.value === 'all' ? '' : e.target.value)}
+            value={pageFilter}
+            maxW="52">
+            <option value="all"> All </option>
+            <option value="open"> Open </option>
+            <option value="inProgress"> In Progress </option>
+            <option value="closed"> Closed </option>
+          </Select>
+          <Text minWidth="max-content">Sort by: </Text>
+          <Select onChange={(e) => setPageSort(e.target.value)} value={pageSort} maxW="48">
+            <option value="desc">Descending</option>
+            <option value="asc">Ascending</option>
+          </Select>
+        </HStack>
+        <Spacer />
+
         {isLoading ? (
           range(3).map((i) => (
             <FloatingCard key={i} p="4">
