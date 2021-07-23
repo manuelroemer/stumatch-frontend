@@ -29,6 +29,7 @@ import { usePageQueryParameter } from '../../utils/useQueryParameter';
 import Pagination from '../../components/Pagination';
 import { NoCommentsEmptyState } from '../../components/EmptyStates';
 import { tryGetBlobUrl } from '../../api/blob';
+import PlaceHodlerPostPicture from '../../assets/sTUMatch_logo.png';
 
 interface RouteParams {
   postId: string;
@@ -77,6 +78,7 @@ export default function PostPage() {
                   objectFit="cover"
                   alt="postImage"
                   src={tryGetBlobUrl(data.result.postImageBlobId)}
+                  fallbackSrc={PlaceHodlerPostPicture}
                 />
               </Flex>
             </VStack>
@@ -119,7 +121,6 @@ export default function PostPage() {
                 </HStack>
               </HStack>
             </Box>
-
             <Box
               as="article"
               mt={['4', '4', '8']}
