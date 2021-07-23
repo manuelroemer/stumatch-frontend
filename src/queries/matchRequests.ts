@@ -58,7 +58,6 @@ export function usePostAcceptDeclineMatchRequestMutation(id: string) {
 export function useUserMatchRequestSocketQueryInvalidation() {
   const queryClient = useQueryClient();
   useResourceChangedEventEffect((event) => {
-    console.log(event);
     if (event.resourceType === 'matchRequest') {
       queryClient.invalidateQueries(matchRequestsQueryKey);
     }

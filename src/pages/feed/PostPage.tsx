@@ -6,6 +6,7 @@ import {
   Flex,
   Box,
   Icon,
+  Image,
   Divider,
   Textarea,
   VStack,
@@ -27,6 +28,8 @@ import { useGetCommentsQuery, usePostCommentMutation } from '../../queries/comme
 import { usePageQueryParameter } from '../../utils/useQueryParameter';
 import Pagination from '../../components/Pagination';
 import { NoCommentsEmptyState } from '../../components/EmptyStates';
+import { tryGetBlobUrl } from '../../api/blob';
+import PlaceHodlerPostPicture from '../../assets/sTUMatch_logo.png';
 
 interface RouteParams {
   postId: string;
@@ -64,9 +67,21 @@ export default function PostPage() {
                 </Heading>
               </Box>
             </Flex>
-            <Box as="article" mt={['4', '4', '8']}>
-              {data.result.content}
-            </Box>
+            <VStack>
+              <Box as="article" alignContent="left" mt={['4', '4', '8']}>
+                <p style={{ whiteSpace: 'pre-wrap' }}>{data.result.content}</p>
+              </Box>
+              <Flex w="90%" rounded="md" justify="center">
+                <Image
+                  // htmlHeight=""
+                  maxBlockSize="500px"
+                  objectFit="cover"
+                  alt="postImage"
+                  src={tryGetBlobUrl(data.result.postImageBlobId)}
+                  fallbackSrc={PlaceHodlerPostPicture}
+                />
+              </Flex>
+            </VStack>
             <Box
               as="article"
               mt={['4', '4', '8']}
@@ -106,7 +121,6 @@ export default function PostPage() {
                 </HStack>
               </HStack>
             </Box>
-
             <Box
               as="article"
               mt={['4', '4', '8']}

@@ -41,16 +41,9 @@ export default function CommentContainer({ comment }: CommentContainerProps) {
         <HStack>
           <HStack spacing="5">
             <HStack>
-              <Icon aria-label="Author" as={CgProfile} />
-              <Text>
-                {user?.result.lastName}, {user?.result.firstName}
-              </Text>
-            </HStack>
-            <HStack>
               <Icon aria-label="Ago" as={AiOutlineClockCircle} />
               <ReactTimeago date={comment.createdOn} component={(props) => <Text {...props} />} />
             </HStack>
-            {console.log(comment.createdOn != comment.modifiedOn)}
             {comment.createdOn != comment.modifiedOn ? (
               <HStack>
                 <Icon aria-label="EditAgo" as={BsPencil} />
@@ -68,6 +61,14 @@ export default function CommentContainer({ comment }: CommentContainerProps) {
   return (
     <Box as="article" mt={['4', '4', '4']} rounded="md" boxShadow="base" p="3">
       <VStack alignContent="flex-start" spacing="5">
+        <HStack w="100%">
+          <Icon aria-label="Author" as={CgProfile} />
+          <Text>
+            <b>
+              {user?.result.lastName}, {user?.result.firstName} said:
+            </b>
+          </Text>
+        </HStack>
         {allowEdit() ? (
           editable ? (
             <>
@@ -90,7 +91,7 @@ export default function CommentContainer({ comment }: CommentContainerProps) {
             <>
               <Flex w="100%" justifyContent="flex-start">
                 <HStack>
-                  <Text>{comment.content}</Text>
+                  <p style={{ whiteSpace: 'pre-wrap' }}>{comment.content}</p>
                 </HStack>
               </Flex>
               <HStack w="100%" justifyContent="space-between">
@@ -113,7 +114,7 @@ export default function CommentContainer({ comment }: CommentContainerProps) {
           <>
             <Flex w="100%" justifyContent="flex-start">
               <HStack>
-                <Text>{comment.content}</Text>
+                <p style={{ whiteSpace: 'pre-wrap' }}>{comment.content}</p>
               </HStack>
             </Flex>
 

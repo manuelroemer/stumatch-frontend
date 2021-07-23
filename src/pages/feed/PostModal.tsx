@@ -16,11 +16,12 @@ import {
   WrapItem,
   Tooltip,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { HiHashtag } from 'react-icons/hi';
 import { PostPost } from '../../api/post';
 import { usePostMutation } from '../../queries/posts';
+import { useImagePicker } from '../../utils/useImagePicker';
 
 export interface PostModalProps {
   isOpen: boolean;
@@ -31,9 +32,15 @@ export default function PostModal({ isOpen, onClose }: PostModalProps): JSX.Elem
   const [validCategory, setValidCategory] = useState(true);
   const form = useForm<PostPost>();
   const mutation = usePostMutation();
+  const postImagePicker = useImagePicker();
+
+  useEffect(() => {
+    return form.setValue('postImageBlob', postImagePicker.base64Data ? postImagePicker.base64Data : '');
+  }, [postImagePicker.base64Data]);
 
   const onSubmit = form.handleSubmit(async (postPost) => {
     mutation.mutate(postPost);
+    postImagePicker.clear();
   });
 
   return (
@@ -95,6 +102,13 @@ export default function PostModal({ isOpen, onClose }: PostModalProps): JSX.Elem
                     </HStack>
                   </Tooltip>
                 </WrapItem>
+              </FormControl>
+              <FormControl>
+                <FormLabel>Post Picture</FormLabel>
+                <Button onClick={postImagePicker.pickImage} colorScheme="blue" mr={3}>
+                  Add Picture
+                </Button>
+                {postImagePicker.src ? 'An image is selected.' : ''}
               </FormControl>
             </VStack>
           </ModalBody>

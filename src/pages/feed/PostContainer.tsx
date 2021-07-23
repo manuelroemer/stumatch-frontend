@@ -1,16 +1,18 @@
 import { Post } from '../../api/post';
 import { Heading, Text, Flex, HStack } from '@chakra-ui/layout';
-import { AiOutlineClockCircle, AiOutlinePicture } from 'react-icons/ai';
+import { AiOutlineClockCircle } from 'react-icons/ai';
 import { BiCommentDetail } from 'react-icons/bi';
 import { HiHashtag } from 'react-icons/hi';
 import { CgProfile } from 'react-icons/cg';
-import { Grid, GridItem, Icon, Link } from '@chakra-ui/react';
+import { Image, Grid, GridItem, Icon, Link } from '@chakra-ui/react';
 import ReactTimeago from 'react-timeago';
 import { routes } from '../../constants';
 import { useHistory } from 'react-router';
 import { Dispatch } from 'react';
 import SharePopOver from './SharePopOver';
 import LikeButton from './LikeButton';
+import { tryGetBlobUrl } from '../../api/blob';
+import PlaceHodlerPostPicture from '../../assets/sTUMatch_logo.png';
 
 export interface PostContainerProps {
   post: Post;
@@ -25,7 +27,13 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
     <Grid templateRows="repeat(2, 1fr)" templateColumns="repeat(14, 1fr)" gap={2}>
       <GridItem rowSpan={2} colSpan={2}>
         <Flex h="100%" align="center">
-          <Icon aria-label="Picture" as={AiOutlinePicture} w="80%" h="80%" />
+          <Image
+            boxSize="100px"
+            objectFit="cover"
+            alt="postImage"
+            src={tryGetBlobUrl(post?.postImageBlobId)}
+            fallbackSrc={PlaceHodlerPostPicture}
+          />
         </Flex>
       </GridItem>
       <GridItem rowSpan={1} colSpan={12}>
