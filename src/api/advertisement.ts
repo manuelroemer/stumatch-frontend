@@ -2,10 +2,8 @@ import { qs } from '../utils/qs';
 import { ApiResult, PaginationApiResult } from './apiResult';
 import { ApiObject, QueryOptions } from './conventions';
 import { stumatchFetch, StumatchFetchInit } from './fetch';
-import { Like } from './like';
-import { Comment } from './comment';
 import { User } from './users';
-import { Faculty, StudyProgram } from './faculty';
+import { Faculty } from './faculty';
 
 export interface Advertisement extends ApiObject {
   title: string;
