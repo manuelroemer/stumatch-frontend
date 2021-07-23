@@ -77,7 +77,7 @@ export default function AdvertisementOverviewPage() {
         )}
         {data && data.result.length === 0 && <NoAdvertisementsEmptyState />}
       </DefaultPageLayout>
-      <AdvertisementModal isOpen={isOpen} onClose={onClose} />
+      <AdvertisementModal isUpdate={false} isOpen={isOpen} onClose={onClose} />
     </RequireRoles>
   );
 }

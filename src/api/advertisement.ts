@@ -31,7 +31,7 @@ export interface PostAdvertisement extends ApiObject {
   endDate: Date;
 }
 
-export interface PutAdvertisement extends ApiObject {
+export interface PutAdvertisement {
   title?: string;
   shortDescription?: string;
   content?: string;
@@ -40,9 +40,10 @@ export interface PutAdvertisement extends ApiObject {
   studyProgramId?: string;
   startDate?: Date;
   endDate?: Date;
+  status?: string;
 }
 
-export function getAllAdvertisements(userId: string, options?: QueryOptions, init?: StumatchFetchInit) {
+export function getAllAdvertisements(options?: QueryOptions, init?: StumatchFetchInit) {
   return stumatchFetch<PaginationApiResult<Advertisement>>(`/api/v1/advertisements?${qs(options)}`, init);
 }
 
@@ -57,8 +58,8 @@ export function getAdvertisementByID(advertisementId: string, init?: StumatchFet
   return stumatchFetch<ApiResult<Advertisement>>(`/api/v1/advertisements/${advertisementId}`, init);
 }
 
-export function getAllCategories(init?: StumatchFetchInit) {
-  return stumatchFetch<ApiResult<Array<string>>>(`/api/v1/categories`, init);
+export function getRandomAdvertisement(init?: StumatchFetchInit) {
+  return stumatchFetch<ApiResult<Advertisement>>(`/api/v1/feedAdvertisements/random`, init);
 }
 
 export function PostAdvertisement(body: PostAdvertisement, init?: StumatchFetchInit) {

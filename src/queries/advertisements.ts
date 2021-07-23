@@ -6,6 +6,7 @@ import {
   PostAdvertisement,
   getAdvertisementsByUser,
   PutAdvertisement,
+  getRandomAdvertisement,
 } from '../api/advertisement';
 import { PutMutationData } from './types';
 
@@ -13,7 +14,7 @@ export const advertisementsQueryKey = 'advertisements';
 
 export function useGetAllAdvertisementsQuery(userId: string, options?: QueryOptions) {
   return useQuery([advertisementsQueryKey, userId, options], () =>
-    getAllAdvertisements(userId, options).then((res) => res.data),
+    getAllAdvertisements(options).then((res) => res.data),
   );
 }
 export function useGetAdvertisementsByUserQuery(userId: string, options?: QueryOptions) {
@@ -24,6 +25,10 @@ export function useGetAdvertisementsByUserQuery(userId: string, options?: QueryO
 
 export function useGetAdvertisementByIDQuery(advertisementId: string) {
   return useQuery([advertisementsQueryKey], () => getAdvertisementByID(advertisementId).then((res) => res.data));
+}
+
+export function useGetRandomAdvertisementQuery() {
+  return useQuery([advertisementsQueryKey], () => getRandomAdvertisement().then((res) => res.data));
 }
 
 export function usePostAdvertisementMutation() {

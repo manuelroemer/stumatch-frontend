@@ -1,5 +1,5 @@
 import { Heading, Text, Flex, HStack } from '@chakra-ui/layout';
-import { AiOutlineClockCircle, AiOutlineEdit, AiOutlinePicture } from 'react-icons/ai';
+import { AiOutlineClockCircle, AiOutlineEdit, AiOutlineEye, AiOutlinePicture } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
 import { Center, Grid, GridItem, Icon, IconButton, Link, useDisclosure } from '@chakra-ui/react';
 import ReactTimeago from 'react-timeago';
@@ -26,6 +26,7 @@ export default function AdvertisementContainer({ advertisement }: AdvertisementC
       <GridItem rowSpan={3} colSpan={2}>
         <Center h="100%" align="center">
           <Icon aria-label="Picture" as={AiOutlinePicture} w="80%" h="80%" />
+
         </Center>
       </GridItem>
       <GridItem rowSpan={1} colSpan={12}>
@@ -53,8 +54,12 @@ export default function AdvertisementContainer({ advertisement }: AdvertisementC
             <ReactTimeago date={advertisement.createdOn} component={(props) => <Text {...props} />} />
           </HStack>
           <HStack>
-            <Icon aria-label="Category" as={MdSubject} />
+            <Icon aria-label="TargetGroup" as={MdSubject} />
             <Text>{getTargetGroup(advertisement)}</Text>
+          </HStack>
+          <HStack>
+            <Icon aria-label="Status" as={AiOutlineEye} />
+            <Text>{advertisement.status}</Text>
           </HStack>
           <HStack>
             <SharePopOver permalink={window.location.href + '/' + advertisement.id} />
