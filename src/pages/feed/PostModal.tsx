@@ -39,8 +39,6 @@ export default function PostModal({ isOpen, onClose }: PostModalProps): JSX.Elem
   }, [postImagePicker.base64Data]);
 
   const onSubmit = form.handleSubmit(async (postPost) => {
-    console.log('HIER KPOMMT EIN POST');
-    console.log(postPost);
     mutation.mutate(postPost);
     postImagePicker.clear();
   });

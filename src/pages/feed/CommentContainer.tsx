@@ -44,7 +44,6 @@ export default function CommentContainer({ comment }: CommentContainerProps) {
               <Icon aria-label="Ago" as={AiOutlineClockCircle} />
               <ReactTimeago date={comment.createdOn} component={(props) => <Text {...props} />} />
             </HStack>
-            {console.log(comment.createdOn != comment.modifiedOn)}
             {comment.createdOn != comment.modifiedOn ? (
               <HStack>
                 <Icon aria-label="EditAgo" as={BsPencil} />
