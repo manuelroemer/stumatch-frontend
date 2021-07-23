@@ -65,7 +65,7 @@ export default function CommentContainer({ comment }: CommentContainerProps) {
           <Icon aria-label="Author" as={CgProfile} />
           <Text>
             <b>
-              {user?.result.lastName}, {user?.result.firstName} said:
+              {user?.result.firstName}, {user?.result.lastName} said:
             </b>
           </Text>
         </HStack>

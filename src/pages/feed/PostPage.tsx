@@ -73,7 +73,6 @@ export default function PostPage() {
               </Box>
               <Flex w="90%" rounded="md" justify="center">
                 <Image
-                  // htmlHeight=""
                   maxBlockSize="500px"
                   objectFit="cover"
                   alt="postImage"

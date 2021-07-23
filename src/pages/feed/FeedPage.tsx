@@ -30,12 +30,10 @@ import PostContainer from './PostContainer';
 import { BiPlus } from 'react-icons/bi';
 import PostModal from './PostModal';
 import { useGetAllCategoriesQuery } from '../../queries/categories';
-import { useCurrentUser } from '../../stores/userStore';
 
 export default function FeedPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = usePageQueryParameter();
-  const currentUser = useCurrentUser();
   const [pageSize, setPageSize] = usePageSizeQueryParameter();
   const [pageSort, setPageSort] = useStringQueryParameter('sort', 'desc');
   const [pageFilter, setPageFilter] = useStringQueryParameter('filter', '');
@@ -55,20 +53,17 @@ export default function FeedPage() {
         header="Feed"
         subHeader="What happened at your university?"
         actions={
-          currentUser.roles.includes('admin') || currentUser.roles.includes('globalContentManager') ? (
+          <RequireRoles roles={['globalContentManager', 'admin']}>
             <Button onClick={onOpen} colorScheme="primary" leftIcon={<BiPlus />} size="md">
               Create New
             </Button>
-          ) : (
-            <></>
-          )
+          </RequireRoles>
         }>
         <VStack>
           <HStack w="100%" spacing="5">
             <InputGroup>
               <InputLeftElement pointerEvents="none">
-                {' '}
-                <FiSearch color="gray.300" />{' '}
+                <FiSearch color="gray.300" />
               </InputLeftElement>
               <Input
                 onChange={(e) => setPageSearch(e.target.value.toLowerCase())}
