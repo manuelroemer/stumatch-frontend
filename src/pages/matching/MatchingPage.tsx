@@ -7,7 +7,11 @@ import { BiPlus } from 'react-icons/bi';
 import MatchingSelector from './MatchingSelector';
 import MatchingModal from './MatchingModal';
 import Pagination from '../../components/Pagination';
-import { useGetAllUserMatchRequestsQuery } from '../../queries/matchRequests';
+
+import {
+  useGetAllUserMatchRequestsQuery,
+  useUserMatchRequestSocketQueryInvalidation,
+} from '../../queries/matchRequests';
 import { usePageQueryParameter, usePageSizeQueryParameter } from '../../utils/useQueryParameter';
 import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptionSkeleton';
 import { me } from '../../api/conventions';
@@ -17,7 +21,8 @@ export default function MatchingPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = usePageQueryParameter();
   const [pageSize] = usePageSizeQueryParameter();
-  const { isLoading, data } = useGetAllUserMatchRequestsQuery(me, { page, pageSize, sort: 'createdOn:desc' });
+  const { isLoading, data } = useGetAllUserMatchRequestsQuery(me, { page, pageSize, sort: `modifiedOn:desc` });
+  useUserMatchRequestSocketQueryInvalidation();
 
   return (
     <RequireRoles roles={['student', 'admin']} fallback={<AccessDeniedEmptyState />}>
@@ -53,7 +58,7 @@ export default function MatchingPage() {
         )}
         {data && data.result.length === 0 && <NoMatchRequestsEmptyState />}
       </DefaultPageLayout>
-      <MatchingModal isOpen={isOpen} onClose={onClose} />
+      <MatchingModal isUpdate={false} isOpen={isOpen} onClose={onClose} />
     </RequireRoles>
   );
 }

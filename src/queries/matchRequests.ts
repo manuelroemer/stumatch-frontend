@@ -5,9 +5,13 @@ import {
   getAllUserMatchRequests,
   MatchRequestAcceptOrDeclinePost,
   MatchRequestPost,
+  MatchRequestPut,
   postMatchRequest,
   postMatchRequestAcceptOrDeclinePost,
+  putMatchRequest,
 } from '../api/matching';
+import { useResourceChangedEventEffect } from '../sockets/resourceChangedEvent';
+import { PutMutationData } from './types';
 
 export const matchRequestsQueryKey = 'matchRequests';
 
@@ -31,6 +35,16 @@ export function usePostMatchRequestMutation() {
   });
 }
 
+export function usePutMatchRequestMutation() {
+  const client = useQueryClient();
+  return useMutation(
+    ({ id, body }: PutMutationData<MatchRequestPut>) => putMatchRequest(id, body).then((res) => res.data),
+    {
+      onSuccess: () => client.invalidateQueries(matchRequestsQueryKey),
+    },
+  );
+}
+
 export function usePostAcceptDeclineMatchRequestMutation(id: string) {
   const client = useQueryClient();
   return useMutation(
@@ -39,4 +53,13 @@ export function usePostAcceptDeclineMatchRequestMutation(id: string) {
       onSuccess: () => client.invalidateQueries(matchRequestsQueryKey),
     },
   );
+}
+
+export function useUserMatchRequestSocketQueryInvalidation() {
+  const queryClient = useQueryClient();
+  useResourceChangedEventEffect((event) => {
+    if (event.resourceType === 'matchRequest') {
+      queryClient.invalidateQueries(matchRequestsQueryKey);
+    }
+  });
 }

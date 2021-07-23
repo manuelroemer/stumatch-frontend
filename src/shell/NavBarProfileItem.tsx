@@ -20,10 +20,12 @@ import {
 import { useCurrentUser, useUserStore } from '../stores/userStore';
 import UserAvatar from '../components/UserAvatar';
 import { getFullName } from '../utils/userUtils';
-import { routes } from '../constants';
 import { Link as RouterLink } from 'react-router-dom';
+import { useHistory } from 'react-router';
+import { routes } from '../constants';
 
 export default function NavBarProfileItem() {
+  const history = useHistory();
   const logout = useUserStore((state) => state.logout);
   const user = useCurrentUser();
 
@@ -57,7 +59,13 @@ export default function NavBarProfileItem() {
         </PopoverBody>
         <PopoverFooter p="2">
           <Flex justify="flex-end">
-            <Button onClick={logout}>Logout</Button>
+            <Button
+              onClick={() => {
+                logout();
+                history.push(routes.root);
+              }}>
+              Logout
+            </Button>
           </Flex>
         </PopoverFooter>
       </PopoverContent>

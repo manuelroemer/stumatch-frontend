@@ -10,6 +10,9 @@ import { useEffect, useState } from 'react';
 import NotConnectedOverlay from './shell/NotConnectedOverlay';
 import { AppQueryClientProvider } from './queries/AppQueryClientProvider';
 import { SocketContext, useConnectedSocket } from './sockets/socket';
+import ContactPage from './pages/contact/ContactPage';
+import { TermsOfUsePage } from './components/TermsOfUsePage';
+import { PrivacyPolicyPage } from './components/PrivacyPolicyPage';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -35,6 +38,9 @@ export default function App() {
                     path={routes.root}
                     render={() => (hasLoggedInUser ? <Redirect to={routes.feed} /> : <LandingPage />)}
                   />
+                  {!hasLoggedInUser && <Route exact path={routes.contact} component={ContactPage} />}
+                  {!hasLoggedInUser && <Route exact path={routes.termsOfUse} component={TermsOfUsePage} />}
+                  {!hasLoggedInUser && <Route exact path={routes.privacyPolicy} component={PrivacyPolicyPage} />}
                   <Route render={() => (hasLoggedInUser ? <AppShell /> : <Redirect to={routes.root} />)} />
                 </Switch>
               </BrowserRouter>

@@ -1,6 +1,7 @@
 import { HTMLChakraProps } from '@chakra-ui/react';
 import { Notification } from '../api/notifications';
 import { useDeleteNotificationMutation, usePutNotificationMutation } from '../queries/notifications';
+import { useConfetti } from '../utils/useConfetti';
 import NotificationTemplate, { NotificationTemplateProps } from './NotificationTemplate';
 
 export interface NotificationSelectorProps extends HTMLChakraProps<'div'> {
@@ -21,6 +22,7 @@ export default function NotificationSelector({ notification, ...rest }: Notifica
   const markAsReadMutation = usePutNotificationMutation(notification.id, { seen: true });
   const markAsUnreadMutation = usePutNotificationMutation(notification.id, { seen: false });
   const deleteMutation = useDeleteNotificationMutation(notification.id);
+  const { show, confetti, isVisible } = useConfetti();
   const baseNotificationTemplateProps = {
     date: notification.createdOn,
     seen: notification.seen ?? false,
@@ -29,6 +31,8 @@ export default function NotificationSelector({ notification, ...rest }: Notifica
     onMarkAsRead: markAsReadMutation.mutate,
     onMarkAsUnread: markAsUnreadMutation.mutate,
     onDelete: deleteMutation.mutate,
+    title: notification.title,
+    content: notification.content,
     ...rest,
   } as const;
 
@@ -37,40 +41,30 @@ export default function NotificationSelector({ notification, ...rest }: Notifica
       case 'text':
         return {
           ...baseNotificationTemplateProps,
-          title: notification.title ?? '',
-          content: notification.content ?? '',
           emoji: '💬',
           onClick: undefined,
         };
       case 'matchRequestAcceptedByPartner':
         return {
           ...baseNotificationTemplateProps,
-          title: 'Match Request Accepted',
-          content: 'Your partner has accepted you. :)',
           emoji: '🥳',
           onClick: undefined,
         };
       case 'matchRequestDeclinedByPartner':
         return {
           ...baseNotificationTemplateProps,
-          title: 'Match Request Declined',
-          content: 'Your partner has declined you. :(',
           emoji: '😢',
           onClick: undefined,
         };
       case 'matchRequestAccepted':
         return {
           ...baseNotificationTemplateProps,
-          title: 'You have a new friend!',
-          content: 'Name is now your friend!',
           emoji: '👫',
-          onClick: undefined,
+          onClick: show,
         };
       case 'matchRequestFoundMatch':
         return {
           ...baseNotificationTemplateProps,
-          title: 'New Match!',
-          content: 'We have found a new match.',
           emoji: '👋',
           onClick: undefined,
         };
@@ -89,5 +83,9 @@ export default function NotificationSelector({ notification, ...rest }: Notifica
     }
   };
 
-  return <NotificationTemplate {...getNotificationTemplateProps()} />;
+  return (
+    <>
+      <NotificationTemplate {...getNotificationTemplateProps()} /> {confetti}
+    </>
+  );
 }

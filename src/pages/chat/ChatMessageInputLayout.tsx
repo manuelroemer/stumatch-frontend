@@ -83,7 +83,6 @@ export default function ChatMessageInputLayout({
       spacing="4"
       py="4"
       px="8"
-      bg="white"
       overflowY="scroll"
       // Hack: To get the correct padding as the chat messages above we need the system's
       // scrollbar width. Simply achieve that by adding a transparent scrollbar.

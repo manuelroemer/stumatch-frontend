@@ -1,5 +1,19 @@
 import { useGetPostByIDQuery } from '../../queries/posts';
-import { HStack, Text, Heading, Flex, Box, Icon, Divider, Textarea, VStack, Button, Center } from '@chakra-ui/react';
+import {
+  HStack,
+  Text,
+  Heading,
+  Flex,
+  Box,
+  Icon,
+  Image,
+  Divider,
+  Textarea,
+  VStack,
+  Button,
+  Center,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { useParams } from 'react-router';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { BiCommentDetail } from 'react-icons/bi';
@@ -14,6 +28,8 @@ import { useGetCommentsQuery, usePostCommentMutation } from '../../queries/comme
 import { usePageQueryParameter } from '../../utils/useQueryParameter';
 import Pagination from '../../components/Pagination';
 import { NoCommentsEmptyState } from '../../components/EmptyStates';
+import { tryGetBlobUrl } from '../../api/blob';
+import PlaceHodlerPostPicture from '../../assets/sTUMatch_logo.png';
 
 interface RouteParams {
   postId: string;
@@ -30,6 +46,8 @@ export default function PostPage() {
     pageSize: 10,
     sort: 'createdOn:desc',
   });
+  const colorBg = useColorModeValue('white', 'gray.700');
+  const colorBd = useColorModeValue('gray.200', 'gray.600');
 
   const handleSubmit = () => {
     mutationPost.mutate({ content: commentContent });
@@ -49,10 +67,28 @@ export default function PostPage() {
                 </Heading>
               </Box>
             </Flex>
-            <Box as="article" mt={['4', '4', '8']}>
-              {data.result.content}
-            </Box>
-            <Box as="article" mt={['4', '4', '8']} rounded="md" boxShadow="base" p="6">
+            <VStack>
+              <Box as="article" alignContent="left" mt={['4', '4', '8']}>
+                <p style={{ whiteSpace: 'pre-wrap' }}>{data.result.content}</p>
+              </Box>
+              <Flex w="90%" rounded="md" justify="center">
+                <Image
+                  maxBlockSize="500px"
+                  objectFit="cover"
+                  alt="postImage"
+                  src={tryGetBlobUrl(data.result.postImageBlobId)}
+                  fallbackSrc={PlaceHodlerPostPicture}
+                />
+              </Flex>
+            </VStack>
+            <Box
+              as="article"
+              mt={['4', '4', '8']}
+              rounded="md"
+              boxShadow="base"
+              p="6"
+              bg={colorBg}
+              borderColor={colorBd}>
               <HStack h="100%" justifyContent="space-between">
                 <HStack>
                   <Icon aria-label="Author" as={CgProfile} />
@@ -84,8 +120,14 @@ export default function PostPage() {
                 </HStack>
               </HStack>
             </Box>
-
-            <Box as="article" mt={['4', '4', '8']} rounded="md" boxShadow="base" p="6">
+            <Box
+              as="article"
+              mt={['4', '4', '8']}
+              rounded="md"
+              boxShadow="base"
+              p="6"
+              bg={colorBg}
+              borderColor={colorBd}>
               <VStack>
                 <Flex w="100%" alignContent="flex-start">
                   <Heading as="h1" size="md" mb="0">

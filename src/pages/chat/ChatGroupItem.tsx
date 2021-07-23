@@ -1,4 +1,5 @@
-import { Heading, Flex, Tag, Center, Text, Grid, Tooltip } from '@chakra-ui/react';
+import { Heading, Flex, Tag, Center, Text, Grid, Tooltip, Icon, useColorModeValue } from '@chakra-ui/react';
+import { IoNotificationsOffOutline } from 'react-icons/io5';
 import { useHistory } from 'react-router';
 import ReactTimeago from 'react-timeago';
 import { ChatGroup } from '../../api/chatGroups';
@@ -19,17 +20,18 @@ export default function ChatGroupItem({ chatGroup, isSelected }: ChatGroupItemPr
   const lastMessage = chatGroup.lastMessage?.textContent;
   const timeAgo = chatGroup.lastMessage?.createdOn ?? chatGroup.createdOn;
   const handleClick = () => history.replace(`${routes.chat}/${chatGroup.id}`);
+  const colorBgIsSelected = useColorModeValue('gray.300', 'gray.700');
+  const colorBgHover = useColorModeValue('gray.200', 'gray.600');
 
   return (
     <Grid
       templateRows="1fr 1fr"
       templateColumns="auto minmax(0, 1fr) auto"
       w="100%"
-      spacing="2"
       p="2"
       cursor="pointer"
-      bg={isSelected ? 'gray.300' : undefined}
-      _hover={!isSelected ? { bg: 'gray.200' } : undefined}
+      bg={isSelected ? colorBgIsSelected : undefined}
+      _hover={!isSelected ? { bg: colorBgHover } : undefined}
       onClick={handleClick}>
       <Center gridRow="1 / span 2" gridColumn="1" minH="12" minW="12" mr="2">
         <ChatGroupAvatarGroup chatGroup={chatGroup} />
@@ -59,13 +61,14 @@ export default function ChatGroupItem({ chatGroup, isSelected }: ChatGroupItemPr
           </Text>
         )}
       </Flex>
-      {!isSelected && newMessages > 0 && (
-        <Flex gridRow="2" gridColumn="3" justify="flex-end" align="center">
+      <Flex gridRow="2" gridColumn="3" justify="flex-end" align="center">
+        {!isSelected && !chatGroup.mutedByMe && newMessages > 0 && (
           <Tag colorScheme="primary" size="sm" rounded="full">
             {newMessages > 99 ? '99+' : newMessages}
           </Tag>
-        </Flex>
-      )}
+        )}
+        {chatGroup.mutedByMe && <Icon as={IoNotificationsOffOutline} layerStyle="hint" />}
+      </Flex>
     </Grid>
   );
 }

@@ -5,10 +5,17 @@ export interface MatchingTemplateProps {
   leftChildren: ReactNode;
   title: string;
   description?: string;
+  filters?: ReactNode;
   actions: ReactNode;
 }
 
-export default function MatchingTemplate({ leftChildren, title, description, actions }: MatchingTemplateProps) {
+export default function MatchingTemplate({
+  leftChildren,
+  title,
+  description,
+  filters,
+  actions,
+}: MatchingTemplateProps) {
   return (
     <HStack p="4" spacing="4">
       {leftChildren}
@@ -17,6 +24,7 @@ export default function MatchingTemplate({ leftChildren, title, description, act
           {title}
         </Heading>
         <Text>{description}</Text>
+        {filters}
       </VStack>
       <Spacer />
       {actions}

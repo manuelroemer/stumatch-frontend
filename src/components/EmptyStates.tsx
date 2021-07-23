@@ -44,6 +44,34 @@ export function NoMatchRequestsEmptyState(props?: EmptyStateProps) {
   );
 }
 
+export function NoContactRequestsEmptyState(props?: EmptyStateProps) {
+  return (
+    <EmptyState
+      imgSrc={socialSerenity}
+      title="No Contact Requests"
+      description="There are no contact requests at the moment."
+      {...props}
+    />
+  );
+}
+
+export function NoUserEmptyState(props?: EmptyStateProps) {
+  return (
+    <EmptyState imgSrc={socialSerenity} title="No User" description="There are no users at the moment." {...props} />
+  );
+}
+
+export function NoFriendsEmptyState(props?: EmptyStateProps) {
+  return (
+    <EmptyState
+      imgSrc={socialSerenity}
+      title="No Friends"
+      description="You have no friends in your list at the moment."
+      {...props}
+    />
+  );
+}
+
 export function NoChatMessagesEmptyState(props?: EmptyStateProps) {
   return (
     <EmptyState
@@ -93,6 +121,17 @@ export function NoCommentsEmptyState(props?: EmptyStateProps) {
       imgSrc={socialSerenity}
       title="No Comments"
       description="There are no comments at the moment."
+      {...props}
+    />
+  );
+}
+
+export function NoAdvertisementsEmptyState(props?: EmptyStateProps) {
+  return (
+    <EmptyState
+      imgSrc={socialSerenity}
+      title="No Advertisements"
+      description="There are no advertisements at the moment."
       {...props}
     />
   );

@@ -20,3 +20,11 @@ export function postComment(id: string, body: CommentPost, init?: StumatchFetchI
 export function getComments(id: string, options?: QueryOptions, init?: StumatchFetchInit) {
   return stumatchFetch<PaginationApiResult<Comment>>(`/api/v1/posts/comments/${id}?${qs(options)}`, init);
 }
+
+export function deleteComment(id: string, init?: StumatchFetchInit) {
+  return stumatchFetch(`/api/v1/posts/comments/${id}`, { method: 'DELETE', ...init });
+}
+
+export function putComment(id: string, body: CommentPost, init?: StumatchFetchInit) {
+  return stumatchFetch<Comment>(`/api/v1/posts/comments/${id}`, { body, method: 'PUT', ...init });
+}

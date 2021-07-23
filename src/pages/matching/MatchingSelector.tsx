@@ -3,24 +3,26 @@ import {
   Icon,
   Center,
   HTMLChakraProps,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
-  Button,
+  Badge,
+  HStack,
+  useColorModeValue,
+  Text,
+  useDisclosure,
+  Tooltip,
 } from '@chakra-ui/react';
 import { IoChatbubblesOutline } from 'react-icons/io5';
 import { IoMdCheckmark, IoMdClose } from 'react-icons/io';
 import { BiHourglass } from 'react-icons/bi';
 import { MdDeleteForever } from 'react-icons/md';
+import { FaRegEdit } from 'react-icons/fa';
 import { MatchRequest } from '../../api/matching';
 import MatchingTemplate, { MatchingTemplateProps } from './MatchingTemplate';
 import { useDeleteMatchRequestMutation, usePostAcceptDeclineMatchRequestMutation } from '../../queries/matchRequests';
-import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import UserAvatar from '../../components/UserAvatar';
+import { useDeleteConfirmationModal } from '../../components/DeleteConfirmationModal';
+import { useConfetti } from '../../utils/useConfetti';
+import MatchingModal from './MatchingModal';
 
 const descriptions = {
   acceptedByMe: 'You have accepted your partner.',
@@ -37,6 +39,9 @@ export interface MatchingSelectorProps {
 }
 
 export default function MatchingSelector({ matchRequest }: MatchingSelectorProps) {
+  const colorBg = useColorModeValue('gray.300', 'gray.600');
+  const { show, confetti, isVisible } = useConfetti();
+
   const getMatchingTemplateProps = (): MatchingTemplateProps => {
     const partnerName = `${matchRequest.partner?.firstName} ${matchRequest.partner?.lastName}`;
     const partnerAvatar = <UserAvatar userId={matchRequest.partner?.id} />;
@@ -53,8 +58,8 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
           actions: (
             <>
               <ChatButton chatGroupId="matchRequest.chatGroupId ?? ''" />
-              <CheckButton matchRequestId={matchRequest.id} disabled={matchRequest.status === 'acceptedByMe'} />
-              <CloseButton matchRequestId={matchRequest.id} disabled={matchRequest.status === 'acceptedByMe'} />
+              <AcceptButton matchRequestId={matchRequest.id} disabled={matchRequest.status === 'acceptedByMe'} />
+              <DeclineButton matchRequestId={matchRequest.id} disabled={matchRequest.status === 'acceptedByMe'} />
             </>
           ),
         };
@@ -67,6 +72,11 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
           description: descriptions[matchRequest.status],
           actions: (
             <>
+              {matchRequest.status === 'accepted' && (
+                <Tooltip label={'Confetti'} hasArrow>
+                  <IconButton isDisabled={isVisible} aria-label="confetti" onClick={show} icon={<Text>🎊</Text>} />
+                </Tooltip>
+              )}
               {matchRequest.status === 'accepted' && <ChatButton chatGroupId={matchRequest.chatGroupId ?? ''} />}
               {deleteButton}
             </>
@@ -76,100 +86,134 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
         return {
           leftChildren: (
             <>
-              <Center w="12" h="12" bg="gray.300" borderRadius="full">
+              <Center w="12" h="12" bg={colorBg} borderRadius="full">
                 <Icon as={BiHourglass} w="8" h="8" color="white" />
               </Center>
             </>
           ),
           title: 'Pending...',
           description: descriptions[matchRequest.status],
-          actions: deleteButton,
+          actions: (
+            <>
+              <EditButton matchRequest={matchRequest} />
+              {deleteButton}{' '}
+            </>
+          ),
         };
       default:
         throw new Error('Unknown State');
     }
   };
 
-  return <MatchingTemplate {...getMatchingTemplateProps()} />;
+  return (
+    <>
+      <MatchingTemplate filters={<MatchRequestFilters matchRequest={matchRequest} />} {...getMatchingTemplateProps()} />
+      {confetti}
+    </>
+  );
+}
+
+function MatchRequestFilters({ matchRequest }: { matchRequest: MatchRequest }) {
+  return (
+    <HStack>
+      <Badge variant="solid" colorScheme="blue">
+        {matchRequest.faculty?.name}
+      </Badge>
+
+      <Badge ml="2" variant="solid" colorScheme="blue">
+        {matchRequest.studyProgram?.name}
+      </Badge>
+
+      {matchRequest.minSemester && (
+        <Badge ml="2" variant="solid" colorScheme="cyan">
+          Semester: {matchRequest.minSemester} - {matchRequest.maxSemester}
+        </Badge>
+      )}
+    </HStack>
+  );
 }
 
 function ChatButton({ chatGroupId, ...props }: HTMLChakraProps<'button'> & { chatGroupId: string }) {
   return (
     <Link to={`/chat/${chatGroupId}`}>
-      <IconButton aria-label="Chat" fontSize="25" icon={<IoChatbubblesOutline />} {...props} />
+      <Tooltip label={'Chat'} hasArrow>
+        <IconButton aria-label="Chat" fontSize="25" icon={<IoChatbubblesOutline />} {...props} />
+      </Tooltip>
     </Link>
   );
 }
 
-function CheckButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & { matchRequestId: string }) {
+function AcceptButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & { matchRequestId: string }) {
   const mutation = usePostAcceptDeclineMatchRequestMutation(matchRequestId);
   return (
-    <IconButton
-      aria-label="Check"
-      fontSize="25"
-      color="green"
-      icon={<IoMdCheckmark />}
-      onClick={() => mutation.mutate({ accepted: true })}
-      isLoading={mutation.isLoading}
-      {...props}
-    />
+    <Tooltip label={'Accept Partner'} hasArrow>
+      <IconButton
+        aria-label="Accept"
+        fontSize="25"
+        color="green.400"
+        icon={<IoMdCheckmark />}
+        onClick={() => mutation.mutate({ accepted: true })}
+        isLoading={mutation.isLoading}
+        {...props}
+      />
+    </Tooltip>
   );
 }
 
-function CloseButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & { matchRequestId: string }) {
+function DeclineButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & { matchRequestId: string }) {
   const mutation = usePostAcceptDeclineMatchRequestMutation(matchRequestId);
 
   return (
-    <IconButton
-      aria-label="Close"
-      fontSize="25"
-      color="red"
-      icon={<IoMdClose />}
-      onClick={() => mutation.mutate({ accepted: false })}
-      isLoading={mutation.isLoading}
-      {...props}
-    />
+    <Tooltip label={'Decline Partner'} hasArrow>
+      <IconButton
+        aria-label="Decline"
+        fontSize="25"
+        color="red"
+        icon={<IoMdClose />}
+        onClick={() => mutation.mutate({ accepted: false })}
+        isLoading={mutation.isLoading}
+        {...props}
+      />
+    </Tooltip>
   );
 }
 
 function DeleteButton({ matchRequestId, ...props }: HTMLChakraProps<'button'> & { matchRequestId: string }) {
   const mutation = useDeleteMatchRequestMutation(matchRequestId);
-  const [isOpen, setIsOpen] = useState(false);
-  const onClose = () => setIsOpen(false);
-  const cancelRef = useRef<any>();
+  const deleteModal = useDeleteConfirmationModal();
   return (
     <>
-      <IconButton
-        aria-label="Delete"
-        fontSize="25"
-        icon={<MdDeleteForever />}
-        onClick={() => setIsOpen(true)}
-        {...props}
-      />
-      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Remove Match Request
-            </AlertDialogHeader>
-            <AlertDialogBody>Are you sure? You can not undo this action afterwards.</AlertDialogBody>
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
-                No, keep it
-              </Button>
-              <Button
-                colorScheme="red"
-                ml={3}
-                onClick={() => {
-                  mutation.mutateAsync();
-                  onClose();
-                }}>
-                Yes, delete it
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+      <Tooltip label={'Delete'} hasArrow>
+        <IconButton
+          aria-label="Delete"
+          fontSize="25"
+          icon={<MdDeleteForever />}
+          onClick={() => {
+            deleteModal.show({
+              header: 'Remove Match Request ',
+              cancelText: 'No, keep it',
+              confirmText: 'Yes, delete it',
+              onConfirm: () => mutation.mutateAsync(),
+            });
+          }}
+          {...props}
+        />
+      </Tooltip>
+
+      {deleteModal.modal}
+    </>
+  );
+}
+
+function EditButton({ matchRequest, ...props }: HTMLChakraProps<'button'> & { matchRequest: MatchRequest }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  return (
+    <>
+      <Tooltip label={'Edit Match Request'}>
+        <IconButton aria-label="Edit" fontSize="25" icon={<FaRegEdit />} onClick={onOpen} {...props} />
+      </Tooltip>
+
+      <MatchingModal isUpdate={true} isOpen={isOpen} onClose={onClose} matchRequest={matchRequest} />
     </>
   );
 }

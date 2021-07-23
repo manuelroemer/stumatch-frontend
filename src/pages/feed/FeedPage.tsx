@@ -1,10 +1,23 @@
 import DefaultPageLayout from '../../components/DefaultPageLayout';
-import { Button, Center, HStack, Select, useDisclosure, VStack, Text, Spacer } from '@chakra-ui/react';
+import {
+  Button,
+  Center,
+  HStack,
+  Select,
+  useDisclosure,
+  VStack,
+  Text,
+  Spacer,
+  Input,
+  InputLeftElement,
+  InputGroup,
+} from '@chakra-ui/react';
 import { AccessDeniedEmptyState, NoPostsEmptyState } from '../../components/EmptyStates';
 import RequireRoles from '../../components/RequireRoles';
 import FloatingCard from '../../components/FloatingCard';
 import Pagination from '../../components/Pagination';
 import { useGetAllPostsQuery } from '../../queries/posts';
+import { FiSearch } from 'react-icons/fi';
 import {
   usePageQueryParameter,
   usePageSizeQueryParameter,
@@ -24,11 +37,13 @@ export default function FeedPage() {
   const [pageSize, setPageSize] = usePageSizeQueryParameter();
   const [pageSort, setPageSort] = useStringQueryParameter('sort', 'desc');
   const [pageFilter, setPageFilter] = useStringQueryParameter('filter', '');
+  const [pageSearch, setPageSearch] = useStringQueryParameter('search', '');
   const { isLoading, data } = useGetAllPostsQuery(me, {
     page,
     pageSize,
     sort: 'createdOn:' + pageSort,
     filter: pageFilter,
+    search: pageSearch,
   });
   const { data: categoryData } = useGetAllCategoriesQuery();
 
@@ -38,11 +53,24 @@ export default function FeedPage() {
         header="Feed"
         subHeader="What happened at your university?"
         actions={
-          <Button onClick={onOpen} colorScheme="primary" leftIcon={<BiPlus />} size="md">
-            Create New
-          </Button>
+          <RequireRoles roles={['globalContentManager', 'admin']}>
+            <Button onClick={onOpen} colorScheme="primary" leftIcon={<BiPlus />} size="md">
+              Create New
+            </Button>
+          </RequireRoles>
         }>
         <VStack>
+          <HStack w="100%" spacing="5">
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
+                <FiSearch color="gray.300" />
+              </InputLeftElement>
+              <Input
+                onChange={(e) => setPageSearch(e.target.value.toLowerCase())}
+                placeholder="Search for posts by title..."
+              />
+            </InputGroup>
+          </HStack>
           <HStack width="full" justifyContent="space-between">
             <Text>Category:</Text>
             <Select onChange={(e) => setPageFilter(e.target.value === 'all' ? '' : e.target.value)} value={pageFilter}>

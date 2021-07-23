@@ -13,6 +13,7 @@ export interface Post extends ApiObject {
   likes: Array<Like>;
   comments: Array<Comment>;
   category: string;
+  postImageBlobId: string;
 }
 
 export interface PostPost extends ApiObject {
@@ -20,6 +21,7 @@ export interface PostPost extends ApiObject {
   content: string;
   authorId: string;
   category: string;
+  postImageBlob: string;
 }
 
 export function getAllPosts(userId: string, options?: QueryOptions, init?: StumatchFetchInit) {
