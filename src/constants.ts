@@ -17,4 +17,5 @@ export const routes = {
   advertisingUserList: '/advertisingUserList',
 } as const;
 
+export const debounceDuration = 250;
 export const emailRegex = /^\S+@\S+\.\S+$/;
