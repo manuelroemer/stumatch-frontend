@@ -11,8 +11,8 @@ import NotConnectedOverlay from './shell/NotConnectedOverlay';
 import { AppQueryClientProvider } from './queries/AppQueryClientProvider';
 import { SocketContext, useConnectedSocket } from './sockets/socket';
 import ContactPage from './pages/contact/ContactPage';
-import { TermsOfUsePage } from './components/TermsOfUsePage';
-import { PrivacyPolicyPage } from './components/PrivacyPolicyPage';
+import { TermsOfUsePage } from './pages/termsOfUse/TermsOfUsePage';
+import { PrivacyPolicyPage } from './pages/privacyPolicy/PrivacyPolicyPage';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -26,9 +26,9 @@ export default function App() {
   }, []);
 
   return (
-    <AppQueryClientProvider>
-      <SocketContext.Provider value={{ socket }}>
-        <ChakraProvider theme={appTheme}>
+    <ChakraProvider theme={appTheme}>
+      <AppQueryClientProvider>
+        <SocketContext.Provider value={{ socket }}>
           <NotConnectedOverlay>
             <LoadingOverlay show={isLoading}>
               <BrowserRouter>
@@ -46,8 +46,8 @@ export default function App() {
               </BrowserRouter>
             </LoadingOverlay>
           </NotConnectedOverlay>
-        </ChakraProvider>
-      </SocketContext.Provider>
-    </AppQueryClientProvider>
+        </SocketContext.Provider>
+      </AppQueryClientProvider>
+    </ChakraProvider>
   );
 }

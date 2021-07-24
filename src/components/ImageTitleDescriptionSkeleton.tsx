@@ -9,6 +9,11 @@ export interface ImageTitleDescriptionSkeletonProps extends HTMLChakraProps<'div
   textSpacing?: Size;
 }
 
+/**
+ * A loading skeleton which resembles a structure with an image to the left,
+ * a title and text below the title.
+ * Used by various components, e.g. the notifications.
+ */
 export default function ImageTitleDescriptionSkeleton({
   imageSize = 14,
   textSize = 5,

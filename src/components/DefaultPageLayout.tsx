@@ -9,6 +9,11 @@ export interface DefaultPageLayoutProps {
   actions?: ReactNode;
 }
 
+/**
+ * A component which renders children in the default page layout used by the website.
+ * Renders a header, subheader and an optional actions area (e.g. for page-global buttons).
+ * The children form the page's content.
+ */
 export default function DefaultPageLayout({ children, header, subHeader, actions }: DefaultPageLayoutProps) {
   return (
     <Flex minH="100%" display="flex" flexDirection="column">

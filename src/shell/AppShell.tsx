@@ -13,8 +13,8 @@ import PostPage from '../pages/feed/PostPage';
 import friendsListPage from '../pages/friendsList/friendsListPage';
 import ContactPage from '../pages/contact/ContactPage';
 import AdvertisementPage from '../pages/advertising/AdvertisementPage';
-import { TermsOfUsePage } from '../components/TermsOfUsePage';
-import { PrivacyPolicyPage } from '../components/PrivacyPolicyPage';
+import { TermsOfUsePage } from '../pages/termsOfUse/TermsOfUsePage';
+import { PrivacyPolicyPage } from '../pages/privacyPolicy/PrivacyPolicyPage';
 import AdvertisementUserListPage from '../pages/advertising/AdvertisementUserListPage';
 
 export default function AppShell() {

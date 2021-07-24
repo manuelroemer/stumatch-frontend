@@ -1,6 +1,6 @@
-import DefaultPageLayout from './DefaultPageLayout';
+import DefaultPageLayout from '../../components/DefaultPageLayout';
 import { Button, Heading, Link, ListItem, Text, UnorderedList } from '@chakra-ui/react';
-import { routes } from '../constants';
+import { routes } from '../../constants';
 
 export function PrivacyPolicyPage() {
   return (

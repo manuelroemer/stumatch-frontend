@@ -8,6 +8,13 @@ export interface RequireRolesProps {
   roles?: UserRole | Array<UserRole>;
 }
 
+/**
+ * A component which only renders its children if the signed-in user has *any*
+ * of the given roles.
+ * If not, it optionally displays a fallback component instead of the actual children.
+ *s
+ * Used to restrict access to certain functionality/areas based on the user's roles.
+ */
 export default function RequireRoles({ children, fallback, roles = [] }: RequireRolesProps) {
   if (roles.length === 0) {
     console.warn(

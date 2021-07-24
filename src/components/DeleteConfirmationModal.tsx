@@ -18,6 +18,11 @@ export interface DeleteConfirmationModalProps {
   onClose(): void;
 }
 
+/**
+ * A modal window which prompts the user for a deletion confirmation.
+ * This component should probably not be used directly.
+ * Use {@link useDeleteConfirmationModal} instead.
+ */
 export function DeleteConfirmationModal({
   isOpen,
   header,
@@ -65,6 +70,13 @@ export function DeleteConfirmationModal({
 
 export type UseDeleteConfirmationModalProps = Omit<Omit<DeleteConfirmationModalProps, 'isOpen'>, 'onClose'>;
 
+/**
+ * Enables imperative integration of a deletion confirmation modal into arbitrary code locations.
+ * Returns an object with a `show` and `modal` attribute.
+ *
+ * `modal` is the deletion modal `ReactNode` and must be placed within the component tree.
+ * `show` allows you to imperatively display the modal with the given modal props.
+ */
 export function useDeleteConfirmationModal() {
   const [props, setProps] = useState<DeleteConfirmationModalProps | null>(null);
   const modal = props ? <DeleteConfirmationModal {...props} /> : null;

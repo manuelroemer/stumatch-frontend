@@ -12,6 +12,10 @@ export interface UserAvatarProps extends AvatarProps {
   userId?: string;
 }
 
+/**
+ * Renders an {@link Avatar} which displays the data of a given user.
+ * Handles issues like finding the user's name and profile image.
+ */
 export default function UserAvatar({ userId, ...rest }: UserAvatarProps) {
   const thisUserId = useCurrentUser().id;
   const finalUserId = userId ?? thisUserId;

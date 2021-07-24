@@ -2,6 +2,10 @@ import { useUserStore } from '../stores/userStore';
 
 const apiBaseUrl = API_BASE_URL;
 
+/**
+ * A specialized {@link RequestInit} object to be used in conjunction
+ * with {@link stumatchFetch}.
+ */
 export interface StumatchFetchInit extends Omit<Omit<RequestInit, 'body'>, 'headers'> {
   /**
    * The body to be sent with the request.
@@ -12,6 +16,11 @@ export interface StumatchFetchInit extends Omit<Omit<RequestInit, 'body'>, 'head
   headers?: Record<string, string>;
 }
 
+/**
+ * The result of a {@link stumatchFetch} call.
+ * A default {@link Response} which additionally contains the
+ * deserialized JSON body returned by the associated REST API endpoint.
+ */
 export interface StumatchFetchResponse<T = unknown> extends Response {
   /**
    * Deserialized JSON data from the response.
