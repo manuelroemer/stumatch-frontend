@@ -6,6 +6,9 @@ export interface NavBarItemProps {
   to: string;
 }
 
+/**
+ * A default item/link in the navbar.
+ */
 export default function NavBarItem({ title, to }: NavBarItemProps) {
   const isSelected = !!useRouteMatch(to);
 

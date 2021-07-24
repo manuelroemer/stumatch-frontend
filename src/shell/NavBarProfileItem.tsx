@@ -23,6 +23,10 @@ import { useHistory } from 'react-router';
 import { routes } from '../constants';
 import { Link } from 'react-router-dom';
 
+/**
+ * The profile icon button within the navbar.
+ * Provides the link to the user's profile and the option to logout.
+ */
 export default function NavBarProfileItem() {
   const history = useHistory();
   const logout = useUserStore((state) => state.logout);

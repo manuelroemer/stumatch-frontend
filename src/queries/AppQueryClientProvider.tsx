@@ -4,6 +4,10 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { useToast } from '@chakra-ui/react';
 import { useRef } from 'react';
 
+/**
+ * Initializes the {@link QueryClient} used by the app.
+ * Must be configured at the app's component tree root.
+ */
 export function AppQueryClientProvider({ children }: PropsWithChildren<{}>) {
   const toast = useToast();
   const showGenericErrorToast = (message: string) => {
