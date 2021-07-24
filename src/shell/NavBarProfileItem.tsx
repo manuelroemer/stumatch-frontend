@@ -15,13 +15,13 @@ import {
   PopoverFooter,
   PopoverBody,
   Flex,
-  Link,
 } from '@chakra-ui/react';
 import { useCurrentUser, useUserStore } from '../stores/userStore';
 import UserAvatar from '../components/UserAvatar';
 import { getFullName } from '../utils/userUtils';
 import { useHistory } from 'react-router';
 import { routes } from '../constants';
+import { Link } from 'react-router-dom';
 
 export default function NavBarProfileItem() {
   const history = useHistory();
