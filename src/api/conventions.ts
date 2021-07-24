@@ -16,6 +16,7 @@ export interface SortQueryOptions {
 
 export interface FilterQueryOptions {
   filter?: string;
+  lookingForJob? : boolean;
 }
 
 export interface SearchQueryOptions {

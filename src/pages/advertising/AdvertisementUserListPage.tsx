@@ -42,11 +42,12 @@ export default function AdvertisementUserListPage() {
     page,
     pageSize,
     filter: pageFilter,
+    lookingForJob: true,
     sort: 'firstName:asc, lastName:asc',
   });
 
   return (
-    <DefaultPageLayout header="Studentslist" subHeader="Students who are currently looking for a job.">
+    <DefaultPageLayout header="Job Candidates" subHeader="Students who are currently looking for a job.">
       <HStack w="100%">
         <InputGroup>
           <InputRightElement pointerEvents="none">{<Icon as={BsSearch} />} </InputRightElement>
