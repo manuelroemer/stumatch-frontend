@@ -1,14 +1,26 @@
-import { Button, Center, HStack, Select, Spacer, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import {
+  Button,
+  Center,
+  HStack,
+  IconButton,
+  Select,
+  Spacer,
+  Text,
+  Tooltip,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react';
 import { range } from 'lodash-es';
 import { BiPlus } from 'react-icons/bi';
+import { FaRegEdit } from 'react-icons/fa';
 import { me } from '../../api/conventions';
 import DefaultPageLayout from '../../components/DefaultPageLayout';
-import { AccessDeniedEmptyState, NoAdvertisementsEmptyState, NoPostsEmptyState } from '../../components/EmptyStates';
+import { AccessDeniedEmptyState, NoAdvertisementsEmptyState } from '../../components/EmptyStates';
 import FloatingCard from '../../components/FloatingCard';
 import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptionSkeleton';
 import Pagination from '../../components/Pagination';
 import RequireRoles from '../../components/RequireRoles';
-import { useGetAdvertisementsByUserQuery, useGetAllAdvertisementsQuery } from '../../queries/advertisements';
+import { useGetAdvertisementsByUserQuery } from '../../queries/advertisements';
 import {
   usePageQueryParameter,
   usePageSizeQueryParameter,
@@ -29,6 +41,16 @@ export default function AdvertisementOverviewPage() {
     sort: 'createdOn:' + pageSort,
     //filter: pageFilter,
   });
+  const editButton = (
+    <>
+      <HStack>
+        <Tooltip label={'Edit Ad'}>
+          <IconButton size="sm" aria-label="Edit" fontSize="17" icon={<FaRegEdit />} onClick={onOpen} />
+        </Tooltip>
+        <Text>Edit </Text>
+      </HStack>
+    </>
+  );
   return (
     <RequireRoles roles={['admin', 'advertiser']} fallback={<AccessDeniedEmptyState />}>
       <DefaultPageLayout
@@ -64,7 +86,7 @@ export default function AdvertisementOverviewPage() {
             <>
               {data?.result.map((advertisement) => (
                 <FloatingCard key={advertisement.id}>
-                  <AdvertisementContainer advertisement={advertisement} />
+                  <AdvertisementContainer advertisement={advertisement} showAuthor={false} secondButton={editButton} />
                 </FloatingCard>
               ))}
             </>

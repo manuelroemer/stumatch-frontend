@@ -1,25 +1,35 @@
 import { Heading, Text, Flex, HStack } from '@chakra-ui/layout';
 import { AiOutlineClockCircle, AiOutlinePicture } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
-import { Badge, Center, Grid, GridItem, Icon, Link } from '@chakra-ui/react';
+import { Badge, Center, Grid, GridItem, Icon, Link, useDisclosure } from '@chakra-ui/react';
 import ReactTimeago from 'react-timeago';
 import { routes } from '../../constants';
 import { useHistory } from 'react-router';
 import { Advertisement } from '../../api/advertisement';
-import SharePopOver from '../feed/SharePopOver';
 import { getTargetGroup } from '../../utils/advertisementUtils';
 import { MdSubject } from 'react-icons/md';
+import AdvertisementModal from './AdvertisementModal';
+import { ReactNode } from 'react';
 
 export interface AdvertisementContainerProps {
   advertisement: Advertisement;
+  showAuthor: boolean;
+  firstButton?: ReactNode;
+  secondButton?: ReactNode;
 }
 
-export default function AdvertisementContainer({ advertisement }: AdvertisementContainerProps) {
+export default function AdvertisementContainer({
+  advertisement,
+  showAuthor,
+  firstButton,
+  secondButton,
+}: AdvertisementContainerProps) {
   const history = useHistory();
   const handleClick = () => history.push(`${routes.advertising}/${advertisement.id}`);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Grid templateRows="repeat(3, 1fr)" templateColumns="repeat(13, 1fr)" gap={2}>
+    <Grid templateRows="repeat(3, 1fr)" templateColumns="repeat(13, 1fr)" gap={2} rowGap={2}>
       <GridItem rowSpan={3} colSpan={2}>
         <Center h="100%" align="center">
           <Icon aria-label="Picture" as={AiOutlinePicture} w="80%" h="80%" />
@@ -39,14 +49,16 @@ export default function AdvertisementContainer({ advertisement }: AdvertisementC
       </GridItem>
       <GridItem rowSpan={1} colSpan={8}>
         <HStack>
-          <Badge variant="solid" colorScheme="cyan">
-            <HStack>
-              <Icon aria-label="Author" as={CgProfile} fontSize="14" />
-              <Text fontSize="12">
-                {advertisement.author.lastName} ,{advertisement.author.firstName}
-              </Text>
-            </HStack>
-          </Badge>
+          {showAuthor && (
+            <Badge variant="solid" colorScheme="cyan">
+              <HStack>
+                <Icon aria-label="Author" as={CgProfile} fontSize="14" />
+                <Text fontSize="12">
+                  {advertisement.author.lastName} ,{advertisement.author.firstName}
+                </Text>
+              </HStack>
+            </Badge>
+          )}
           {getTargetGroup(advertisement) && (
             <Badge variant="solid" colorScheme="cyan">
               <HStack>
@@ -63,13 +75,17 @@ export default function AdvertisementContainer({ advertisement }: AdvertisementC
           </Badge>
         </HStack>
       </GridItem>
-
-      <GridItem colStart={13} colspan={1}>
-        <HStack>
-          <SharePopOver permalink={window.location.href + '/' + advertisement.id} />
-          <Text>Share</Text>
-        </HStack>
-      </GridItem>
+      {firstButton && (
+        <GridItem rowSpan={1} colStart={12}>
+          {firstButton}
+        </GridItem>
+      )}
+      {secondButton && (
+        <GridItem rowSpan={1} colStart={13}>
+          {secondButton}
+        </GridItem>
+      )}
+      <AdvertisementModal isUpdate={true} isOpen={isOpen} onClose={onClose} advertisement={advertisement} />
     </Grid>
   );
 }

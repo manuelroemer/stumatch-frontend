@@ -6,19 +6,21 @@ import {
   GridItem,
   Heading,
   HStack,
+  HTMLChakraProps,
   Icon,
   IconButton,
   Link,
   Select,
   Spacer,
   Text,
+  Tooltip,
   useDisclosure,
   useToast,
   VStack,
 } from '@chakra-ui/react';
 import { range } from 'lodash-es';
 import { AiOutlineCheck, AiOutlineClockCircle, AiOutlineClose, AiOutlinePicture } from 'react-icons/ai';
-import { BiPlus } from 'react-icons/bi';
+import { IoMdCheckmark, IoMdClose } from 'react-icons/io';
 import { CgProfile } from 'react-icons/cg';
 import { MdSubject } from 'react-icons/md';
 import { useHistory } from 'react-router';
@@ -93,8 +95,13 @@ export function VerifyAdvertisementsPage() {
         ) : (
           <>
             {data?.result.map((advertisement) => (
-              <FloatingCard key={advertisement.id}>
-                <AdContainer advertisement={advertisement} />
+              <FloatingCard padding="3" key={advertisement.id}>
+                <AdvertisementContainer
+                  advertisement={advertisement}
+                  showAuthor={false}
+                  firstButton={<VerifyButton advertisement={advertisement} />}
+                  secondButton={<DenyButton advertisement={advertisement} />}
+                />
               </FloatingCard>
             ))}
           </>
@@ -187,5 +194,58 @@ export function AdContainer({ advertisement }: adContainerProps) {
         </HStack>
       </GridItem>
     </Grid>
+  );
+}
+function VerifyButton({ advertisement, ...props }: HTMLChakraProps<'button'> & { advertisement: Advertisement }) {
+  const mutation = usePutAdvertisementMutation();
+  const toast = useToast();
+  return (
+    <>
+      <HStack>
+        <Tooltip label={'Verify'} hasArrow>
+          <IconButton
+            aria-label="Accept"
+            color="green.400"
+            fontSize="25"
+            icon={<IoMdCheckmark />}
+            onClick={() => {
+              mutation.mutate({ id: advertisement.id, body: { status: 'verified' } });
+              toast({
+                description: 'Ad verified!',
+              });
+            }}
+            {...props}
+          />
+        </Tooltip>
+
+        <Text>Verify</Text>
+      </HStack>
+    </>
+  );
+}
+
+function DenyButton({ advertisement, ...props }: HTMLChakraProps<'button'> & { advertisement: Advertisement }) {
+  const mutation = usePutAdvertisementMutation();
+  const toast = useToast();
+  return (
+    <>
+      <HStack>
+        <Tooltip label={'Deny'} hasArrow>
+          <IconButton
+            aria-label="Deny"
+            color="red"
+            icon={<IoMdClose />}
+            onClick={() => {
+              mutation.mutate({ id: advertisement.id, body: { status: 'denied' } });
+              toast({
+                description: 'Ad denied.',
+              });
+            }}
+            {...props}
+          />
+        </Tooltip>
+        <Text>Deny</Text>
+      </HStack>
+    </>
   );
 }
