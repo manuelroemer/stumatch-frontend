@@ -26,7 +26,7 @@ export default function AdvertisementContainer({ advertisement }: AdvertisementC
         </Center>
       </GridItem>
       <GridItem rowSpan={1} colSpan={11}>
-        <HStack h="100%" align="flex-end" >
+        <HStack h="100%" align="flex-end">
           <Heading onClick={handleClick} as="h1" lineHeight="1.4" fontSize="20" isTruncated textAlign="left">
             <Link>{advertisement.title}</Link>
           </Heading>
