@@ -26,7 +26,6 @@ export default function AdvertisementContainer({ advertisement }: AdvertisementC
       <GridItem rowSpan={3} colSpan={2}>
         <Center h="100%" align="center">
           <Icon aria-label="Picture" as={AiOutlinePicture} w="80%" h="80%" />
-
         </Center>
       </GridItem>
       <GridItem rowSpan={1} colSpan={12}>
