@@ -8,6 +8,7 @@ export const routes = {
   notifications: '/notifications',
   chat: '/chat',
   chatGroup: '/chat/:chatGroupId?',
+  profile: '/profile',
   postPage: '/feed/:postId',
   friendsList: '/friends',
   contact: '/contact',
