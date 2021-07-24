@@ -45,7 +45,7 @@ export default function SharePopOver({ permalink }: SharePopOverProps) {
     <>
       <Popover>
         <PopoverTrigger>
-          <IconButton size="sm" aria-label="Share" icon={<AiOutlineShareAlt />} />
+          <IconButton size="sm" aria-label="Share" icon={<AiOutlineShareAlt />} fontSize="17" />
         </PopoverTrigger>
         <Portal>
           <PopoverContent>

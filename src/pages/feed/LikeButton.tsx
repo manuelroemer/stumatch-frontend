@@ -41,9 +41,9 @@ export default function LikeButton({ post }: LikeButtonProps) {
   return (
     <>
       {liked ? (
-        <IconButton onClick={handleDislike} size="sm" aria-label="Dislike" icon={<FcLike />} />
+        <IconButton onClick={handleDislike} size="sm" aria-label="Dislike" icon={<FcLike />} fontSize="16" />
       ) : (
-        <IconButton onClick={handleLike} size="sm" aria-label="Like" icon={<FcLikePlaceholder />} />
+        <IconButton onClick={handleLike} size="sm" aria-label="Like" icon={<FcLikePlaceholder />} fontSize="16" />
       )}
       <Text>{likes}</Text>
     </>
