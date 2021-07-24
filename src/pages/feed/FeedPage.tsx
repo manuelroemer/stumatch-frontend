@@ -11,6 +11,7 @@ import {
   Input,
   InputLeftElement,
   InputGroup,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { AccessDeniedEmptyState, NoPostsEmptyState } from '../../components/EmptyStates';
 import RequireRoles from '../../components/RequireRoles';
@@ -54,6 +55,7 @@ export default function FeedPage() {
   const { data: adData } = useGetAllAdvertisementsQuery(me);
   const debouncedSetPageSearch = debounce(setPageSearch, debounceDuration);
   const showAd = (data?.result.length ?? 0) > 0;
+  const colorBg = useColorModeValue('blue.50', 'blue.900');
 
   return (
     <RequireRoles roles={['student', 'admin']} fallback={<AccessDeniedEmptyState />}>
@@ -113,17 +115,17 @@ export default function FeedPage() {
           ) : (
             <>
               {showAd && (
-                <FloatingCard>
+                <FloatingCard padding="3" bgColor={colorBg}>
                   <AdvertisementContainer advertisement={adData!.result[0]}></AdvertisementContainer>
                 </FloatingCard>
               )}
               {data?.result.map((post) => (
-                <FloatingCard key={post.id}>
-                  <PostContainer setPageFilter={setPageFilter} post={post} />
+                <FloatingCard key={post.id} padding="3">
+                  <PostContainer post={post} setPageFilter={setPageFilter} />
                 </FloatingCard>
               ))}
               {showAd && (
-                <FloatingCard>
+                <FloatingCard padding="3" bgColor={colorBg}>
                   <AdvertisementContainer advertisement={adData!.result[0]}></AdvertisementContainer>
                 </FloatingCard>
               )}
