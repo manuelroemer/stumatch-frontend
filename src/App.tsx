@@ -26,9 +26,9 @@ export default function App() {
   }, []);
 
   return (
-    <AppQueryClientProvider>
-      <SocketContext.Provider value={{ socket }}>
-        <ChakraProvider theme={appTheme}>
+    <ChakraProvider theme={appTheme}>
+      <AppQueryClientProvider>
+        <SocketContext.Provider value={{ socket }}>
           <NotConnectedOverlay>
             <LoadingOverlay show={isLoading}>
               <BrowserRouter>
@@ -46,8 +46,8 @@ export default function App() {
               </BrowserRouter>
             </LoadingOverlay>
           </NotConnectedOverlay>
-        </ChakraProvider>
-      </SocketContext.Provider>
-    </AppQueryClientProvider>
+        </SocketContext.Provider>
+      </AppQueryClientProvider>
+    </ChakraProvider>
   );
 }
