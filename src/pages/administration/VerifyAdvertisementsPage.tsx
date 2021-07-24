@@ -133,6 +133,7 @@ function DenyButton({ advertisement, ...props }: HTMLChakraProps<'button'> & { a
           <IconButton
             aria-label="Deny"
             color="red"
+            fontSize="25"
             icon={<IoMdClose />}
             onClick={() => {
               mutation.mutate({ id: advertisement.id, body: { status: 'denied' } });
