@@ -9,6 +9,11 @@ export interface User extends ApiObject {
   email?: string;
   firstName: string;
   lastName: string;
+  facultyId?: string;
+  studyProgramId?: string;
+  startingSemester?: string;
+  startingYear?: number;
+  searchForJobs?: string;
   profileImageBlobId?: string;
   roles: Array<UserRole>;
 }
@@ -28,6 +33,7 @@ export interface UserPost {
     startingSemester?: string;
     startingYear?: number;
   };
+  searchForJobs?: string;
   profileImageBlob?: string;
 }
 
@@ -36,17 +42,17 @@ export interface UserPut {
   roles?: Array<UserRole>;
 }
 
-export interface UserPut {
-  email: string;
-  firstName: string;
-  lastName: string;
-  facultyId?: string;
-  studyProgramId?: string;
-  immatriculatedOn?: {
-    startingSemester?: string;
-    startingYear?: number;
-  };
-}
+// export interface UserPut {
+//   email: string;
+//   firstName: string;
+//   lastName: string;
+//   facultyId?: string;
+//   studyProgramId?: string;
+//   immatriculatedOn?: {
+//     startingSemester?: string;
+//     startingYear?: number;
+//   };
+// }
 
 export function getAllUsers(options?: QueryOptions, init?: StumatchFetchInit) {
   return stumatchFetch<PaginationApiResult<User>>(`/api/v1/users?${qs(options)}`, init);

@@ -48,10 +48,9 @@ export function RoleManagementPage() {
       <VStack spacing="5">
         <HStack w="100%">
           <InputGroup>
-            <InputRightElement pointerEvents="none">{<Icon as={BsSearch}/>} </InputRightElement>
+            <InputRightElement pointerEvents="none">{<Icon as={BsSearch} />} </InputRightElement>
             <Input type="text" placeholder="Search User..." onChange={(e) => setPageFilter(e.target.value)} />
           </InputGroup>
-
         </HStack>
         {isLoading ? (
           range(3).map((i) => (

@@ -15,6 +15,7 @@ import ContactPage from '../pages/contact/ContactPage';
 import AdvertisementPage from '../pages/advertising/AdvertisementPage';
 import { TermsOfUsePage } from '../components/TermsOfUsePage';
 import { PrivacyPolicyPage } from '../components/PrivacyPolicyPage';
+import AdvertisementUserListPage from '../pages/advertising/AdvertisementUserListPage';
 
 export default function AppShell() {
   return (
@@ -33,6 +34,7 @@ export default function AppShell() {
       <Route path={routes.chatGroup} component={ChatPage} />
       <Route exact path={routes.termsOfUse} component={TermsOfUsePage} />
       <Route exact path={routes.privacyPolicy} component={PrivacyPolicyPage} />
+      <Route exact path={routes.advertisingUserList} component={AdvertisementUserListPage} />
     </Flex>
   );
 }

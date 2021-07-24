@@ -72,6 +72,17 @@ export function NoFriendsEmptyState(props?: EmptyStateProps) {
   );
 }
 
+export function NoJobSearchingUserEmptyState(props?: EmptyStateProps) {
+  return (
+    <EmptyState
+      imgSrc={socialSerenity}
+      title="No User"
+      description="There are currently no users who are looking for a job."
+      {...props}
+    />
+  );
+}
+
 export function NoChatMessagesEmptyState(props?: EmptyStateProps) {
   return (
     <EmptyState

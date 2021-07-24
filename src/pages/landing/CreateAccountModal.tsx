@@ -20,6 +20,8 @@ import {
   Flex,
   Avatar,
   FormHelperText,
+  Radio,
+  RadioGroup,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { UserPost } from '../../api/users';
@@ -30,7 +32,7 @@ import { useUserStore } from '../../stores/userStore';
 import { routes } from '../../constants';
 import { Link } from 'react-router-dom';
 import { useImagePicker } from '../../utils/useImagePicker';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { emailRegex } from '../../constants';
 
 export interface CreateAccountModalProps {
@@ -51,12 +53,13 @@ export default function CreateAccountModal({ isOpen, onClose }: CreateAccountMod
   const mutation = usePostUserMutation();
   const login = useUserStore((state) => state.login);
   const profileImagePicker = useImagePicker();
+  const [jobValue, setJobValue] = useState('Undefined');
 
   const onSubmit = handleSubmit(async (userPost) => {
     if (!userPost.immatriculatedOn?.startingSemester || !userPost.immatriculatedOn?.startingYear) {
       userPost.immatriculatedOn = undefined;
     }
-
+    setValue('searchForJobs', jobValue);
     await mutation.mutateAsync(userPost);
     onClose();
     await login(userPost.email, userPost.password);
@@ -135,6 +138,16 @@ export default function CreateAccountModal({ isOpen, onClose }: CreateAccountMod
                     <FormErrorMessage>Please enter your last name.</FormErrorMessage>
                   </FormControl>
                 </HStack>
+                <FormControl>
+                  <FormLabel>Are you currently looking for a job?</FormLabel>
+                  <RadioGroup  {...register('searchForJobs')} defaultValue={jobValue} onChange={setJobValue}>
+                    <HStack>
+                      <Radio value="Yes">Yes</Radio>
+                      <Radio value="No">No</Radio>
+                      <Radio value="Undefined">Undefined</Radio>
+                    </HStack>
+                  </RadioGroup>
+                </FormControl>
 
                 <FacultyDropdown
                   facultyData={data?.result ?? []}
