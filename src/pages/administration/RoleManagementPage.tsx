@@ -20,7 +20,7 @@ import FloatingCard from '../../components/FloatingCard';
 import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptionSkeleton';
 import Pagination from '../../components/Pagination';
 import UserAvatar from '../../components/UserAvatar';
-import { useGetAllUsersQuery, usePutUserMutation } from '../../queries/users';
+import { useGetAllUsersQuery, usePutUserRolesMutation } from '../../queries/users';
 import {
   usePageQueryParameter,
   usePageSizeQueryParameter,
@@ -81,7 +81,7 @@ interface RoleUserCardProps {
 }
 
 function RoleUserCard({ user }: RoleUserCardProps) {
-  const mutation = usePutUserMutation();
+  const mutation = usePutUserRolesMutation();
   const [selectedRoles, setSelectedRoles] = useState(user.roles);
   const toast = useToast();
 
