@@ -3,6 +3,7 @@ import { Heading, Text, Flex, HStack } from '@chakra-ui/layout';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { BiCommentDetail } from 'react-icons/bi';
 import { CgProfile } from 'react-icons/cg';
+import { HiHashtag } from 'react-icons/hi';
 import { Image, Grid, GridItem, Icon, Link } from '@chakra-ui/react';
 import ReactTimeago from 'react-timeago';
 import { routes } from '../../constants';
@@ -35,6 +36,7 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
           />
         </Flex>
       </GridItem>
+
       <GridItem rowSpan={1} colSpan={10}>
         <Flex h="100%" align="flex-end">
           <Heading onClick={handleClick} as="h1" lineHeight="1.4" fontSize="20" isTruncated textAlign="left">
@@ -42,7 +44,7 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
           </Heading>
         </Flex>
       </GridItem>
-      <GridItem colSpan={5}>
+      <GridItem colSpan={3}>
         <HStack>
           <Icon aria-label="Author" as={CgProfile} />
           <Text>
@@ -56,12 +58,18 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
           <ReactTimeago date={post.createdOn} component={(props) => <Text {...props} />} />
         </HStack>
       </GridItem>
+      <GridItem colSpan={3}>
+        <HStack>
+          <Icon aria-label="Category" as={HiHashtag} />
+          <Link onClick={() => setPageFilter(post.category)}>{post.category}</Link>
+        </HStack>
+      </GridItem>
       <GridItem>
         <HStack>
           <LikeButton post={post}></LikeButton>
         </HStack>
       </GridItem>
-      <GridItem colSpan={2}>
+      <GridItem>
         <HStack>
           <Icon w={4} h={4} aria-label="Comment" as={BiCommentDetail} />
           <Text>{post.comments.length}</Text>
