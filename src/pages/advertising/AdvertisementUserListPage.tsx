@@ -4,9 +4,6 @@ import {
   HStack,
   Icon,
   IconButton,
-  Input,
-  InputGroup,
-  InputRightElement,
   Link,
   Skeleton,
   SkeletonCircle,
@@ -15,19 +12,16 @@ import {
   Tbody,
   Td,
   Tr,
+  VStack,
+  Text,
 } from '@chakra-ui/react';
 import DefaultPageLayout from '../../components/DefaultPageLayout';
 import UserAvatar from '../../components/UserAvatar';
 import { getFullName } from '../../utils/userUtils';
 import range from 'lodash-es/range';
-import {
-  usePageQueryParameter,
-  usePageSizeQueryParameter,
-  useStringQueryParameter,
-} from '../../utils/useQueryParameter';
+import { usePageQueryParameter, usePageSizeQueryParameter } from '../../utils/useQueryParameter';
 import { useGetAllUsersQuery } from '../../queries/users';
 import Pagination from '../../components/Pagination';
-import { BsSearch } from 'react-icons/bs';
 import { HiOutlineMail } from 'react-icons/hi';
 import { NoJobSearchingUserEmptyState } from '../../components/EmptyStates';
 import { useGetAllFacultiesQuery } from '../../queries/faculties';
@@ -37,24 +31,17 @@ import { Faculty } from '../../api/faculty';
 export default function AdvertisementUserListPage() {
   const [page, setPage] = usePageQueryParameter();
   const [pageSize] = usePageSizeQueryParameter();
-  const [pageFilter, setPageFilter] = useStringQueryParameter('filter', '');
+
   const { isLoading, data } = useGetAllUsersQuery({
     page,
     pageSize,
-    filter: pageFilter,
     lookingForJob: true,
     sort: 'firstName:asc, lastName:asc',
   });
 
   return (
     <DefaultPageLayout header="Job Candidates" subHeader="Students who are currently looking for a job.">
-      <HStack w="100%">
-        <InputGroup>
-          <InputRightElement pointerEvents="none">{<Icon as={BsSearch} />} </InputRightElement>
-          <Input type="text" placeholder="Search User..." onChange={(e) => setPageFilter(e.target.value)} />
-        </InputGroup>
-      </HStack>
-      <Table>
+      <Table size="lg">
         <Tbody>
           {isLoading &&
             range(4).map((i) => (
@@ -69,10 +56,16 @@ export default function AdvertisementUserListPage() {
             <Tr key={user.id}>
               <Td display="flex" alignItems="center" p="3">
                 <UserAvatar userId={user.id} size="md" mr="6" ml="4" />
-                {getFullName(user)}{' '}
-                <Link href={`mailto:${user.email}`} ml="2">
-                  (<Icon as={HiOutlineMail} /> {user.email})
-                </Link>
+                <VStack align="flex-start">
+                  <HStack>
+                    <Text>{getFullName(user)} </Text>
+                    <Link href={`mailto:${user.email}`} ml="2" mr="2">
+                      (<Icon as={HiOutlineMail} /> {user.email})
+                    </Link>
+                  </HStack>
+                  <UsersFilters user={user} />
+                </VStack>
+
                 <Spacer />
                 <Link href={`mailto:${user.email}`}>
                   <IconButton aria-label="EMail" icon={<HiOutlineMail />} mr="4" fontSize="20" />
@@ -92,22 +85,32 @@ export default function AdvertisementUserListPage() {
   );
 }
 
-// function UsersFilters({ user }: { user: User }) {
-//   const { data } = useGetAllFacultiesQuery();
-//   const userFaculty = data?.result.find((faculty) => faculty.id === user.facultyId);
-//   const studyPrograms = data?.result
-//     .filter((faculty: Faculty) => userFaculty === undefined || faculty.id === userFaculty.id)
-//     .flatMap((faculty: Faculty) => faculty.studyPrograms);
-//   const userStudyProgram = studyPrograms?.find((studyProgram) => studyProgram.id === user.studyProgramId);
-//   return (
-//     <HStack>
-//       <Badge variant="solid" colorScheme="blue">
-//         {userFaculty?.name}
-//       </Badge>
+function UsersFilters({ user }: { user: User }) {
+  const { data } = useGetAllFacultiesQuery();
+  const userFaculty = data?.result.find((faculty) => faculty.id === user.facultyId);
+  const studyPrograms = data?.result
+    .filter((faculty: Faculty) => userFaculty === undefined || faculty.id === userFaculty.id)
+    .flatMap((faculty: Faculty) => faculty.studyPrograms);
+  const userStudyProgram = studyPrograms?.find((studyProgram) => studyProgram.id === user.studyProgramId);
+  console.info(user);
 
-//       <Badge ml="2" variant="solid" colorScheme="blue">
-//         {userStudyProgram?.name}
-//       </Badge>
-//     </HStack>
-//   );
-// }
+  return (
+    <HStack>
+      {user.facultyId && (
+        <Badge variant="subtle" colorScheme="blue">
+          Faculty: {userFaculty?.name}
+        </Badge>
+      )}
+      {user.studyProgramId && (
+        <Badge ml="2" variant="subtle" colorScheme="blue">
+          Study program: {userStudyProgram?.name}
+        </Badge>
+      )}
+      {user.startingSemester && user.startingYear && (
+        <Badge ml="2" variant="subtle" colorScheme="cyan">
+          Studienstart: {user.startingSemester} {user.startingYear}
+        </Badge>
+      )}
+    </HStack>
+  );
+}
