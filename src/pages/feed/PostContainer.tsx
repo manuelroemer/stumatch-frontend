@@ -11,12 +11,14 @@ import SharePopOver from './SharePopOver';
 import LikeButton from './LikeButton';
 import { tryGetBlobUrl } from '../../api/blob';
 import PlaceHodlerPostPicture from '../../assets/sTUMatch_logo.png';
+import { Dispatch } from 'react';
 
 export interface PostContainerProps {
   post: Post;
+  setPageFilter: Dispatch<string>;
 }
 
-export default function PostContainer({ post }: PostContainerProps) {
+export default function PostContainer({ post, setPageFilter }: PostContainerProps) {
   const history = useHistory();
   const handleClick = () => history.push(`${routes.feed}/${post.id}`);
 

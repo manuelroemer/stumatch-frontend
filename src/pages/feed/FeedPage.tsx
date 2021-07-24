@@ -121,7 +121,7 @@ export default function FeedPage() {
               )}
               {data?.result.map((post) => (
                 <FloatingCard key={post.id} padding="3">
-                  <PostContainer post={post} />
+                  <PostContainer post={post} setPageFilter={setPageFilter} />
                 </FloatingCard>
               ))}
               {showAd && (
