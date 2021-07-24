@@ -2,6 +2,7 @@ import {
   Button,
   Center,
   HStack,
+  HTMLChakraProps,
   IconButton,
   Select,
   Spacer,
@@ -13,6 +14,7 @@ import {
 import { range } from 'lodash-es';
 import { BiPlus } from 'react-icons/bi';
 import { FaRegEdit } from 'react-icons/fa';
+import { Advertisement } from '../../api/advertisement';
 import { me } from '../../api/conventions';
 import DefaultPageLayout from '../../components/DefaultPageLayout';
 import { AccessDeniedEmptyState, NoAdvertisementsEmptyState } from '../../components/EmptyStates';
@@ -41,16 +43,6 @@ export default function AdvertisementOverviewPage() {
     sort: 'createdOn:' + pageSort,
     //filter: pageFilter,
   });
-  const editButton = (
-    <>
-      <HStack>
-        <Tooltip label={'Edit Ad'}>
-          <IconButton size="sm" aria-label="Edit" fontSize="17" icon={<FaRegEdit />} onClick={onOpen} />
-        </Tooltip>
-        <Text>Edit </Text>
-      </HStack>
-    </>
-  );
   return (
     <RequireRoles roles={['admin', 'advertiser']} fallback={<AccessDeniedEmptyState />}>
       <DefaultPageLayout
@@ -86,7 +78,11 @@ export default function AdvertisementOverviewPage() {
             <>
               {data?.result.map((advertisement) => (
                 <FloatingCard key={advertisement.id}>
-                  <AdvertisementContainer advertisement={advertisement} showAuthor={false} secondButton={editButton} />
+                  <AdvertisementContainer
+                    advertisement={advertisement}
+                    showAuthor={false}
+                    secondButton={<EditButton advertisement={advertisement} />}
+                  />
                 </FloatingCard>
               ))}
             </>
@@ -101,5 +97,20 @@ export default function AdvertisementOverviewPage() {
       </DefaultPageLayout>
       <AdvertisementModal isUpdate={false} isOpen={isOpen} onClose={onClose} />
     </RequireRoles>
+  );
+}
+
+function EditButton({ advertisement, ...props }: HTMLChakraProps<'button'> & { advertisement: Advertisement }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  return (
+    <>
+      <HStack>
+        <Tooltip label={'Edit Ad'}>
+          <IconButton size="sm" aria-label="Edit" fontSize="17" icon={<FaRegEdit />} onClick={onOpen} {...props} />
+        </Tooltip>
+        <Text>Edit </Text>
+      </HStack>
+      <AdvertisementModal isUpdate={true} isOpen={isOpen} onClose={onClose} advertisement={advertisement} />
+    </>
   );
 }

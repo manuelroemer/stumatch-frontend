@@ -26,7 +26,6 @@ export default function AdvertisementContainer({
 }: AdvertisementContainerProps) {
   const history = useHistory();
   const handleClick = () => history.push(`${routes.advertising}/${advertisement.id}`);
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Grid templateRows="repeat(3, 1fr)" templateColumns="repeat(13, 1fr)" gap={2} rowGap={2}>
@@ -85,7 +84,6 @@ export default function AdvertisementContainer({
           {secondButton}
         </GridItem>
       )}
-      <AdvertisementModal isUpdate={true} isOpen={isOpen} onClose={onClose} advertisement={advertisement} />
     </Grid>
   );
 }

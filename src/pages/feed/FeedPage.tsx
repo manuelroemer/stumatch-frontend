@@ -158,7 +158,7 @@ function ShareButton({ advertisement, ...props }: HTMLChakraProps<'button'> & { 
   return (
     <>
       <HStack>
-        <SharePopOver permalink={window.location.href + '/' + advertisement.id} />
+        <SharePopOver permalink={window.location.href + '/' + advertisement.id} {...props} />
         <Text>Share</Text>
       </HStack>
     </>

@@ -1,5 +1,4 @@
 import {
-  Button,
   Center,
   Flex,
   Grid,
@@ -27,18 +26,12 @@ import { useHistory } from 'react-router';
 import ReactTimeago from 'react-timeago';
 import { Advertisement } from '../../api/advertisement';
 import { me } from '../../api/conventions';
-import DefaultPageLayout from '../../components/DefaultPageLayout';
-import { AccessDeniedEmptyState, NoAdvertisementsEmptyState, NoPostsEmptyState } from '../../components/EmptyStates';
+import { NoAdvertisementsEmptyState } from '../../components/EmptyStates';
 import FloatingCard from '../../components/FloatingCard';
 import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptionSkeleton';
 import Pagination from '../../components/Pagination';
-import RequireRoles from '../../components/RequireRoles';
 import { routes } from '../../constants';
-import {
-  useGetAdvertisementsByUserQuery,
-  useGetAllAdvertisementsQuery,
-  usePutAdvertisementMutation,
-} from '../../queries/advertisements';
+import { useGetAllAdvertisementsQuery, usePutAdvertisementMutation } from '../../queries/advertisements';
 import { getTargetGroup } from '../../utils/advertisementUtils';
 import {
   usePageQueryParameter,
@@ -48,7 +41,6 @@ import {
 import AdvertisementContainer from '../advertising/AdvertisementContainer';
 
 export function VerifyAdvertisementsPage() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = usePageQueryParameter();
   const [pageSize, setPageSize] = usePageSizeQueryParameter();
   const [pageSort, setPageSort] = useStringQueryParameter('sort', 'desc');
