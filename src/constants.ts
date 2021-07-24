@@ -15,4 +15,5 @@ export const routes = {
   privacyPolicy: '/privacyPolicy',
 } as const;
 
+export const debounceDuration = 250;
 export const emailRegex = /^\S+@\S+\.\S+$/;

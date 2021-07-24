@@ -30,6 +30,11 @@ import PostContainer from './PostContainer';
 import { BiPlus } from 'react-icons/bi';
 import PostModal from './PostModal';
 import { useGetAllCategoriesQuery } from '../../queries/categories';
+import {} from '../../api/advertisement';
+import { useGetAllAdvertisementsQuery } from '../../queries/advertisements';
+import AdvertisementContainer from '../advertising/AdvertisementContainer';
+import debounce from 'lodash-es/debounce';
+import { debounceDuration } from '../../constants';
 
 export default function FeedPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -46,6 +51,9 @@ export default function FeedPage() {
     search: pageSearch,
   });
   const { data: categoryData } = useGetAllCategoriesQuery();
+  const { data: adData } = useGetAllAdvertisementsQuery(me);
+  const debouncedSetPageSearch = debounce(setPageSearch, debounceDuration);
+  const showAd = (data?.result.length ?? 0) > 0;
 
   return (
     <RequireRoles roles={['student', 'admin']} fallback={<AccessDeniedEmptyState />}>
@@ -66,7 +74,8 @@ export default function FeedPage() {
                 <FiSearch color="gray.300" />
               </InputLeftElement>
               <Input
-                onChange={(e) => setPageSearch(e.target.value.toLowerCase())}
+                defaultValue={pageSearch}
+                onChange={(e) => debouncedSetPageSearch(e.target.value.toLowerCase())}
                 placeholder="Search for posts by title..."
               />
             </InputGroup>
@@ -103,11 +112,21 @@ export default function FeedPage() {
             ))
           ) : (
             <>
+              {showAd && (
+                <FloatingCard>
+                  <AdvertisementContainer advertisement={adData!.result[0]}></AdvertisementContainer>
+                </FloatingCard>
+              )}
               {data?.result.map((post) => (
                 <FloatingCard key={post.id}>
                   <PostContainer setPageFilter={setPageFilter} post={post} />
                 </FloatingCard>
               ))}
+              {showAd && (
+                <FloatingCard>
+                  <AdvertisementContainer advertisement={adData!.result[0]}></AdvertisementContainer>
+                </FloatingCard>
+              )}
             </>
           )}
         </VStack>
