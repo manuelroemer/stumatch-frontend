@@ -8,6 +8,7 @@ import FeedPage from '../pages/feed/FeedPage';
 import MatchingPage from '../pages/matching/MatchingPage';
 import NotificationPage from '../pages/notifications/NotificationPage';
 import NavBar from './NavBar';
+import ProfilePage from '../pages/profile/ProfilePage';
 import PostPage from '../pages/feed/PostPage';
 import friendsListPage from '../pages/friendsList/friendsListPage';
 import ContactPage from '../pages/contact/ContactPage';
@@ -28,6 +29,7 @@ export default function AppShell() {
       <Route exact path={routes.notifications} component={NotificationPage} />
       <Route exact path={routes.friendsList} component={friendsListPage} />
       <Route exact path={routes.contact} component={ContactPage} />
+      <Route exact path={routes.profile} component={ProfilePage} />
       <Route path={routes.chatGroup} component={ChatPage} />
       <Route exact path={routes.termsOfUse} component={TermsOfUsePage} />
       <Route exact path={routes.privacyPolicy} component={PrivacyPolicyPage} />

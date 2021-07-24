@@ -36,6 +36,18 @@ export interface UserPut {
   roles?: Array<UserRole>;
 }
 
+export interface UserPut {
+  email: string;
+  firstName: string;
+  lastName: string;
+  facultyId?: string;
+  studyProgramId?: string;
+  immatriculatedOn?: {
+    startingSemester?: string;
+    startingYear?: number;
+  };
+}
+
 export function getAllUsers(options?: QueryOptions, init?: StumatchFetchInit) {
   return stumatchFetch<PaginationApiResult<User>>(`/api/v1/users?${qs(options)}`, init);
 }
