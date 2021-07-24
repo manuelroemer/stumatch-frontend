@@ -28,6 +28,7 @@ export interface UserPost {
     startingSemester?: string;
     startingYear?: number;
   };
+  searchForJobs?: string;
   profileImageBlob?: string;
 }
 

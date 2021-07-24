@@ -1,4 +1,5 @@
 import {
+  Badge,
   Center,
   HStack,
   Icon,
@@ -29,6 +30,9 @@ import Pagination from '../../components/Pagination';
 import { BsSearch } from 'react-icons/bs';
 import { HiOutlineMail } from 'react-icons/hi';
 import { NoJobSearchingUserEmptyState } from '../../components/EmptyStates';
+import { useGetAllFacultiesQuery } from '../../queries/faculties';
+import { User } from '../../api/users';
+import { Faculty } from '../../api/faculty';
 
 export default function AdvertisementUserListPage() {
   const [page, setPage] = usePageQueryParameter();
@@ -86,3 +90,23 @@ export default function AdvertisementUserListPage() {
     </DefaultPageLayout>
   );
 }
+
+// function UsersFilters({ user }: { user: User }) {
+//   const { data } = useGetAllFacultiesQuery();
+//   const userFaculty = data?.result.find((faculty) => faculty.id === user.facultyId);
+//   const studyPrograms = data?.result
+//     .filter((faculty: Faculty) => userFaculty === undefined || faculty.id === userFaculty.id)
+//     .flatMap((faculty: Faculty) => faculty.studyPrograms);
+//   const userStudyProgram = studyPrograms?.find((studyProgram) => studyProgram.id === user.studyProgramId);
+//   return (
+//     <HStack>
+//       <Badge variant="solid" colorScheme="blue">
+//         {userFaculty?.name}
+//       </Badge>
+
+//       <Badge ml="2" variant="solid" colorScheme="blue">
+//         {userStudyProgram?.name}
+//       </Badge>
+//     </HStack>
+//   );
+// }
