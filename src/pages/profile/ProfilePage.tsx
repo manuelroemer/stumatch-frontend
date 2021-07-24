@@ -1,90 +1,108 @@
 import {
   Box,
   Button,
-  Editable,
-  EditableInput,
-  EditablePreview,
-  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Grid,
-  GridItem,
   HStack,
   Input,
   NumberInput,
   NumberInputField,
+  Radio,
+  RadioGroup,
   Select,
-  Spacer,
-  Text,
   VStack,
 } from '@chakra-ui/react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { UserPut } from '../../api/users';
 import DefaultPageLayout from '../../components/DefaultPageLayout';
 import FacultyDropdown from '../../components/FacultyDropdown';
 import UserAvatar from '../../components/UserAvatar';
+import { emailRegex } from '../../constants';
 import { useGetAllFacultiesQuery } from '../../queries/faculties';
 import { usePutUserMutation } from '../../queries/users';
 import { useCurrentUser } from '../../stores/userStore';
 
 export default function ProfilePage() {
-  const { isLoading, data } = useGetAllFacultiesQuery();
+  const { data } = useGetAllFacultiesQuery();
+
   const {
     register,
-    unregister,
     setValue,
     getValues,
     formState: { errors },
     handleSubmit,
   } = useForm<UserPut>();
   const mutation = usePutUserMutation();
-
   const user = useCurrentUser();
-
+  const [jobValue, setJobValue] = useState('');
   const validateImmatriculatedOn = () => {
     const startingYear = getValues('immatriculatedOn.startingYear');
     const startingSemester = getValues('immatriculatedOn.startingSemester');
 
     return !((!!startingSemester && !startingYear) || (!startingSemester && !!startingYear));
   };
-
   const onSubmit = handleSubmit(async (userPut) => {
     if (!userPut.immatriculatedOn?.startingSemester || !userPut.immatriculatedOn?.startingYear) {
       userPut.immatriculatedOn = undefined;
     }
-    await mutation.mutateAsync(userPut);
+    setValue('searchForJobs', jobValue);
+    await mutation.mutateAsync({ id: user.id, body: userPut });
   });
-
   return (
     <DefaultPageLayout header="Your Profile">
       <form onSubmit={onSubmit}>
-        <Flex direction="column">
+        <VStack spacing="5">
           <Box align="center">
-            <UserAvatar key={user.id} userId={user.id} size="xl" />
+            <UserAvatar key={user.id} userId={user.id} size="2xl" />
           </Box>
-          <Spacer />
-          <FormControl mt={5}>
+          <FormControl isInvalid={!!errors.firstName} isRequired>
             <FormLabel>First Name</FormLabel>
-            <Input {...register('firstName', { required: true })} type="firstName" defaultValue={user.firstName} />
+            <Input
+              {...register('firstName', { required: true })}
+              placeholder="First Name"
+              defaultValue={user.firstName}
+            />
+            <FormErrorMessage>Please enter your first name.</FormErrorMessage>
           </FormControl>
-          <Spacer />
-          <FormControl mt={5}>
+
+          <FormControl isInvalid={!!errors.lastName} isRequired>
             <FormLabel>Last Name</FormLabel>
-            <Input {...register('lastName', { required: true })} type="text" defaultValue={user.lastName} />
+            <Input
+              {...register('lastName', { required: true })}
+              type="text"
+              placeholder="Last Name"
+              defaultValue={user.lastName}
+            />
+            <FormErrorMessage>Please enter your last name.</FormErrorMessage>
           </FormControl>
-          <Spacer />
-          <FormControl mt={5}>
+          <FormControl isInvalid={!!errors.email} isRequired>
             <FormLabel>E-Mail</FormLabel>
             <Input
-              {...register('email', { required: true, maxLength: 320, pattern: /^\S+@\S+/ })}
+              {...register('email', { required: true, maxLength: 320, pattern: emailRegex })}
               placeholder="Your E-Mail Address"
               type="email"
               defaultValue={user.email}
             />
+            <FormErrorMessage>Please enter a valid E-Mail address.</FormErrorMessage>
           </FormControl>
+
+          <FormControl>
+            <FormLabel>Are you currently looking for a job?</FormLabel>
+            <RadioGroup {...register('searchForJobs')} defaultValue={jobValue} onChange={setJobValue}>
+              <HStack>
+                <Radio value="Yes">Yes</Radio>
+                <Radio value="No">No</Radio>
+                <Radio value="Undefined">Undefined</Radio>
+              </HStack>
+            </RadioGroup>
+          </FormControl>
+
           <FacultyDropdown
             facultyData={data?.result ?? []}
+            initialFacultyId={user.facultyId}
+            initialStudyProgramId={user.studyProgramId}
             facultyDescription="Select your faculty."
             studyProgramDescription="Select your study program."
             onFacultyChanged={(faculty) => setValue('facultyId', faculty?.id)}
@@ -96,11 +114,12 @@ export default function ProfilePage() {
               <Select
                 {...register('immatriculatedOn.startingSemester', { validate: validateImmatriculatedOn })}
                 variant="filled"
-                placeholder="Starting Semester">
+                placeholder="Starting Semester"
+                defaultValue={user.startingSemester}>
                 <option value="WS">WS</option>
                 <option value="SS">SS</option>
               </Select>
-              <NumberInput min={1900}>
+              <NumberInput min={1900} defaultValue={user.startingYear}>
                 <NumberInputField
                   {...register('immatriculatedOn.startingYear', { validate: validateImmatriculatedOn })}
                   placeholder="Starting Year"
@@ -112,14 +131,13 @@ export default function ProfilePage() {
               Please select the starting Semester&nbsp;<b>and</b>&nbsp;the starting year.
             </FormErrorMessage>
           </FormControl>
-
-          <HStack mt={10}>
-            <Button colorScheme="blue" type="submit">
-              Save
-            </Button>
-            <Button>Cancel</Button>
-          </HStack>
-        </Flex>
+        </VStack>
+        <HStack justify="flex-end" padding="5">
+          <Button colorScheme="blue" type="submit">
+            Save
+          </Button>
+          <Button>Cancel</Button>
+        </HStack>
       </form>
     </DefaultPageLayout>
   );
