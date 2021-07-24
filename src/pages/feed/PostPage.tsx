@@ -60,6 +60,15 @@ export default function PostPage() {
       {data && data.result && (
         <Flex as="main" px="8" py="4" justify="center" my="8">
           <Box w={['95%', '90%', '80%', '75%']}>
+            <Flex w="100%" rounded="md" justify="center">
+              <Image
+                maxBlockSize="150px"
+                objectFit="cover"
+                alt="postImage"
+                src={tryGetBlobUrl(data.result.postImageBlobId)}
+                fallbackSrc={PlaceHodlerPostPicture}
+              />
+            </Flex>
             <Flex justify="space-between">
               <Box as="header">
                 <Heading as="h1" mb="0">
@@ -68,18 +77,9 @@ export default function PostPage() {
               </Box>
             </Flex>
             <VStack>
-              <Box as="article" alignContent="left" mt={['4', '4', '8']}>
+              <Box as="article" mt={['4', '4', '8']}>
                 <p style={{ whiteSpace: 'pre-wrap' }}>{data.result.content}</p>
               </Box>
-              <Flex w="90%" rounded="md" justify="center">
-                <Image
-                  maxBlockSize="500px"
-                  objectFit="cover"
-                  alt="postImage"
-                  src={tryGetBlobUrl(data.result.postImageBlobId)}
-                  fallbackSrc={PlaceHodlerPostPicture}
-                />
-              </Flex>
             </VStack>
             <Box
               as="article"
