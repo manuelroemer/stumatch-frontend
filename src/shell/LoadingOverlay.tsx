@@ -6,6 +6,11 @@ export interface LoadingOverlayProps {
   children?: ReactNode;
 }
 
+/**
+ * Renders a global loading spinner spanning the entire browser window.
+ * Gives the user feedback that the page is working while it's preparing
+ * to be shown.s
+ */
 export default function LoadingOverlay({ show, children }: LoadingOverlayProps) {
   return (
     <>

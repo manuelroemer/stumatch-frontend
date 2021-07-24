@@ -4,6 +4,10 @@ export interface NavBarIconButtonProps extends IconButtonProps {
   showIndicator: boolean;
 }
 
+/**
+ * A generic component for an icon button within the navbar.
+ * Can optionally show an indicator notifying the user about (new) changes.
+ */
 export default function NavBarIconButton({ showIndicator, ...rest }: NavBarIconButtonProps) {
   return (
     <Box pos="relative">

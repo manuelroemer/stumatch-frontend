@@ -17,6 +17,10 @@ import { TermsOfUsePage } from '../pages/termsOfUse/TermsOfUsePage';
 import { PrivacyPolicyPage } from '../pages/privacyPolicy/PrivacyPolicyPage';
 import AdvertisementUserListPage from '../pages/advertising/AdvertisementUserListPage';
 
+/**
+ * Provides the layout and routing functionality for the application
+ * (minus the landing page).
+ */
 export default function AppShell() {
   return (
     <Flex direction="column" h="100%">
@@ -31,7 +35,7 @@ export default function AppShell() {
       <Route exact path={routes.friendsList} component={friendsListPage} />
       <Route exact path={routes.contact} component={ContactPage} />
       <Route exact path={routes.profile} component={ProfilePage} />
-      <Route path={routes.chatGroup} component={ChatPage} />
+      <Route exact path={routes.chatGroup} component={ChatPage} />
       <Route exact path={routes.termsOfUse} component={TermsOfUsePage} />
       <Route exact path={routes.privacyPolicy} component={PrivacyPolicyPage} />
       <Route exact path={routes.advertisingUserList} component={AdvertisementUserListPage} />
