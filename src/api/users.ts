@@ -42,17 +42,19 @@ export interface UserPutRoles {
   roles?: Array<UserRole>;
 }
 
-// export interface UserPut {
-//   email: string;
-//   firstName: string;
-//   lastName: string;
-//   facultyId?: string;
-//   studyProgramId?: string;
-//   immatriculatedOn?: {
-//     startingSemester?: string;
-//     startingYear?: number;
-//   };
-// }
+export interface UserPut {
+  email: string;
+  firstName: string;
+  lastName: string;
+  facultyId?: string;
+  studyProgramId?: string;
+  searchForJobs?: string;
+  immatriculatedOn?: {
+    startingSemester?: string;
+    startingYear?: number;
+  };
+  profileImageBlob?: string;
+}
 
 export function getAllUsers(options?: QueryOptions, init?: StumatchFetchInit) {
   return stumatchFetch<PaginationApiResult<User>>(`/api/v1/users?${qs(options)}`, init);
@@ -68,4 +70,8 @@ export function postUser(body: UserPost, init?: StumatchFetchInit) {
 
 export function putUserRoles(id: string, body: UserPutRoles, init?: StumatchFetchInit) {
   return stumatchFetch<ApiResult<User>>(`/api/v1/users/${id}/roles`, { method: 'PUT', body, ...init });
+}
+
+export function putUser(id: string, body: UserPut, init?: StumatchFetchInit) {
+  return stumatchFetch<ApiResult<User>>(`/api/v1/users/${id}`, { method: 'PUT', body, ...init });
 }

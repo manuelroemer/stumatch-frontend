@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { UserPost, postUser, getUser, getAllUsers, putUserRoles, UserPutRoles } from '../api/users';
+import { UserPost, postUser, getUser, getAllUsers, putUserRoles, UserPutRoles, UserPut, putUser } from '../api/users';
 import { QueryOptions } from '../api/conventions';
 import { PutMutationData } from './types';
 
@@ -23,6 +23,16 @@ export function usePostUserMutation() {
 export function usePutUserRolesMutation() {
   const queryClient = useQueryClient();
   return useMutation(({ id, body }: PutMutationData<UserPutRoles>) => putUserRoles(id, body).then((res) => res.data), {
+    onSuccess: (data) => {
+      queryClient.setQueryData([usersQueryKey, data.result.id], () => data);
+      queryClient.invalidateQueries(usersQueryKey);
+    },
+  });
+}
+
+export function usePutUserMutation() {
+  const queryClient = useQueryClient();
+  return useMutation(({ id, body }: PutMutationData<UserPut>) => putUser(id, body).then((res) => res.data), {
     onSuccess: (data) => {
       queryClient.setQueryData([usersQueryKey, data.result.id], () => data);
       queryClient.invalidateQueries(usersQueryKey);
