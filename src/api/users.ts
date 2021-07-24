@@ -13,7 +13,7 @@ export interface User extends ApiObject {
   studyProgramId?: string;
   startingSemester?: string;
   startingYear?: number;
-  searchForJobs?: string;
+  searchForJobs?: boolean;
   profileImageBlobId?: string;
   roles: Array<UserRole>;
 }
