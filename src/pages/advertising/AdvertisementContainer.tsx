@@ -37,35 +37,33 @@ export default function AdvertisementContainer({ advertisement }: AdvertisementC
           <Text>{advertisement.shortDescription}</Text>
         </Flex>
       </GridItem>
-
-      <GridItem colSpan={3}>
-        <Badge variant="solid" colorScheme="cyan">
-          <HStack>
-            <Icon aria-label="Author" as={CgProfile} fontSize="14" />
-            <Text fontSize="12">
-              {advertisement.author.lastName} ,{advertisement.author.firstName}
-            </Text>
-          </HStack>
-        </Badge>
-      </GridItem>
-      <GridItem colSpan={2}>
-        {getTargetGroup(advertisement) && (
+      <GridItem rowSpan={1} colSpan={8}>
+        <HStack>
           <Badge variant="solid" colorScheme="cyan">
             <HStack>
-              <Icon aria-label="TargetGroup" as={MdSubject} fontSize="14" />
-              <Text fontSize="12">{getTargetGroup(advertisement)}</Text>
+              <Icon aria-label="Author" as={CgProfile} fontSize="14" />
+              <Text fontSize="12">
+                {advertisement.author.lastName} ,{advertisement.author.firstName}
+              </Text>
             </HStack>
           </Badge>
-        )}
+          {getTargetGroup(advertisement) && (
+            <Badge variant="solid" colorScheme="cyan">
+              <HStack>
+                <Icon aria-label="TargetGroup" as={MdSubject} fontSize="14" />
+                <Text fontSize="12">{getTargetGroup(advertisement)}</Text>
+              </HStack>
+            </Badge>
+          )}
+          <Badge variant="solid" colorScheme="cyan">
+            <HStack>
+              <Icon aria-label="Ago" as={AiOutlineClockCircle} fontSize="14" />
+              <ReactTimeago date={advertisement.createdOn} component={(props) => <Text fontSize="12" {...props} />} />
+            </HStack>
+          </Badge>
+        </HStack>
       </GridItem>
-      <GridItem colSpan={2}>
-        <Badge variant="solid" colorScheme="cyan">
-          <HStack>
-            <Icon aria-label="Ago" as={AiOutlineClockCircle} fontSize="14" />
-            <ReactTimeago date={advertisement.createdOn} component={(props) => <Text fontSize="12" {...props} />} />
-          </HStack>
-        </Badge>
-      </GridItem>
+
       <GridItem colStart={13} colspan={1}>
         <HStack>
           <SharePopOver permalink={window.location.href + '/' + advertisement.id} />
