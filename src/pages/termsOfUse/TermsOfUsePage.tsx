@@ -1,7 +1,7 @@
-import DefaultPageLayout from './DefaultPageLayout';
+import DefaultPageLayout from '../../components/DefaultPageLayout';
 import { Button, Heading, ListItem, OrderedList, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import { routes } from '../constants';
+import { routes } from '../../constants';
 
 export function TermsOfUsePage() {
   return (

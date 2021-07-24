@@ -11,8 +11,8 @@ import NotConnectedOverlay from './shell/NotConnectedOverlay';
 import { AppQueryClientProvider } from './queries/AppQueryClientProvider';
 import { SocketContext, useConnectedSocket } from './sockets/socket';
 import ContactPage from './pages/contact/ContactPage';
-import { TermsOfUsePage } from './components/TermsOfUsePage';
-import { PrivacyPolicyPage } from './components/PrivacyPolicyPage';
+import { TermsOfUsePage } from './pages/termsOfUse/TermsOfUsePage';
+import { PrivacyPolicyPage } from './pages/privacyPolicy/PrivacyPolicyPage';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);

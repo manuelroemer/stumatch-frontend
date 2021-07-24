@@ -9,6 +9,13 @@ export interface PaginationProps {
   onPageChanged: (nextPage: number) => void;
 }
 
+/**
+ * Renders a pagination control with forward/backward button(s)
+ * which allows the user to jump between paginated data.
+ *
+ * This component focuses on displaying the controls.
+ * It does not handle any data fetching.
+ */
 export default function Pagination({ currentPage, pages, maxOptionsPerSide = 3, onPageChanged }: PaginationProps) {
   currentPage = Math.max(1, Math.min(currentPage, pages));
   pages = Math.max(1, pages);

@@ -4,6 +4,7 @@ import { PaginationApiResult } from './apiResult';
 import { ApiObject, QueryOptions } from './conventions';
 import { stumatchFetch, StumatchFetchInit } from './fetch';
 import { Faculty, StudyProgram } from './faculty';
+
 export interface MatchRequest extends ApiObject {
   partner?: User;
   status:
