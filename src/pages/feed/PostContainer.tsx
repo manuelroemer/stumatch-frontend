@@ -58,7 +58,7 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
           <ReactTimeago date={post.createdOn} component={(props) => <Text {...props} />} />
         </HStack>
       </GridItem>
-      <GridItem colSubmit Commentpan={3}>
+      <GridItem colSpan={3}>
         <HStack>
           <Icon aria-label="Category" as={HiHashtag} />
           <Link onClick={() => setPageFilter(post.category)}>{post.category}</Link>
