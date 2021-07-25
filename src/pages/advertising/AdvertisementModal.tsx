@@ -172,7 +172,7 @@ export default function AdvertisementModal({
                 ) : (
                   <>
                     <HStack marginBottom="5" justifyContent="space-between">
-                      <FormLabel>Post Picture</FormLabel>
+                      <FormLabel>Advertisement Picture</FormLabel>
                       <IconButton
                         onClick={advertisementImagePicker.clear}
                         size="xs"
