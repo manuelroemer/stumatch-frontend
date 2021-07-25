@@ -1,7 +1,7 @@
 import { Heading, Text, Flex, HStack } from '@chakra-ui/layout';
 import { AiOutlineClockCircle, AiOutlineEdit, AiOutlineEye, AiOutlinePicture } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
-import { Center, Grid, GridItem, Icon, IconButton, Link, useDisclosure } from '@chakra-ui/react';
+import { Center, Grid, GridItem, Icon, IconButton, Link, useDisclosure, Image } from '@chakra-ui/react';
 import ReactTimeago from 'react-timeago';
 import { routes } from '../../constants';
 import { useHistory } from 'react-router';
@@ -11,12 +11,15 @@ import { HiHashtag } from 'react-icons/hi';
 import { getTargetGroup } from '../../utils/advertisementUtils';
 import { MdSubject } from 'react-icons/md';
 import AdvertisementModal from './AdvertisementModal';
+import { tryGetBlobUrl } from '../../api/blob';
+import PlaceHodlerPostPicture from '../../assets/sTUMatch_logo.png';
 
 export interface AdvertisementContainerProps {
   advertisement: Advertisement;
+  isFeed: boolean;
 }
 
-export default function AdvertisementContainer({ advertisement }: AdvertisementContainerProps) {
+export default function AdvertisementContainer({ advertisement, isFeed }: AdvertisementContainerProps) {
   const history = useHistory();
   const handleClick = () => history.push(`${routes.advertising}/${advertisement.id}`);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -25,8 +28,14 @@ export default function AdvertisementContainer({ advertisement }: AdvertisementC
     <Grid templateRows="repeat(3, 1fr)" templateColumns="repeat(14, 1fr)" gap={2}>
       <GridItem rowSpan={3} colSpan={2}>
         <Center h="100%" align="center">
-          <Icon aria-label="Picture" as={AiOutlinePicture} w="80%" h="80%" />
-
+          {/* <Icon aria-label="Picture" as={AiOutlinePicture} w="80%" h="80%" /> */}
+          <Image
+            boxSize="100px"
+            objectFit="cover"
+            alt="postImage"
+            src={tryGetBlobUrl(advertisement?.advertisementImageBlobId)}
+            fallbackSrc={PlaceHodlerPostPicture}
+          />
         </Center>
       </GridItem>
       <GridItem rowSpan={1} colSpan={12}>
@@ -41,7 +50,7 @@ export default function AdvertisementContainer({ advertisement }: AdvertisementC
           <Text>{advertisement.shortDescription}</Text>
         </Flex>
       </GridItem>
-      <GridItem rowSpan={1} colSpan={12}>
+      <GridItem rowSpan={1} colSpan={11}>
         <HStack h="100%" justifyContent="space-between">
           <HStack>
             <Icon aria-label="Author" as={CgProfile} />
@@ -65,10 +74,12 @@ export default function AdvertisementContainer({ advertisement }: AdvertisementC
             <SharePopOver permalink={window.location.href + '/' + advertisement.id} />
             <Text>Share</Text>
           </HStack>
-          <HStack>
-            <IconButton size="sm" aria-label="Edit" as={AiOutlineEdit} onClick={onOpen}></IconButton>
-            <Text>Edit</Text>
-          </HStack>
+          {!isFeed && (
+            <HStack>
+              <IconButton size="sm" aria-label="Edit" as={AiOutlineEdit} onClick={onOpen}></IconButton>
+              <Text>Edit</Text>
+            </HStack>
+          )}
         </HStack>
       </GridItem>
       <AdvertisementModal isUpdate={true} isOpen={isOpen} onClose={onClose} advertisement={advertisement} />

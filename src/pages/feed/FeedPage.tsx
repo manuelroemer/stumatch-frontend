@@ -31,7 +31,7 @@ import { BiPlus } from 'react-icons/bi';
 import PostModal from './PostModal';
 import { useGetAllCategoriesQuery } from '../../queries/categories';
 import {} from '../../api/advertisement';
-import { useGetAllAdvertisementsQuery } from '../../queries/advertisements';
+import { useGetAllAdvertisementsQuery, useGetRandomAdvertisementQuery } from '../../queries/advertisements';
 import AdvertisementContainer from '../advertising/AdvertisementContainer';
 import debounce from 'lodash-es/debounce';
 import { debounceDuration } from '../../constants';
@@ -51,7 +51,8 @@ export default function FeedPage() {
     search: pageSearch,
   });
   const { data: categoryData } = useGetAllCategoriesQuery();
-  const { data: adData } = useGetAllAdvertisementsQuery(me);
+  const { data: adData1 } = useGetRandomAdvertisementQuery();
+  const { data: adData2 } = useGetRandomAdvertisementQuery();
   const debouncedSetPageSearch = debounce(setPageSearch, debounceDuration);
   const showAd = (data?.result.length ?? 0) > 0;
 
@@ -114,7 +115,7 @@ export default function FeedPage() {
             <>
               {showAd && (
                 <FloatingCard>
-                  <AdvertisementContainer advertisement={adData!.result[0]}></AdvertisementContainer>
+                  <AdvertisementContainer advertisement={adData1!.result} isFeed={true}></AdvertisementContainer>
                 </FloatingCard>
               )}
               {data?.result.map((post) => (
@@ -124,7 +125,7 @@ export default function FeedPage() {
               ))}
               {showAd && (
                 <FloatingCard>
-                  <AdvertisementContainer advertisement={adData!.result[0]}></AdvertisementContainer>
+                  <AdvertisementContainer advertisement={adData2!.result} isFeed={true}></AdvertisementContainer>
                 </FloatingCard>
               )}
             </>

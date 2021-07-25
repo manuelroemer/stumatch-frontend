@@ -16,10 +16,14 @@ import {
   WrapItem,
   Tooltip,
   Input,
+  IconButton,
+  Image,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, UseFormReturn } from 'react-hook-form';
+import { FcCancel } from 'react-icons/fc';
 import { HiHashtag } from 'react-icons/hi';
+import { RiImageAddLine } from 'react-icons/ri';
 import { Advertisement, PostAdvertisement, PutAdvertisement } from '../../api/advertisement';
 import { MatchRequestPut } from '../../api/matching';
 import { getUser } from '../../api/users';
@@ -28,6 +32,7 @@ import { usePostAdvertisementMutation, usePutAdvertisementMutation } from '../..
 import { useGetAllFacultiesQuery } from '../../queries/faculties';
 import { usePostMutation } from '../../queries/posts';
 import { useCurrentUser } from '../../stores/userStore';
+import { useImagePicker } from '../../utils/useImagePicker';
 
 export interface AdvertisementModalProps {
   isOpen: boolean;
@@ -55,11 +60,21 @@ export default function AdvertisementModal({
   isUpdate,
   advertisement,
 }: AdvertisementModalProps): JSX.Element {
-  const form = !isUpdate ? useForm<PostAdvertisement>() : useForm<PutAdvertisement>();
+  // const form = !isUpdate ? useForm<PostAdvertisement>() : useForm<PutAdvertisement>();
+  const form = useForm<PostAdvertisement>();
   const postMutation = usePostAdvertisementMutation();
   const putMutation = usePutAdvertisementMutation();
   const { isLoading, data } = useGetAllFacultiesQuery();
   const userId = useCurrentUser().id;
+  const advertisementImagePicker = useImagePicker();
+
+  useEffect(() => {
+    return form.setValue(
+      'advertisementImageBlob',
+      advertisementImagePicker.base64Data ? advertisementImagePicker.base64Data : '',
+    );
+  }, [advertisementImagePicker.base64Data]);
+
   if (!isUpdate) {
     form.setValue('authorId', userId);
   }
@@ -70,6 +85,9 @@ export default function AdvertisementModal({
     } else {
       putMutation.mutate({ id: advertisement!.id, body: advertisementValue });
     }
+    advertisementImagePicker.clear();
+    form.reset();
+    onClose();
   });
 
   return (
@@ -148,6 +166,34 @@ export default function AdvertisementModal({
                   }}
                   defaultValue={getDefaultDateValue(advertisement?.endDate)}
                 />
+              </FormControl>
+              <FormControl>
+                {!advertisementImagePicker.src ? (
+                  <>
+                    <HStack justifyContent="space-between">
+                      <FormLabel>Post Picture</FormLabel>
+                    </HStack>
+                    <IconButton
+                      onClick={advertisementImagePicker.pickImage}
+                      size="lg"
+                      aria-label="AddPicture"
+                      icon={<RiImageAddLine />}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <HStack marginBottom="5" justifyContent="space-between">
+                      <FormLabel>Post Picture</FormLabel>
+                      <IconButton
+                        onClick={advertisementImagePicker.clear}
+                        size="xs"
+                        aria-label="DeletePicture"
+                        icon={<FcCancel />}
+                      />
+                    </HStack>
+                    <Image src={advertisementImagePicker.src ? advertisementImagePicker.src : ''} />
+                  </>
+                )}
               </FormControl>
             </VStack>
           </ModalBody>

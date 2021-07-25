@@ -1,4 +1,17 @@
-import { HStack, Text, Heading, Flex, Box, Icon, Divider, Textarea, VStack, Button, Center } from '@chakra-ui/react';
+import {
+  HStack,
+  Text,
+  Heading,
+  Flex,
+  Box,
+  Icon,
+  Divider,
+  Textarea,
+  VStack,
+  Button,
+  Center,
+  Image,
+} from '@chakra-ui/react';
 import { useParams } from 'react-router';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { HiHashtag } from 'react-icons/hi';
@@ -12,6 +25,7 @@ import { ApiResult } from '../../api/apiResult';
 import { Advertisement } from '../../api/advertisement';
 import { MdSubject } from 'react-icons/md';
 import { getTargetGroup } from '../../utils/advertisementUtils';
+import { tryGetBlobUrl } from '../../api/blob';
 
 interface RouteParams {
   advertisementId: string;
@@ -21,8 +35,6 @@ function getTimeSpan(startDate: string, endDate: string) {
   const options = { day: 'numeric', month: 'numeric', year: 'numeric' } as const;
   return new Date(startDate).toLocaleDateString() + ' - ' + new Date(endDate).toLocaleDateString();
 }
-
-
 
 export default function AdvertisementPage() {
   const { advertisementId } = useParams<RouteParams>();
@@ -45,6 +57,14 @@ export default function AdvertisementPage() {
             <Box as="article" mt={['4', '4', '8']}>
               {data.result.content}
             </Box>
+            <Flex w="90%" rounded="md" justify="center">
+              <Image
+                maxBlockSize="500px"
+                objectFit="cover"
+                alt="advertisementImage"
+                src={tryGetBlobUrl(data.result.advertisementImageBlobId)}
+              />
+            </Flex>
             <Box as="article" mt={['4', '4', '8']} rounded="md" boxShadow="base" p="6">
               <HStack h="100%" justifyContent="space-between">
                 <HStack>

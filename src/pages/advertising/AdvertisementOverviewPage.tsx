@@ -3,12 +3,12 @@ import { range } from 'lodash-es';
 import { BiPlus } from 'react-icons/bi';
 import { me } from '../../api/conventions';
 import DefaultPageLayout from '../../components/DefaultPageLayout';
-import { AccessDeniedEmptyState, NoAdvertisementsEmptyState, NoPostsEmptyState } from '../../components/EmptyStates';
+import { AccessDeniedEmptyState, NoAdvertisementsEmptyState } from '../../components/EmptyStates';
 import FloatingCard from '../../components/FloatingCard';
 import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptionSkeleton';
 import Pagination from '../../components/Pagination';
 import RequireRoles from '../../components/RequireRoles';
-import { useGetAdvertisementsByUserQuery, useGetAllAdvertisementsQuery } from '../../queries/advertisements';
+import { useGetAdvertisementsByUserQuery } from '../../queries/advertisements';
 import {
   usePageQueryParameter,
   usePageSizeQueryParameter,
@@ -64,7 +64,7 @@ export default function AdvertisementOverviewPage() {
             <>
               {data?.result.map((advertisement) => (
                 <FloatingCard key={advertisement.id}>
-                  <AdvertisementContainer advertisement={advertisement} />
+                  <AdvertisementContainer advertisement={advertisement} isFeed={false} />
                 </FloatingCard>
               ))}
             </>
