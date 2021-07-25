@@ -70,3 +70,7 @@ export function PostAdvertisement(body: PostAdvertisement, init?: StumatchFetchI
 export function PutAdvertisement(advertisementId: string, body: PutAdvertisement, init?: StumatchFetchInit) {
   return stumatchFetch<Advertisement>(`/api/v1/advertisements/${advertisementId}`, { body, method: 'PUT', ...init });
 }
+
+export function deleteAdvertisement(id: string, init?: StumatchFetchInit) {
+  return stumatchFetch(`/api/v1/advertisements/${id}`, { method: 'DELETE', ...init });
+}

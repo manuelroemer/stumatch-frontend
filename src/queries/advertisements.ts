@@ -7,6 +7,7 @@ import {
   getAdvertisementsByUser,
   PutAdvertisement,
   getRandomAdvertisement,
+  deleteAdvertisement,
 } from '../api/advertisement';
 import { PutMutationData } from './types';
 import range from 'lodash-es/range';
@@ -56,4 +57,11 @@ export function usePutAdvertisementMutation() {
       onSuccess: () => client.invalidateQueries(advertisementsQueryKey),
     },
   );
+}
+
+export function useDeleteAdvertisementMutation(id: string) {
+  const client = useQueryClient();
+  return useMutation(() => deleteAdvertisement(id).then((res) => res.data), {
+    onSuccess: () => client.invalidateQueries(advertisementsQueryKey),
+  });
 }

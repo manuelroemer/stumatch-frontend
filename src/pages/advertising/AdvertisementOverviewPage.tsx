@@ -20,7 +20,7 @@ import { NoAdvertisementsEmptyState } from '../../components/EmptyStates';
 import FloatingCard from '../../components/FloatingCard';
 import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptionSkeleton';
 import Pagination from '../../components/Pagination';
-import { useGetAdvertisementsByUserQuery } from '../../queries/advertisements';
+import { useDeleteAdvertisementMutation, useGetAdvertisementsByUserQuery } from '../../queries/advertisements';
 import {
   usePageQueryParameter,
   usePageSizeQueryParameter,
@@ -28,6 +28,8 @@ import {
 } from '../../utils/useQueryParameter';
 import AdvertisementContainer from './AdvertisementContainer';
 import AdvertisementModal from './AdvertisementModal';
+import { useDeleteConfirmationModal } from '../../components/DeleteConfirmationModal';
+import { MdDeleteForever } from 'react-icons/md';
 
 export default function AdvertisementOverviewPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -77,6 +79,7 @@ export default function AdvertisementOverviewPage() {
                   advertisement={advertisement}
                   showAuthor={false}
                   showStatus={true}
+                  firstButton={<DeleteButton advertisement={advertisement} />}
                   secondButton={<EditButton advertisement={advertisement} />}
                 />
               </FloatingCard>
@@ -106,6 +109,33 @@ function EditButton({ advertisement, ...props }: HTMLChakraProps<'button'> & { a
         <Text>Edit </Text>
       </HStack>
       <AdvertisementModal isUpdate={true} isOpen={isOpen} onClose={onClose} advertisement={advertisement} />
+    </>
+  );
+}
+
+function DeleteButton({ advertisement, ...props }: HTMLChakraProps<'button'> & { advertisement: Advertisement }) {
+  const mutation = useDeleteAdvertisementMutation(advertisement.id);
+  const deleteModal = useDeleteConfirmationModal();
+  return (
+    <>
+      <Tooltip label={'Delete'} hasArrow>
+        <IconButton
+          aria-label="Delete"
+          fontSize="25"
+          icon={<MdDeleteForever />}
+          onClick={() => {
+            deleteModal.show({
+              header: 'Remove Advertisement ',
+              cancelText: 'No, keep it',
+              confirmText: 'Yes, delete it',
+              onConfirm: () => mutation.mutateAsync(),
+            });
+          }}
+          {...props}
+        />
+      </Tooltip>
+
+      {deleteModal.modal}
     </>
   );
 }
