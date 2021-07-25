@@ -13,6 +13,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Tooltip,
 } from '@chakra-ui/react';
 import { range } from 'lodash-es';
 import { NoUserEmptyState } from '../../components/EmptyStates';
@@ -31,6 +32,7 @@ import { FiSave } from 'react-icons/fi';
 import { BsSearch } from 'react-icons/bs';
 import { useState } from 'react';
 import { User } from '../../api/users';
+import NameMailComponent from '../../components/NameMailComponent';
 
 export function RoleManagementPage() {
   const [page, setPage] = usePageQueryParameter();
@@ -89,10 +91,7 @@ function RoleUserCard({ user }: RoleUserCardProps) {
     <FloatingCard p="4">
       <Flex align="center">
         <UserAvatar userId={user.id} mr="4" />
-        {getFullName(user)}
-        <Link href={`mailto:${user.email}`} ml="2">
-          ({user.email})
-        </Link>
+        <NameMailComponent name={getFullName(user)} email={user.email} />
         <Spacer />
         <CheckboxGroup colorScheme="primary" value={selectedRoles} onChange={(value) => setSelectedRoles(value as any)}>
           <HStack>
@@ -108,22 +107,24 @@ function RoleUserCard({ user }: RoleUserCardProps) {
             <Checkbox value="admin" mr="4">
               Admin
             </Checkbox>
-            <IconButton
-              isDisabled={selectedRoles.length === 0}
-              aria-label="save"
-              icon={<FiSave />}
-              type="submit"
-              onClick={() => {
-                mutation.mutate({ id: user.id, body: { roles: selectedRoles } });
-                toast({
-                  title: 'Roles successfully changed.',
-                  description: "We've saved the new roles.",
-                  status: 'success',
-                  duration: 9000,
-                  isClosable: true,
-                });
-              }}
-            />
+            <Tooltip hasArrow label={'Save'}>
+              <IconButton
+                isDisabled={selectedRoles.length === 0}
+                aria-label="save"
+                icon={<FiSave />}
+                type="submit"
+                onClick={() => {
+                  mutation.mutate({ id: user.id, body: { roles: selectedRoles } });
+                  toast({
+                    title: 'Roles successfully changed.',
+                    description: "We've saved the new roles.",
+                    status: 'success',
+                    duration: 9000,
+                    isClosable: true,
+                  });
+                }}
+              />
+            </Tooltip>
           </HStack>
         </CheckboxGroup>
       </Flex>

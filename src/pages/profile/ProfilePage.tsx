@@ -11,6 +11,7 @@ import {
   Radio,
   RadioGroup,
   Select,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
 import { useState } from 'react';
@@ -26,13 +27,14 @@ import { useCurrentUser } from '../../stores/userStore';
 
 export default function ProfilePage() {
   const { data } = useGetAllFacultiesQuery();
-
+  const toast = useToast();
   const {
     register,
     setValue,
     getValues,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<UserPut>();
   const mutation = usePutUserMutation();
   const user = useCurrentUser();
@@ -50,7 +52,15 @@ export default function ProfilePage() {
     }
     setValue('searchForJobs', jobValue);
     await mutation.mutateAsync({ id: user.id, body: userPut });
+    toast({
+      title: 'Changes successfully saved.',
+      description: 'Your changes were saved.',
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+    });
   });
+
   return (
     <DefaultPageLayout header="Your Profile">
       <form onSubmit={onSubmit}>
@@ -137,7 +147,7 @@ export default function ProfilePage() {
           <Button colorScheme="blue" type="submit">
             Save
           </Button>
-          <Button>Cancel</Button>
+          <Button onClick={() => reset()}>Cancel</Button>
         </HStack>
       </form>
     </DefaultPageLayout>
