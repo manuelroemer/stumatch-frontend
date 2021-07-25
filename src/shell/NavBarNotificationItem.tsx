@@ -26,6 +26,11 @@ import NavBarIconButton from './NavBarIconButton';
 
 const pageSize = 20;
 
+/**
+ * The notification icon button within the navbar.
+ * Notifies the user about the newest notifications using a real-time indicator
+ * and a popup with the most recent notifications.
+ */
 export default function NavBarNotificationItem() {
   const { isLoading, data } = useGetAllUserNotificationsQuery(me, { page: 1, pageSize, sort: 'createdOn:desc' });
   const hasUnreadNotifications = data?.result.some((x) => !x.seen) ?? false;

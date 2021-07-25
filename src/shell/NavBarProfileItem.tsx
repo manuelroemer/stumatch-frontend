@@ -15,6 +15,7 @@ import {
   PopoverFooter,
   PopoverBody,
   Flex,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useCurrentUser, useUserStore } from '../stores/userStore';
 import UserAvatar from '../components/UserAvatar';
@@ -22,8 +23,14 @@ import { getFullName } from '../utils/userUtils';
 import { useHistory } from 'react-router';
 import { routes } from '../constants';
 import { Link } from 'react-router-dom';
+import ProfileModal from '../pages/profile/ProfileModal';
 
+/**
+ * The profile icon button within the navbar.
+ * Provides the link to the user's profile and the option to logout.
+ */
 export default function NavBarProfileItem() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const history = useHistory();
   const logout = useUserStore((state) => state.logout);
   const user = useCurrentUser();
@@ -51,11 +58,14 @@ export default function NavBarProfileItem() {
             <Text fontWeight="bold">{getFullName(user)}</Text>
             <Text>{user.email}</Text>
             <StackDivider />
-            <Link to={routes.profile}>
+            {/* <Link to={routes.profile}>
               <Button variant="link" colorScheme="primary">
                 Show Profile
               </Button>
-            </Link>
+            </Link> */}
+            <Button variant="link" colorScheme="primary" onClick={onOpen}>
+              Show Profile
+            </Button>
           </VStack>
         </PopoverBody>
         <PopoverFooter p="2">
@@ -70,6 +80,7 @@ export default function NavBarProfileItem() {
           </Flex>
         </PopoverFooter>
       </PopoverContent>
+      <ProfileModal isOpen={isOpen} onClose={onClose} />
     </Popover>
   );
 }

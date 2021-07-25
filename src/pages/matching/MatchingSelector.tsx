@@ -137,7 +137,7 @@ function ChatButton({ chatGroupId, ...props }: HTMLChakraProps<'button'> & { cha
   return (
     <Link to={`/chat/${chatGroupId}`}>
       <Tooltip label={'Chat'} hasArrow>
-        <IconButton aria-label="Chat" fontSize="25" icon={<IoChatbubblesOutline />} {...props} />
+        <IconButton aria-label="Chat" fontSize="20" icon={<IoChatbubblesOutline />} {...props} />
       </Tooltip>
     </Link>
   );
@@ -210,7 +210,7 @@ function EditButton({ matchRequest, ...props }: HTMLChakraProps<'button'> & { ma
   return (
     <>
       <Tooltip label={'Edit Match Request'}>
-        <IconButton aria-label="Edit" fontSize="25" icon={<FaRegEdit />} onClick={onOpen} {...props} />
+        <IconButton aria-label="Edit" fontSize="20" icon={<FaRegEdit />} onClick={onOpen} {...props} />
       </Tooltip>
 
       <MatchingModal isUpdate={true} isOpen={isOpen} onClose={onClose} matchRequest={matchRequest} />

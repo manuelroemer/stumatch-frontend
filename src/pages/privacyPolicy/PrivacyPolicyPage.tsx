@@ -1,6 +1,6 @@
-import DefaultPageLayout from './DefaultPageLayout';
+import DefaultPageLayout from '../../components/DefaultPageLayout';
 import { Button, Heading, Link, ListItem, Text, UnorderedList } from '@chakra-ui/react';
-import { routes } from '../constants';
+import { routes } from '../../constants';
 
 export function PrivacyPolicyPage() {
   return (
@@ -56,11 +56,11 @@ export function PrivacyPolicyPage() {
         <p>Our Company collects your data so that we can: </p>
         <UnorderedList ml="10" mb="4" mt="4">
           <ListItem> Manage your account.</ListItem>
-          <p>
-            If you agree, Our Company will share your data with our partner companies so that they may offer you their
-            products and services.
-          </p>
         </UnorderedList>
+        <p>
+          Our Company will share your data with our partner companies so that they may offer you their products and
+          services.
+        </p>
       </Text>
       <Text>
         <Heading as="h2" size="md" mt="10" mb="4">

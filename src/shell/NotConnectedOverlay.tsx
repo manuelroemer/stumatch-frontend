@@ -9,6 +9,11 @@ export interface NotConnectedOverlayProps {
   children?: ReactNode;
 }
 
+/**
+ * A full-page overlay which automatically becomes visible when the app
+ * loses the connection to the backend.
+ * The overlay notifies the user about this scenario using an apology error message.
+ */
 export default function NotConnectedOverlay({ children }: NotConnectedOverlayProps) {
   const isConnected = useIsConnected();
   return (
@@ -34,8 +39,8 @@ function useIsConnected(interval = 5000) {
   const [isConnected, setIsConnected] = useState(true);
 
   // For the moment, use simple polling to the status endpoint for determining whether the backend is reachable.
-  // The used bandwidth is very small, so we can get away with polling over a longer time.
-  // TODO: This could nontheless be replaced with a better approach in the future (e.g. websockets).
+  // The used bandwidth is very small, so we can get away with polling over a longer time (especially with HTTP2).
+  // Also, it's a prototype, so whatever. :)
   useEffect(() => {
     let tid: NodeJS.Timeout;
 

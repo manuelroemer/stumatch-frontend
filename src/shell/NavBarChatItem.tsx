@@ -5,6 +5,10 @@ import { routes } from '../constants';
 import { useGetAllUserChatGroupsQuery, useUserChatGroupSocketQueryInvalidation } from '../queries/chatGroups';
 import NavBarIconButton from './NavBarIconButton';
 
+/**
+ * The chat icon button within the navbar.
+ * Has a real-time indicator notifying the user about new chat messages.
+ */
 export default function NavBarChatItem() {
   const { data: chatGroups } = useGetAllUserChatGroupsQuery(me);
   const hasUnreadChatMessages =

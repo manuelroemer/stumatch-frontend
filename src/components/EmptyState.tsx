@@ -54,6 +54,11 @@ export interface EmptyStateProps extends HTMLChakraProps<'div'> {
   actions?: ReactNode;
 }
 
+/**
+ * The component used accross the app to represent empty state.
+ * Typically consists of a title and an image to fill up the empty space.
+ * Optionally contains additional members such as action buttons.
+ */
 export default function EmptyState({ size = [], imgSrc, title, description, actions, ...rest }: EmptyStateProps) {
   const sizeBreakpoints = typeof size === 'string' ? [size] : size;
   const finalSize = useBreakpointValue(sizeBreakpoints) ?? 'md';

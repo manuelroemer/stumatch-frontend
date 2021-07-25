@@ -22,8 +22,6 @@ function getTimeSpan(startDate: string, endDate: string) {
   return new Date(startDate).toLocaleDateString() + ' - ' + new Date(endDate).toLocaleDateString();
 }
 
-
-
 export default function AdvertisementPage() {
   const { advertisementId } = useParams<RouteParams>();
   const { isLoading, data } = useGetAdvertisementByIDQuery(advertisementId);

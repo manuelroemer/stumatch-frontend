@@ -17,6 +17,7 @@ import {
   Image,
   IconButton,
   FormErrorMessage,
+  useToast,
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -36,6 +37,7 @@ export default function PostModal({ isOpen, onClose }: PostModalProps): JSX.Elem
   const form = useForm<PostPost>();
   const mutation = usePostMutation();
   const postImagePicker = useImagePicker();
+  const toast = useToast();
 
   useEffect(() => {
     return form.setValue('postImageBlob', postImagePicker.base64Data ? postImagePicker.base64Data : '');
@@ -46,6 +48,13 @@ export default function PostModal({ isOpen, onClose }: PostModalProps): JSX.Elem
     postImagePicker.clear();
     form.reset();
     onClose();
+    toast({
+      title: 'Post was successfully created.',
+      description: 'Your post was posted.',
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+    });
   });
 
   return (

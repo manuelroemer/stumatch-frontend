@@ -14,6 +14,7 @@ import {
   Tr,
   VStack,
   Text,
+  Tooltip,
 } from '@chakra-ui/react';
 import DefaultPageLayout from '../../components/DefaultPageLayout';
 import UserAvatar from '../../components/UserAvatar';
@@ -27,6 +28,7 @@ import { NoJobSearchingUserEmptyState } from '../../components/EmptyStates';
 import { useGetAllFacultiesQuery } from '../../queries/faculties';
 import { User } from '../../api/users';
 import { Faculty } from '../../api/faculty';
+import NameMailComponent from '../../components/NameMailComponent';
 
 export default function AdvertisementUserListPage() {
   const [page, setPage] = usePageQueryParameter();
@@ -58,17 +60,16 @@ export default function AdvertisementUserListPage() {
                 <UserAvatar userId={user.id} size="md" mr="6" ml="4" />
                 <VStack align="flex-start">
                   <HStack>
-                    <Text>{getFullName(user)} </Text>
-                    <Link href={`mailto:${user.email}`} ml="2" mr="2">
-                      (<Icon as={HiOutlineMail} /> {user.email})
-                    </Link>
+                    <NameMailComponent name={getFullName(user)} email={user.email} />
                   </HStack>
                   <UsersFilters user={user} />
                 </VStack>
 
                 <Spacer />
                 <Link href={`mailto:${user.email}`}>
-                  <IconButton aria-label="EMail" icon={<HiOutlineMail />} mr="4" fontSize="20" />
+                  <Tooltip hasArrow label={'E-Mail'}>
+                    <IconButton aria-label="EMail" icon={<HiOutlineMail />} mr="4" fontSize="20" />
+                  </Tooltip>
                 </Link>
               </Td>
             </Tr>

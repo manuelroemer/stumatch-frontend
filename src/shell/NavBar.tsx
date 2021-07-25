@@ -12,6 +12,11 @@ import NavBarIconButton from './NavBarIconButton';
 import { FiSun } from 'react-icons/fi';
 import { FaMoon } from 'react-icons/fa';
 
+/**
+ * The global navbar of the app.
+ * Consists of links to various pages (visibility depends on the user's roles)
+ * and popups providing quick-access functionality.
+ */
 export default function NavBar() {
   const { colorMode, toggleColorMode } = useColorMode();
   const colorBg = useColorModeValue('white', 'gray.700');
@@ -43,6 +48,7 @@ export default function NavBar() {
           <NavBarItem title="Administration" to={routes.administration} />
         </RequireRoles>
       </HStack>
+
       <HStack spacing="4" justify="center">
         <NavBarIconButton
           aria-label={colorMode === 'light' ? 'Dark Mode' : 'Light Mode'}
