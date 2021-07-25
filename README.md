@@ -48,6 +48,20 @@ npm run watch-production
 The command will start a local development server on port `8080`. To access the frontend, open
 your favorite browser and navigate to [`localhost:8080`](http://localhost:8080).
 
+You can try logging in with the following credentials:
+
+| E-Mail | Password | Roles |
+| ------ | -------- | ----- |
+| `nhu@stumatch.com` | `Admin123` | All roles. |
+| `manu@stumatch.com` | `Admin123` | All roles. |
+| `khang@stumatch.com` | `Admin123` | All roles. |
+| `jonas@stumatch.com` | `Admin123` | All roles. |
+| `student@stumatch.com` | `Student123` | Student role. |
+| `educator@stumatch.com` | `Educator123` | Educator role. |
+| `advertiser@stumatch.com` | `Advertiser123` | Advertiser role. |
+| `admin@stumatch.com` | `Admin123` | Admin role. |
+
+
 
 ### Debugging the Application with VS Code
 
