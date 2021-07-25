@@ -10,26 +10,16 @@ import {
   VStack,
   FormControl,
   FormLabel,
-  HStack,
   Textarea,
-  Icon,
-  WrapItem,
-  Tooltip,
   Input,
-  IconButton,
   Image,
   FormErrorMessage,
 } from '@chakra-ui/react';
-import { useState } from 'react';
-import { useForm, UseFormReturn } from 'react-hook-form';
-import { HiHashtag } from 'react-icons/hi';
+import { useForm } from 'react-hook-form';
 import { Advertisement, PostAdvertisement, PutAdvertisement } from '../../api/advertisement';
-import { MatchRequestPut } from '../../api/matching';
-import { getUser } from '../../api/users';
 import FacultyDropdown from '../../components/FacultyDropdown';
 import { usePostAdvertisementMutation, usePutAdvertisementMutation } from '../../queries/advertisements';
 import { useGetAllFacultiesQuery } from '../../queries/faculties';
-import { usePostMutation } from '../../queries/posts';
 import { useCurrentUser } from '../../stores/userStore';
 
 export interface AdvertisementModalProps {
@@ -38,10 +28,6 @@ export interface AdvertisementModalProps {
   isUpdate: boolean;
   advertisement?: Advertisement;
 }
-
-/* function removeTimeFromDate(dateString: string) {
-  return new Date(new Date(dateString).toDateString());
-} */
 
 function getDefaultDateValue(dateString?: string) {
   if (!dateString) {
