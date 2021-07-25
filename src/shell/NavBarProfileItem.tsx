@@ -22,7 +22,6 @@ import UserAvatar from '../components/UserAvatar';
 import { getFullName } from '../utils/userUtils';
 import { useHistory } from 'react-router';
 import { routes } from '../constants';
-import { Link } from 'react-router-dom';
 import ProfileModal from '../pages/profile/ProfileModal';
 
 /**
@@ -58,11 +57,6 @@ export default function NavBarProfileItem() {
             <Text fontWeight="bold">{getFullName(user)}</Text>
             <Text>{user.email}</Text>
             <StackDivider />
-            {/* <Link to={routes.profile}>
-              <Button variant="link" colorScheme="primary">
-                Show Profile
-              </Button>
-            </Link> */}
             <Button variant="link" colorScheme="primary" onClick={onOpen}>
               Show Profile
             </Button>

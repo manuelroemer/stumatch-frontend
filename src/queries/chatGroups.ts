@@ -1,7 +1,5 @@
-import { useMutation, useQuery, useQueryClient, UseQueryOptions } from 'react-query';
-import { ApiResult } from '../api/apiResult';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
-  ChatGroup,
   ChatGroupPost,
   ChatGroupPut,
   getAllUserChatGroups,

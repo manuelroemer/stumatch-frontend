@@ -12,7 +12,6 @@ import {
   AccordionItem,
   AccordionPanel,
   chakra,
-  Link,
   Badge,
   HStack,
   Spacer,

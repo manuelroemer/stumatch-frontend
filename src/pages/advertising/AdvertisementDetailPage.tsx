@@ -1,4 +1,4 @@
-import { HStack, Text, Heading, Flex, Box, Icon } from '@chakra-ui/react';
+import { HStack, Text, Heading, Flex, Box, Icon, useColorModeValue } from '@chakra-ui/react';
 import { useParams } from 'react-router';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
@@ -22,6 +22,8 @@ function getTimeSpan(startDate: string, endDate: string) {
 export default function AdvertisementDetailPage() {
   const { advertisementId } = useParams<RouteParams>();
   const { isLoading, data } = useGetAdvertisementByIDQuery(advertisementId);
+  const colorBg = useColorModeValue('white', 'gray.700');
+  const colorBd = useColorModeValue('gray.200', 'gray.600');
 
   return (
     <>
@@ -39,7 +41,14 @@ export default function AdvertisementDetailPage() {
             <Box as="article" mt={['4', '4', '8']}>
               {data.result.content}
             </Box>
-            <Box as="article" mt={['4', '4', '8']} rounded="md" boxShadow="base" p="6">
+            <Box
+              as="article"
+              mt={['4', '4', '8']}
+              rounded="md"
+              boxShadow="base"
+              p="6"
+              bg={colorBg}
+              borderColor={colorBd}>
               <HStack h="100%" justifyContent="space-between">
                 <HStack>
                   <Icon aria-label="Author" as={CgProfile} />
