@@ -16,10 +16,9 @@ import {
   Input,
   NumberInput,
   NumberInputField,
-  Radio,
-  RadioGroup,
   Select,
   useToast,
+  Checkbox,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useGetAllFacultiesQuery } from '../../queries/faculties';
@@ -52,8 +51,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfilProps) {
   const { data: userData } = useGetUserQuery(userMe.id);
   const user = userData ? userData.result : userMe;
 
-  const initialSearchJobValue = user.searchForJobs ? 'Yes' : user.searchForJobs === false ? 'No' : 'Undefined';
-  const [jobValue, setJobValue] = useState(initialSearchJobValue);
+  const [jobValue, setJobValue] = useState(user.searchForJobs);
   const validateImmatriculatedOn = () => {
     const startingYear = getValues('immatriculatedOn.startingYear');
     const startingSemester = getValues('immatriculatedOn.startingSemester');
@@ -79,7 +77,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfilProps) {
   const handleClose = () => {
     reset();
     onClose();
-    setJobValue(initialSearchJobValue);
+    setJobValue(user.searchForJobs);
   };
 
   return (
@@ -128,13 +126,9 @@ export default function ProfileModal({ isOpen, onClose }: ProfilProps) {
 
                 <FormControl>
                   <FormLabel>Are you currently looking for a job?</FormLabel>
-                  <RadioGroup {...register('searchForJobs')} defaultValue={jobValue} onChange={setJobValue}>
-                    <HStack>
-                      <Radio value="Yes">Yes</Radio>
-                      <Radio value="No">No</Radio>
-                      <Radio value="Undefined">Undefined</Radio>
-                    </HStack>
-                  </RadioGroup>
+                  <Checkbox isChecked={jobValue} onChange={(e) => setJobValue(e.target.checked)}>
+                    Yes
+                  </Checkbox>
                 </FormControl>
 
                 <FacultyDropdown
