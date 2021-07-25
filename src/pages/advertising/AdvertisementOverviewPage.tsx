@@ -1,4 +1,5 @@
 import {
+  Button,
   Center,
   HStack,
   HTMLChakraProps,
@@ -12,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { range } from 'lodash-es';
 import { FaRegEdit } from 'react-icons/fa';
+import { BiPlus } from 'react-icons/bi';
 import { Advertisement } from '../../api/advertisement';
 import { me } from '../../api/conventions';
 import { NoAdvertisementsEmptyState } from '../../components/EmptyStates';
@@ -28,7 +30,7 @@ import AdvertisementContainer from './AdvertisementContainer';
 import AdvertisementModal from './AdvertisementModal';
 
 export default function AdvertisementOverviewPage() {
-  const { isOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = usePageQueryParameter();
   const [pageSize, setPageSize] = usePageSizeQueryParameter();
   const [pageSort, setPageSort] = useStringQueryParameter('sort', 'desc');
@@ -40,6 +42,12 @@ export default function AdvertisementOverviewPage() {
   return (
     <>
       <VStack>
+        <HStack justify="flex-end" w="100%">
+          <Button onClick={onOpen} colorScheme="primary" leftIcon={<BiPlus />} size="md">
+            Create New
+          </Button>
+        </HStack>
+
         <HStack width="full" justifyContent="space-between">
           <Spacer></Spacer>
           <Text minWidth="max-content">Sort by:</Text>
@@ -64,7 +72,7 @@ export default function AdvertisementOverviewPage() {
         ) : (
           <>
             {data?.result.map((advertisement) => (
-              <FloatingCard key={advertisement.id}>
+              <FloatingCard padding={3} key={advertisement.id}>
                 <AdvertisementContainer
                   advertisement={advertisement}
                   showAuthor={false}
