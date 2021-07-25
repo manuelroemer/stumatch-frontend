@@ -13,6 +13,7 @@ import {
   Button,
   Center,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react';
 import { useParams } from 'react-router';
 import { AiOutlineClockCircle } from 'react-icons/ai';
@@ -48,10 +49,18 @@ export default function PostPage() {
   });
   const colorBg = useColorModeValue('white', 'gray.700');
   const colorBd = useColorModeValue('gray.200', 'gray.600');
+  const toast = useToast();
 
   const handleSubmit = () => {
     mutationPost.mutate({ content: commentContent });
     setCommentContent('');
+    toast({
+      title: 'Comment was successfully created.',
+      description: 'Your comment was created.',
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+    });
   };
 
   return (
