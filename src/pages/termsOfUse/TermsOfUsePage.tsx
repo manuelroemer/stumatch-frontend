@@ -81,12 +81,10 @@ export function TermsOfUsePage() {
         </Heading>
         If you have any questions about these Terms, please
         <Link to={routes.contact}>
-          {' '}
           <Button variant="link" colorScheme="primary">
-            contact us{' '}
+            contact us
           </Button>
         </Link>
-        .
       </Text>
     </DefaultPageLayout>
   );
