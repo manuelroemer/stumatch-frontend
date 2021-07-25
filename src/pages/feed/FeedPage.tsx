@@ -60,7 +60,9 @@ export default function FeedPage() {
   const colorBg = useColorModeValue('blue.50', 'blue.900');
 
   return (
-    <RequireRoles roles={['student', 'admin']} fallback={<AccessDeniedEmptyState />}>
+    <RequireRoles
+      roles={['student', 'admin', 'advertiser', 'globalContentManager']}
+      fallback={<AccessDeniedEmptyState />}>
       <DefaultPageLayout
         header="Feed"
         subHeader="What happened at your university?"
