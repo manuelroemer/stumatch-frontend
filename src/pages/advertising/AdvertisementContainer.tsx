@@ -1,14 +1,13 @@
-import { Heading, Text, Flex, HStack, Spacer } from '@chakra-ui/layout';
+import { Heading, Text, Flex, HStack } from '@chakra-ui/layout';
 import { AiOutlineClockCircle, AiOutlinePicture } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
-import { Badge, Center, Grid, GridItem, Icon, Link, useDisclosure } from '@chakra-ui/react';
+import { Badge, Center, Grid, GridItem, Icon, Link } from '@chakra-ui/react';
 import ReactTimeago from 'react-timeago';
 import { routes } from '../../constants';
 import { useHistory } from 'react-router';
 import { Advertisement } from '../../api/advertisement';
 import { getTargetGroup } from '../../utils/advertisementUtils';
 import { MdSubject } from 'react-icons/md';
-import AdvertisementModal from './AdvertisementModal';
 import { ReactNode } from 'react';
 
 export interface AdvertisementContainerProps {
