@@ -16,6 +16,7 @@ export interface Advertisement extends ApiObject {
   startDate: string;
   endDate: string;
   status: string;
+  advertisementImageBlobId: string;
 }
 
 export interface PostAdvertisement extends ApiObject {
@@ -27,6 +28,7 @@ export interface PostAdvertisement extends ApiObject {
   studyProgramId?: string;
   startDate: Date;
   endDate: Date;
+  advertisementImageBlob: string;
 }
 
 export interface PutAdvertisement {
@@ -39,6 +41,7 @@ export interface PutAdvertisement {
   startDate?: Date;
   endDate?: Date;
   status?: string;
+  advertisementImageBlob: string;
 }
 
 export function getAllAdvertisements(options?: QueryOptions, init?: StumatchFetchInit) {
