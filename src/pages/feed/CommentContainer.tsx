@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { useCurrentUser } from '../../stores/userStore';
 import { useDeleteCommentMutation, usePutCommentMutation } from '../../queries/comments';
 import { defaultTimeagoFormatter } from '../../utils/reactTimeagoFormatter';
+import { getFullName } from '../../utils/userUtils';
 
 export interface CommentContainerProps {
   comment: Comment;
@@ -85,9 +86,7 @@ export default function CommentContainer({ comment }: CommentContainerProps) {
         <HStack w="100%">
           <Icon aria-label="Author" as={CgProfile} />
           <Text>
-            <b>
-              {user?.result.firstName}, {user?.result.lastName} said:
-            </b>
+            <b>{user ? getFullName(user) : ''}</b>
           </Text>
         </HStack>
         {allowEdit() ? (

@@ -33,6 +33,7 @@ import { tryGetBlobUrl } from '../../api/blob';
 import PlaceHodlerPostPicture from '../../assets/sTUMatch_logo.png';
 import { defaultTimeagoFormatter } from '../../utils/reactTimeagoFormatter';
 import { generatePermalinkForCurrentPage } from '../../utils/permalink';
+import { getFullName } from '../../utils/userUtils';
 
 interface RouteParams {
   postId: string;
@@ -103,9 +104,7 @@ export default function PostPage() {
               <HStack h="100%" justifyContent="space-between">
                 <HStack>
                   <Icon aria-label="Author" as={CgProfile} />
-                  <Text>
-                    {data.result.author.firstName}, {data.result.author.lastName}
-                  </Text>
+                  <Text>{getFullName(data.result.author)}</Text>
                 </HStack>
                 <HStack>
                   <Icon aria-label="Ago" as={AiOutlineClockCircle} />

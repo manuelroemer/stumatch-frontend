@@ -15,6 +15,7 @@ import PlaceHodlerPostPicture from '../../assets/sTUMatch_logo.png';
 import { Dispatch } from 'react';
 import { defaultTimeagoFormatter } from '../../utils/reactTimeagoFormatter';
 import { generatePermalinkForCurrentPage } from '../../utils/permalink';
+import { getFullName } from '../../utils/userUtils';
 
 export interface PostContainerProps {
   post: Post;
@@ -49,9 +50,7 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
       <GridItem colSpan={3}>
         <HStack h="100%">
           <Icon aria-label="Author" as={CgProfile} />
-          <Text>
-            {post.author.lastName}, {post.author.firstName}
-          </Text>
+          <Text>{getFullName(post.author)}</Text>
         </HStack>
       </GridItem>
       <GridItem colSpan={2}>
