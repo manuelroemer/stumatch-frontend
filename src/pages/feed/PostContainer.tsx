@@ -4,7 +4,7 @@ import { AiOutlineClockCircle } from 'react-icons/ai';
 import { BiCommentDetail } from 'react-icons/bi';
 import { CgProfile } from 'react-icons/cg';
 import { HiHashtag } from 'react-icons/hi';
-import { Image, Grid, GridItem, Icon, Link } from '@chakra-ui/react';
+import { Image, Grid, GridItem, Icon, Link, IconButton } from '@chakra-ui/react';
 import ReactTimeago from 'react-timeago';
 import { routes } from '../../constants';
 import { useHistory } from 'react-router';
@@ -21,7 +21,7 @@ export interface PostContainerProps {
 
 export default function PostContainer({ post, setPageFilter }: PostContainerProps) {
   const history = useHistory();
-  const handleClick = () => history.push(`${routes.feed}/${post.id}`);
+  const goToPostDetails = () => history.push(`${routes.feed}/${post.id}`);
 
   return (
     <Grid templateRows="repeat(2, 1fr)" templateColumns="repeat(13, 1fr)" gap={2} rowGap="6">
@@ -39,7 +39,7 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
 
       <GridItem rowSpan={1} colSpan={10}>
         <Flex h="100%" align="flex-end">
-          <Heading onClick={handleClick} as="h1" lineHeight="1.4" fontSize="20" isTruncated textAlign="left">
+          <Heading onClick={goToPostDetails} as="h1" lineHeight="1.4" fontSize="20" isTruncated textAlign="left">
             <Link>{post.title}</Link>
           </Heading>
         </Flex>
@@ -71,7 +71,13 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
       </GridItem>
       <GridItem>
         <HStack h="100%">
-          <Icon w={4} h={4} aria-label="Comment" as={BiCommentDetail} />
+          <IconButton
+            size="sm"
+            aria-label="Comment"
+            icon={<BiCommentDetail />}
+            fontSize="17"
+            onClick={goToPostDetails}
+          />
           <Text>{post.comments.length}</Text>
         </HStack>
       </GridItem>
