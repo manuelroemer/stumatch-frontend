@@ -105,7 +105,7 @@ function UsersFilters({ user }: { user: User }) {
       )}
       {user.startingSemester && user.startingYear && (
         <Badge ml="2" variant="subtle" colorScheme="cyan">
-          Studienstart: {user.startingSemester} {user.startingYear}
+          Start of Studies: {user.startingSemester} {user.startingYear}
         </Badge>
       )}
     </HStack>
