@@ -33,7 +33,7 @@ export interface UserPost {
     startingSemester?: string;
     startingYear?: number;
   };
-  searchForJobs?: string;
+  searchForJobs?: boolean;
   profileImageBlob?: string;
 }
 
@@ -48,7 +48,7 @@ export interface UserPut {
   lastName: string;
   facultyId?: string;
   studyProgramId?: string;
-  searchForJobs?: string;
+  searchForJobs?: boolean;
   immatriculatedOn?: {
     startingSemester?: string;
     startingYear?: number;

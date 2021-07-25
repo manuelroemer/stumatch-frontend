@@ -20,8 +20,7 @@ import {
   Flex,
   Avatar,
   FormHelperText,
-  Radio,
-  RadioGroup,
+  Checkbox,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { UserPost } from '../../api/users';
@@ -53,7 +52,7 @@ export default function CreateAccountModal({ isOpen, onClose }: CreateAccountMod
   const mutation = usePostUserMutation();
   const login = useUserStore((state) => state.login);
   const profileImagePicker = useImagePicker();
-  const [jobValue, setJobValue] = useState('Undefined');
+  const [jobValue, setJobValue] = useState(false);
 
   const onSubmit = handleSubmit(async (userPost) => {
     if (!userPost.immatriculatedOn?.startingSemester || !userPost.immatriculatedOn?.startingYear) {
@@ -140,13 +139,7 @@ export default function CreateAccountModal({ isOpen, onClose }: CreateAccountMod
                 </HStack>
                 <FormControl>
                   <FormLabel>Are you currently looking for a job?</FormLabel>
-                  <RadioGroup {...register('searchForJobs')} defaultValue={jobValue} onChange={setJobValue}>
-                    <HStack>
-                      <Radio value="Yes">Yes</Radio>
-                      <Radio value="No">No</Radio>
-                      <Radio value="Undefined">Undefined</Radio>
-                    </HStack>
-                  </RadioGroup>
+                  <Checkbox onChange={(e) => setJobValue(e.target.checked)}>Yes</Checkbox>
                 </FormControl>
 
                 <FacultyDropdown
