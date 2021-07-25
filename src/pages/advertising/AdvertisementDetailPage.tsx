@@ -78,10 +78,12 @@ export default function AdvertisementDetailPage() {
                   <Icon aria-label="TimeSpan" as={IoCalendarOutline} />
                   <Text>{getTimeSpan(data.result.startDate, data.result.endDate)}</Text>
                 </HStack>
-                <HStack>
-                  <Icon aria-label="Faculty" as={MdSubject} />
-                  <Text>{getTargetGroup(data.result)}</Text>
-                </HStack>
+                {getTargetGroup(data.result) && (
+                  <HStack>
+                    <Icon aria-label="TargetGroup" as={MdSubject} fontSize="14" />
+                    <Text>{getTargetGroup(data.result)}</Text>
+                  </HStack>
+                )}
                 <HStack>
                   <SharePopOver permalink={generatePermalinkForCurrentPage()} />
                   <Text>Share</Text>
