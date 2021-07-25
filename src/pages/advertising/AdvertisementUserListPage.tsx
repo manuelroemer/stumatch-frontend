@@ -2,7 +2,6 @@ import {
   Badge,
   Center,
   HStack,
-  Icon,
   IconButton,
   Link,
   Skeleton,
@@ -13,10 +12,8 @@ import {
   Td,
   Tr,
   VStack,
-  Text,
   Tooltip,
 } from '@chakra-ui/react';
-import DefaultPageLayout from '../../components/DefaultPageLayout';
 import UserAvatar from '../../components/UserAvatar';
 import { getFullName } from '../../utils/userUtils';
 import range from 'lodash-es/range';
@@ -42,7 +39,7 @@ export default function AdvertisementUserListPage() {
   });
 
   return (
-    <DefaultPageLayout header="Job Candidates" subHeader="Students who are currently looking for a job.">
+    <>
       <Table size="lg">
         <Tbody>
           {isLoading &&
@@ -82,7 +79,7 @@ export default function AdvertisementUserListPage() {
         </Center>
       )}
       {data && data.result.length === 0 && <NoJobSearchingUserEmptyState />}
-    </DefaultPageLayout>
+    </>
   );
 }
 
@@ -93,7 +90,6 @@ function UsersFilters({ user }: { user: User }) {
     .filter((faculty: Faculty) => userFaculty === undefined || faculty.id === userFaculty.id)
     .flatMap((faculty: Faculty) => faculty.studyPrograms);
   const userStudyProgram = studyPrograms?.find((studyProgram) => studyProgram.id === user.studyProgramId);
-  console.info(user);
 
   return (
     <HStack>

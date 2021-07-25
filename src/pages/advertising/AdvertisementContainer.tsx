@@ -1,4 +1,4 @@
-import { Heading, Text, Flex, HStack } from '@chakra-ui/layout';
+import { Heading, Text, Flex, HStack, Spacer } from '@chakra-ui/layout';
 import { AiOutlineClockCircle, AiOutlinePicture } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
 import { Badge, Center, Grid, GridItem, Icon, Link, useDisclosure } from '@chakra-ui/react';
@@ -14,12 +14,14 @@ import { ReactNode } from 'react';
 export interface AdvertisementContainerProps {
   advertisement: Advertisement;
   showAuthor: boolean;
+  showStatus: boolean;
   firstButton?: ReactNode;
   secondButton?: ReactNode;
 }
 
 export default function AdvertisementContainer({
   advertisement,
+  showStatus,
   showAuthor,
   firstButton,
   secondButton,
@@ -46,7 +48,7 @@ export default function AdvertisementContainer({
           <Text>{advertisement.shortDescription}</Text>
         </Flex>
       </GridItem>
-      <GridItem rowSpan={1} colSpan={8}>
+      <GridItem rowSpan={1} colSpan={8} colStart={3}>
         <HStack>
           {showAuthor && (
             <Badge variant="solid" colorScheme="cyan">
@@ -72,8 +74,17 @@ export default function AdvertisementContainer({
               <ReactTimeago date={advertisement.createdOn} component={(props) => <Text fontSize="12" {...props} />} />
             </HStack>
           </Badge>
+          {showStatus && (
+            <Badge variant="solid" colorScheme="orange">
+              <HStack>
+                <Icon aria-label="Status" as={MdSubject} fontSize="14" />
+                <Text fontSize="12">{advertisement.status}</Text>
+              </HStack>
+            </Badge>
+          )}
         </HStack>
       </GridItem>
+
       {firstButton && (
         <GridItem rowSpan={1} colStart={12}>
           {firstButton}

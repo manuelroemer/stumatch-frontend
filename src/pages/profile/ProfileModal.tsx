@@ -48,7 +48,10 @@ export default function ProfileModal({ isOpen, onClose }: ProfilProps) {
     reset,
   } = useForm<UserPut>();
   const mutation = usePutUserMutation();
-  const user = useCurrentUser();
+  const userMe = useCurrentUser();
+  const { data: userData } = useGetUserQuery(userMe.id);
+  const user = userData ? userData.result : userMe;
+
   const initialSearchJobValue = user.searchForJobs ? 'Yes' : user.searchForJobs === false ? 'No' : 'Undefined';
   const [jobValue, setJobValue] = useState(initialSearchJobValue);
   const validateImmatriculatedOn = () => {
@@ -63,6 +66,7 @@ export default function ProfileModal({ isOpen, onClose }: ProfilProps) {
     }
     setValue('searchForJobs', jobValue);
     await mutation.mutateAsync({ id: user.id, body: userPut });
+    onClose();
     toast({
       title: 'Changes successfully saved.',
       description: 'Your changes were saved.',
@@ -72,8 +76,14 @@ export default function ProfileModal({ isOpen, onClose }: ProfilProps) {
     });
   });
 
+  const handleClose = () => {
+    reset();
+    onClose();
+    setJobValue(initialSearchJobValue);
+  };
+
   return (
-    <Modal isOpen={isOpen} size="4xl" onClose={onClose}>
+    <Modal isOpen={isOpen} size="4xl" onClose={handleClose}>
       <ModalOverlay />
       <ModalContent>
         {!isLoading && (
@@ -164,10 +174,10 @@ export default function ProfileModal({ isOpen, onClose }: ProfilProps) {
 
             <ModalFooter>
               <HStack justify="flex-end" padding="5">
-                <Button colorScheme="primary" type="submit" onClick={onClose}>
+                <Button colorScheme="primary" type="submit">
                   Save
                 </Button>
-                <Button onClick={onClose}>Cancel</Button>
+                <Button onClick={handleClose}>Cancel</Button>
               </HStack>
             </ModalFooter>
           </form>
