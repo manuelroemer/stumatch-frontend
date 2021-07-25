@@ -12,6 +12,7 @@ import { ReactNode } from 'react';
 import { tryGetBlobUrl } from '../../api/blob';
 import PlaceHodlerPostPicture from '../../assets/sTUMatch_logo.png';
 import { defaultTimeagoFormatter } from '../../utils/reactTimeagoFormatter';
+import { getFullName } from '../../utils/userUtils';
 
 export interface AdvertisementContainerProps {
   advertisement: Advertisement;
@@ -62,9 +63,7 @@ export default function AdvertisementContainer({
             <Badge variant="solid" colorScheme="cyan">
               <HStack>
                 <Icon aria-label="Author" as={CgProfile} fontSize="14" />
-                <Text fontSize="12">
-                  {advertisement.author.lastName} ,{advertisement.author.firstName}
-                </Text>
+                <Text fontSize="12">{getFullName(advertisement.author)}</Text>
               </HStack>
             </Badge>
           )}
