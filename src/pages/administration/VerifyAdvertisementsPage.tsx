@@ -59,7 +59,6 @@ export function VerifyAdvertisementsPage() {
           <Select onChange={(e) => setPageFilter(e.target.value)} value={pageFilter}>
             <option value="">All</option>
             <option value="unverified">unverified</option>
-            <option value="pendingVerification">pending verification</option>
             <option value="verified">verified</option>
             <option value="denied">denied</option>
           </Select>
