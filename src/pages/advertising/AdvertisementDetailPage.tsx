@@ -50,7 +50,7 @@ export default function AdvertisementDetailPage() {
               </Box>
             </Flex>
             <Box as="article" mt={['4', '4', '8']}>
-              {data.result.content}
+              <p style={{ whiteSpace: 'pre-wrap' }}>{data.result.content}</p>
             </Box>
             <Box
               as="article"
