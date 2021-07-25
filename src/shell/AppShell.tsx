@@ -15,6 +15,7 @@ import { TermsOfUsePage } from '../pages/termsOfUse/TermsOfUsePage';
 import { PrivacyPolicyPage } from '../pages/privacyPolicy/PrivacyPolicyPage';
 import AdvertisementUserListPage from '../pages/advertising/AdvertisementUserListPage';
 import AdvertisementPage from '../pages/advertising/AdvertisementPage';
+import AdvertisementDetailPage from '../pages/advertising/AdvertisementDetailPage';
 
 /**
  * Provides the layout and routing functionality for the application
@@ -28,6 +29,7 @@ export default function AppShell() {
       <Route exact path={routes.postPage} component={PostPage} />
       <Route exact path={routes.matching} component={MatchingPage} />
       <Route exact path={routes.advertising} component={AdvertisementPage} />
+      <Route exact path={routes.advertisementPage} component={AdvertisementDetailPage} />
       <Route exact path={routes.administration} component={AdministrationPage} />
       <Route exact path={routes.notifications} component={NotificationPage} />
       <Route exact path={routes.friendsList} component={friendsListPage} />
