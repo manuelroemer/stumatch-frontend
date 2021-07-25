@@ -9,6 +9,7 @@ import { IoCalendarOutline } from 'react-icons/io5';
 import { MdSubject } from 'react-icons/md';
 import { getTargetGroup } from '../../utils/advertisementUtils';
 import { defaultTimeagoFormatter } from '../../utils/reactTimeagoFormatter';
+import { generatePermalinkForCurrentPage } from '../../utils/permalink';
 
 interface RouteParams {
   advertisementId: string;
@@ -63,7 +64,7 @@ export default function AdvertisementDetailPage() {
                   <Text>{getTargetGroup(data.result)}</Text>
                 </HStack>
                 <HStack>
-                  <SharePopOver permalink={window.location.href} />
+                  <SharePopOver permalink={generatePermalinkForCurrentPage()} />
                   <Text>Share</Text>
                 </HStack>
               </HStack>
