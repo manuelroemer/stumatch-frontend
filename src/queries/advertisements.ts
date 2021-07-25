@@ -9,6 +9,7 @@ import {
   getRandomAdvertisement,
 } from '../api/advertisement';
 import { PutMutationData } from './types';
+import range from 'lodash-es/range';
 
 export const advertisementsQueryKey = 'advertisements';
 
@@ -24,11 +25,20 @@ export function useGetAdvertisementsByUserQuery(userId: string, options?: QueryO
 }
 
 export function useGetAdvertisementByIDQuery(advertisementId: string) {
-  return useQuery([advertisementsQueryKey], () => getAdvertisementByID(advertisementId).then((res) => res.data));
+  return useQuery([advertisementsQueryKey, advertisementId], () =>
+    getAdvertisementByID(advertisementId).then((res) => res.data),
+  );
 }
 
-export function useGetRandomAdvertisementQuery() {
-  return useQuery([advertisementsQueryKey], () => getRandomAdvertisement().then((res) => res.data));
+export function useGetRandomAdvertisementsQuery(count: number) {
+  return useQuery([advertisementsQueryKey, 'random', count], async () => {
+    try {
+      const adPromises = range(count).map(() => getRandomAdvertisement().then((res) => res.data));
+      return await Promise.all(adPromises);
+    } catch {
+      return [];
+    }
+  });
 }
 
 export function usePostAdvertisementMutation() {

@@ -32,7 +32,7 @@ import PostContainer from './PostContainer';
 import { BiPlus } from 'react-icons/bi';
 import PostModal from './PostModal';
 import { useGetAllCategoriesQuery } from '../../queries/categories';
-import { useGetRandomAdvertisementQuery } from '../../queries/advertisements';
+import { useGetRandomAdvertisementsQuery } from '../../queries/advertisements';
 import { Advertisement } from '../../api/advertisement';
 import AdvertisementContainer from '../advertising/AdvertisementContainer';
 import debounce from 'lodash-es/debounce';
@@ -54,10 +54,9 @@ export default function FeedPage() {
     search: pageSearch,
   });
   const { data: categoryData } = useGetAllCategoriesQuery();
-  const { data: adData1 } = useGetRandomAdvertisementQuery();
-  const { data: adData2 } = useGetRandomAdvertisementQuery();
+  const { data: adsData } = useGetRandomAdvertisementsQuery(2);
   const debouncedSetPageSearch = debounce(setPageSearch, debounceDuration);
-  const showAd = (data?.result.length ?? 0) > 0;
+  const showAd = (data?.result.length ?? 0) > 0 && (adsData?.length ?? 0) > 0;
   const colorBg = useColorModeValue('blue.50', 'blue.900');
 
   return (
@@ -123,9 +122,9 @@ export default function FeedPage() {
                 <FloatingCard padding="3" bgColor={colorBg}>
                   <AdvertisementContainer
                     showStatus={false}
-                    advertisement={adData1!.result}
+                    advertisement={adsData![0].result}
                     showAuthor={true}
-                    secondButton={<ShareButton advertisement={adData1!.result} />}
+                    secondButton={<ShareButton advertisement={adsData![0].result} />}
                   />
                 </FloatingCard>
               )}
@@ -138,9 +137,9 @@ export default function FeedPage() {
                 <FloatingCard padding="3" bgColor={colorBg}>
                   <AdvertisementContainer
                     showStatus={false}
-                    advertisement={adData2!.result}
+                    advertisement={adsData![1].result}
                     showAuthor={true}
-                    secondButton={<ShareButton advertisement={adData2!.result} />}
+                    secondButton={<ShareButton advertisement={adsData![1].result} />}
                   />
                 </FloatingCard>
               )}
