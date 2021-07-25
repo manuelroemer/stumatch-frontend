@@ -36,12 +36,10 @@ export default function AdvertisementOverviewPage() {
   const [page, setPage] = usePageQueryParameter();
   const [pageSize, setPageSize] = usePageSizeQueryParameter();
   const [pageSort, setPageSort] = useStringQueryParameter('sort', 'desc');
-  //const [pageFilter, setPageFilter] = useStringQueryParameter('filter', '');
   const { isLoading, data } = useGetAdvertisementsByUserQuery(me, {
     page,
     pageSize,
     sort: 'createdOn:' + pageSort,
-    //filter: pageFilter,
   });
   return (
     <RequireRoles roles={['admin', 'advertiser']} fallback={<AccessDeniedEmptyState />}>

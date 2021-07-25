@@ -32,8 +32,8 @@ import PostContainer from './PostContainer';
 import { BiPlus } from 'react-icons/bi';
 import PostModal from './PostModal';
 import { useGetAllCategoriesQuery } from '../../queries/categories';
+import { useGetRandomAdvertisementQuery } from '../../queries/advertisements';
 import { Advertisement } from '../../api/advertisement';
-import { useGetAllAdvertisementsQuery } from '../../queries/advertisements';
 import AdvertisementContainer from '../advertising/AdvertisementContainer';
 import debounce from 'lodash-es/debounce';
 import { debounceDuration } from '../../constants';
@@ -54,7 +54,8 @@ export default function FeedPage() {
     search: pageSearch,
   });
   const { data: categoryData } = useGetAllCategoriesQuery();
-  const { data: adData } = useGetAllAdvertisementsQuery(me);
+  const { data: adData1 } = useGetRandomAdvertisementQuery();
+  const { data: adData2 } = useGetRandomAdvertisementQuery();
   const debouncedSetPageSearch = debounce(setPageSearch, debounceDuration);
   const showAd = (data?.result.length ?? 0) > 0;
   const colorBg = useColorModeValue('blue.50', 'blue.900');
@@ -121,9 +122,9 @@ export default function FeedPage() {
               {showAd && (
                 <FloatingCard padding="3" bgColor={colorBg}>
                   <AdvertisementContainer
-                    advertisement={adData!.result[0]}
+                    advertisement={adData1!.result}
                     showAuthor={true}
-                    secondButton={<ShareButton advertisement={adData!.result[0]} />}
+                    secondButton={<ShareButton advertisement={adData1!.result} />}
                   />
                 </FloatingCard>
               )}
@@ -135,9 +136,9 @@ export default function FeedPage() {
               {showAd && (
                 <FloatingCard padding="3" bgColor={colorBg}>
                   <AdvertisementContainer
-                    advertisement={adData!.result[0]}
+                    advertisement={adData2!.result}
                     showAuthor={true}
-                    secondButton={<ShareButton advertisement={adData!.result[0]} />}
+                    secondButton={<ShareButton advertisement={adData2!.result} />}
                   />
                 </FloatingCard>
               )}

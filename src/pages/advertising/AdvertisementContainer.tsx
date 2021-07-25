@@ -1,15 +1,16 @@
 import { Heading, Text, Flex, HStack } from '@chakra-ui/layout';
-import { AiOutlineClockCircle, AiOutlinePicture } from 'react-icons/ai';
+import { AiOutlineClockCircle } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
-import { Badge, Center, Grid, GridItem, Icon, Link, useDisclosure } from '@chakra-ui/react';
+import { Badge, Center, Grid, GridItem, Icon, Link, Image } from '@chakra-ui/react';
 import ReactTimeago from 'react-timeago';
 import { routes } from '../../constants';
 import { useHistory } from 'react-router';
 import { Advertisement } from '../../api/advertisement';
 import { getTargetGroup } from '../../utils/advertisementUtils';
 import { MdSubject } from 'react-icons/md';
-import AdvertisementModal from './AdvertisementModal';
 import { ReactNode } from 'react';
+import { tryGetBlobUrl } from '../../api/blob';
+import PlaceHodlerPostPicture from '../../assets/sTUMatch_logo.png';
 
 export interface AdvertisementContainerProps {
   advertisement: Advertisement;
@@ -31,7 +32,13 @@ export default function AdvertisementContainer({
     <Grid templateRows="repeat(3, 1fr)" templateColumns="repeat(13, 1fr)" gap={2} rowGap={2}>
       <GridItem rowSpan={3} colSpan={2}>
         <Center h="100%" align="center">
-          <Icon aria-label="Picture" as={AiOutlinePicture} w="80%" h="80%" />
+          <Image
+            boxSize="100px"
+            objectFit="cover"
+            alt="postImage"
+            src={tryGetBlobUrl(advertisement?.advertisementImageBlobId)}
+            fallbackSrc={PlaceHodlerPostPicture}
+          />
         </Center>
       </GridItem>
       <GridItem rowSpan={1} colSpan={11}>

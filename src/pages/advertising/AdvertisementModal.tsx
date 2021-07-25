@@ -12,15 +12,21 @@ import {
   FormLabel,
   Textarea,
   Input,
+  IconButton,
   Image,
   FormErrorMessage,
+  HStack,
 } from '@chakra-ui/react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { FcCancel } from 'react-icons/fc';
+import { RiImageAddLine } from 'react-icons/ri';
 import { Advertisement, PostAdvertisement, PutAdvertisement } from '../../api/advertisement';
 import FacultyDropdown from '../../components/FacultyDropdown';
 import { usePostAdvertisementMutation, usePutAdvertisementMutation } from '../../queries/advertisements';
 import { useGetAllFacultiesQuery } from '../../queries/faculties';
 import { useCurrentUser } from '../../stores/userStore';
+import { useImagePicker } from '../../utils/useImagePicker';
 
 export interface AdvertisementModalProps {
   isOpen: boolean;
@@ -49,6 +55,15 @@ export default function AdvertisementModal({
   const putMutation = usePutAdvertisementMutation();
   const { isLoading, data } = useGetAllFacultiesQuery();
   const userId = useCurrentUser().id;
+  const advertisementImagePicker = useImagePicker();
+
+  useEffect(() => {
+    return form.setValue(
+      'advertisementImageBlob',
+      advertisementImagePicker.base64Data ? advertisementImagePicker.base64Data : '',
+    );
+  }, [advertisementImagePicker.base64Data]);
+
   if (!isUpdate) {
     form.setValue('authorId', userId);
   }
@@ -59,6 +74,7 @@ export default function AdvertisementModal({
     } else {
       putMutation.mutate({ id: advertisement!.id, body: advertisementValue });
     }
+    advertisementImagePicker.clear();
     form.reset();
     onClose();
   });
@@ -139,6 +155,34 @@ export default function AdvertisementModal({
                   defaultValue={getDefaultDateValue(advertisement?.endDate)}
                 />
                 <FormErrorMessage>The end date must be greater than the start date.</FormErrorMessage>
+              </FormControl>
+              <FormControl>
+                {!advertisementImagePicker.src ? (
+                  <>
+                    <HStack justifyContent="space-between">
+                      <FormLabel>Post Picture</FormLabel>
+                    </HStack>
+                    <IconButton
+                      onClick={advertisementImagePicker.pickImage}
+                      size="lg"
+                      aria-label="AddPicture"
+                      icon={<RiImageAddLine />}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <HStack marginBottom="5" justifyContent="space-between">
+                      <FormLabel>Post Picture</FormLabel>
+                      <IconButton
+                        onClick={advertisementImagePicker.clear}
+                        size="xs"
+                        aria-label="DeletePicture"
+                        icon={<FcCancel />}
+                      />
+                    </HStack>
+                    <Image src={advertisementImagePicker.src ? advertisementImagePicker.src : ''} />
+                  </>
+                )}
               </FormControl>
             </VStack>
           </ModalBody>
