@@ -9,6 +9,7 @@
     "start": "npm run watch",
     "build": "webpack --mode production",
     "watch": "webpack serve --mode development",
+    "watch-production": "webpack serve --mode production",
     "lint": "eslint \"./src/**.{ts,tsx}\"",
     "prettier": "prettier --config .prettierrc --write \"src/**/*.{ts,tsx}\""
   },
