@@ -79,8 +79,8 @@ export default function AdvertisementOverviewPage() {
                   advertisement={advertisement}
                   showAuthor={false}
                   showStatus={true}
-                  firstButton={<DeleteButton advertisement={advertisement} />}
-                  secondButton={<EditButton advertisement={advertisement} />}
+                  firstButton={<EditButton advertisement={advertisement} />}
+                  secondButton={<DeleteButton advertisement={advertisement} />}
                 />
               </FloatingCard>
             ))}
