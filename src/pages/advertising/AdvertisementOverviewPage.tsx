@@ -118,22 +118,26 @@ function DeleteButton({ advertisement, ...props }: HTMLChakraProps<'button'> & {
   const deleteModal = useDeleteConfirmationModal();
   return (
     <>
-      <Tooltip label={'Delete'} hasArrow>
-        <IconButton
-          aria-label="Delete"
-          fontSize="25"
-          icon={<MdDeleteForever />}
-          onClick={() => {
-            deleteModal.show({
-              header: 'Remove Advertisement ',
-              cancelText: 'No, keep it',
-              confirmText: 'Yes, delete it',
-              onConfirm: () => mutation.mutateAsync(),
-            });
-          }}
-          {...props}
-        />
-      </Tooltip>
+      <HStack>
+        <Tooltip label={'Delete'} hasArrow>
+          <IconButton
+            aria-label="Delete"
+            fontSize="25"
+            size="sm"
+            icon={<MdDeleteForever />}
+            onClick={() => {
+              deleteModal.show({
+                header: 'Remove Advertisement ',
+                cancelText: 'No, keep it',
+                confirmText: 'Yes, delete it',
+                onConfirm: () => mutation.mutateAsync(),
+              });
+            }}
+            {...props}
+          />
+        </Tooltip>
+        <Text>Delete</Text>
+      </HStack>
 
       {deleteModal.modal}
     </>
