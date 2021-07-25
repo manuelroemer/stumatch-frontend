@@ -5,10 +5,23 @@ This repository contains the source code of the sTUMatch frontend.
 
 ## Getting Started
 
+## ⚠ IMPORTANT ⚠
+
+![Adblocker Notice](./assets/readme-adblocker-notice.png)
+
+One of our use-cases introduces self-written advertisments. A lot of **ad-blockers** will **block**
+the endpoints in the backend.
+We consider ad-blocker evasion a topic that goes way beyond the scope of a prototype (in fact,
+that's a topic that whole teams of developers are paid for - that's too much for students 😉).
+Therefore the simplest solution is to:
+
+➡ **Disable your ad-blocker** when using the page!
+
+
 ### Installing Packages
 
-First of all, ensure that [NodeJS](https://nodejs.org/en/) is installed on your machine.
-Then, clone the repository and install the packages:
+Ensure that [NodeJS](https://nodejs.org/en/) is installed on your machine.
+Clone the repository and install the packages:
 
 ```sh
 git clone https://gitlab.lrz.de/seba-master-2021/team-29/frontend.git stumatch-frontend
@@ -20,12 +33,16 @@ npm i
 
 ### Running the Application
 
-Clone and run the [sTUMatch Backend](https://gitlab.lrz.de/seba-master-2021/team-29/backend)
+Clone and **run** the [**sTUMatch Backend**](https://gitlab.lrz.de/seba-master-2021/team-29/backend)
 repository (follow the instructions in its README for details).
 Once the backend is running locally, you can start the frontend part of the application using your terminal:
 
 ```sh
-npm run start
+# Recommended: Run in Development mode:
+npm start
+
+# Or alternatively, run in Production mode:
+npm run watch-production
 ```
 
 The command will start a local development server on port `8080`. To access the frontend, open
