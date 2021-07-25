@@ -53,7 +53,7 @@ export default function AdvertisementModal({
   const form = useForm<PostAdvertisement | PutAdvertisement>();
   const postMutation = usePostAdvertisementMutation();
   const putMutation = usePutAdvertisementMutation();
-  const { isLoading, data } = useGetAllFacultiesQuery();
+  const { data } = useGetAllFacultiesQuery();
   const userId = useCurrentUser().id;
   const advertisementImagePicker = useImagePicker();
 

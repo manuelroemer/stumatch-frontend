@@ -1,5 +1,4 @@
 import {
-  Button,
   Center,
   HStack,
   HTMLChakraProps,
@@ -12,16 +11,13 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { range } from 'lodash-es';
-import { BiPlus } from 'react-icons/bi';
 import { FaRegEdit } from 'react-icons/fa';
 import { Advertisement } from '../../api/advertisement';
 import { me } from '../../api/conventions';
-import DefaultPageLayout from '../../components/DefaultPageLayout';
-import { AccessDeniedEmptyState, NoAdvertisementsEmptyState } from '../../components/EmptyStates';
+import { NoAdvertisementsEmptyState } from '../../components/EmptyStates';
 import FloatingCard from '../../components/FloatingCard';
 import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptionSkeleton';
 import Pagination from '../../components/Pagination';
-import RequireRoles from '../../components/RequireRoles';
 import { useGetAdvertisementsByUserQuery } from '../../queries/advertisements';
 import {
   usePageQueryParameter,
@@ -32,7 +28,7 @@ import AdvertisementContainer from './AdvertisementContainer';
 import AdvertisementModal from './AdvertisementModal';
 
 export default function AdvertisementOverviewPage() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose } = useDisclosure();
   const [page, setPage] = usePageQueryParameter();
   const [pageSize, setPageSize] = usePageSizeQueryParameter();
   const [pageSort, setPageSort] = useStringQueryParameter('sort', 'desc');
@@ -42,59 +38,52 @@ export default function AdvertisementOverviewPage() {
     sort: 'createdOn:' + pageSort,
   });
   return (
-    <RequireRoles roles={['admin', 'advertiser']} fallback={<AccessDeniedEmptyState />}>
-      <DefaultPageLayout
-        header="Your Ads"
-        actions={
-          <Button onClick={onOpen} colorScheme="primary" leftIcon={<BiPlus />} size="md">
-            Create New
-          </Button>
-        }>
-        <VStack>
-          <HStack width="full" justifyContent="space-between">
-            <Spacer></Spacer>
-            <Text minWidth="max-content">Sort by:</Text>
-            <Select onChange={(e) => setPageSort(e.target.value)} value={pageSort}>
-              <option value="desc">Descending</option>
-              <option value="asc">Ascending</option>
-            </Select>
-            <Spacer></Spacer>
-            <Text>Show:</Text>
-            <Select onChange={(e) => setPageSize(parseInt(e.target.value))} value={pageSize}>
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-            </Select>
-          </HStack>
-          {isLoading ? (
-            range(3).map((i) => (
-              <FloatingCard key={i} p="4">
-                <ImageTitleDescriptionSkeleton />
+    <>
+      <VStack>
+        <HStack width="full" justifyContent="space-between">
+          <Spacer></Spacer>
+          <Text minWidth="max-content">Sort by:</Text>
+          <Select onChange={(e) => setPageSort(e.target.value)} value={pageSort}>
+            <option value="desc">Descending</option>
+            <option value="asc">Ascending</option>
+          </Select>
+          <Spacer></Spacer>
+          <Text>Show:</Text>
+          <Select onChange={(e) => setPageSize(parseInt(e.target.value))} value={pageSize}>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+          </Select>
+        </HStack>
+        {isLoading ? (
+          range(3).map((i) => (
+            <FloatingCard key={i} p="4">
+              <ImageTitleDescriptionSkeleton />
+            </FloatingCard>
+          ))
+        ) : (
+          <>
+            {data?.result.map((advertisement) => (
+              <FloatingCard key={advertisement.id}>
+                <AdvertisementContainer
+                  advertisement={advertisement}
+                  showAuthor={false}
+                  showStatus={true}
+                  secondButton={<EditButton advertisement={advertisement} />}
+                />
               </FloatingCard>
-            ))
-          ) : (
-            <>
-              {data?.result.map((advertisement) => (
-                <FloatingCard key={advertisement.id}>
-                  <AdvertisementContainer
-                    advertisement={advertisement}
-                    showAuthor={false}
-                    secondButton={<EditButton advertisement={advertisement} />}
-                  />
-                </FloatingCard>
-              ))}
-            </>
-          )}
-        </VStack>
-        {data && data.result.length > 0 && (
-          <Center mt="10">
-            <Pagination currentPage={data.page} pages={data.pages} onPageChanged={setPage} />
-          </Center>
+            ))}
+          </>
         )}
-        {data && data.result.length === 0 && <NoAdvertisementsEmptyState />}
-      </DefaultPageLayout>
+      </VStack>
+      {data && data.result.length > 0 && (
+        <Center mt="10">
+          <Pagination currentPage={data.page} pages={data.pages} onPageChanged={setPage} />
+        </Center>
+      )}
+      {data && data.result.length === 0 && <NoAdvertisementsEmptyState />}
       <AdvertisementModal isUpdate={false} isOpen={isOpen} onClose={onClose} />
-    </RequireRoles>
+    </>
   );
 }
 

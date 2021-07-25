@@ -76,6 +76,7 @@ export function VerifyAdvertisementsPage() {
               <FloatingCard padding="3" key={advertisement.id}>
                 <AdvertisementContainer
                   advertisement={advertisement}
+                  showStatus={true}
                   showAuthor={true}
                   firstButton={<VerifyButton advertisement={advertisement} />}
                   secondButton={<DenyButton advertisement={advertisement} />}

@@ -11,7 +11,7 @@ interface RouteParams {
   chatGroupId?: string;
 }
 
-export default function AdministrationPage() {
+export default function ChatPage() {
   const { chatGroupId } = useParams<RouteParams>();
   const [chatGroupFilter, setChatGroupFilter] = useState('');
   const colorBg = useColorModeValue('gray.200', 'gray.600');

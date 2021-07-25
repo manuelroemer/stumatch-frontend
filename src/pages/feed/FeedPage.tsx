@@ -122,6 +122,7 @@ export default function FeedPage() {
               {showAd && (
                 <FloatingCard padding="3" bgColor={colorBg}>
                   <AdvertisementContainer
+                    showStatus={false}
                     advertisement={adData1!.result}
                     showAuthor={true}
                     secondButton={<ShareButton advertisement={adData1!.result} />}
@@ -136,6 +137,7 @@ export default function FeedPage() {
               {showAd && (
                 <FloatingCard padding="3" bgColor={colorBg}>
                   <AdvertisementContainer
+                    showStatus={false}
                     advertisement={adData2!.result}
                     showAuthor={true}
                     secondButton={<ShareButton advertisement={adData2!.result} />}
