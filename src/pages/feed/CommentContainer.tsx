@@ -41,7 +41,11 @@ export default function CommentContainer({ comment }: CommentContainerProps) {
   };
 
   function allowEdit() {
-    return currentUser.id == comment.authorId || currentUser.roles.includes('admin') ? true : false;
+    return currentUser.id == comment.authorId ||
+      currentUser.roles.includes('admin') ||
+      currentUser.roles.includes('globalContentManager')
+      ? true
+      : false;
   }
 
   function generalInfo() {
