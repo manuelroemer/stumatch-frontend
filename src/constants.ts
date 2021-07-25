@@ -5,7 +5,6 @@ export const routes = {
   advertising: '/advertising',
   advertisementPage: '/advertising/:advertisementId',
   administration: '/administration',
-  profile: '/profile',
   notifications: '/notifications',
   chat: '/chat',
   chatGroup: '/chat/:chatGroupId?',
