@@ -1,4 +1,4 @@
-import { HStack, Text, Heading, Flex, Box, Icon, useColorModeValue } from '@chakra-ui/react';
+import { HStack, Text, Heading, Flex, Box, Icon, useColorModeValue, Image } from '@chakra-ui/react';
 import { useParams } from 'react-router';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
@@ -10,6 +10,8 @@ import { MdSubject } from 'react-icons/md';
 import { getTargetGroup } from '../../utils/advertisementUtils';
 import { defaultTimeagoFormatter } from '../../utils/reactTimeagoFormatter';
 import { generatePermalinkForCurrentPage } from '../../utils/permalink';
+import { tryGetBlobUrl } from '../../api/blob';
+import PlaceHodlerPostPicture from '../../assets/sTUMatch_logo.png';
 
 interface RouteParams {
   advertisementId: string;
@@ -31,6 +33,15 @@ export default function AdvertisementDetailPage() {
       {data && data.result && (
         <Flex as="main" px="8" py="4" justify="center" my="8">
           <Box w={['95%', '90%', '80%', '75%']}>
+            <Flex w="100%" rounded="md" justify="center">
+              <Image
+                maxBlockSize="150px"
+                objectFit="cover"
+                alt="postImage"
+                src={tryGetBlobUrl(data.result.advertisementImageBlobId)}
+                fallbackSrc={PlaceHodlerPostPicture}
+              />
+            </Flex>
             <Flex justify="space-between">
               <Box as="header">
                 <Heading as="h1" mb="0">
