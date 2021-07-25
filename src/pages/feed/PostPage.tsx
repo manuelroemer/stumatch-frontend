@@ -32,6 +32,7 @@ import { NoCommentsEmptyState } from '../../components/EmptyStates';
 import { tryGetBlobUrl } from '../../api/blob';
 import PlaceHodlerPostPicture from '../../assets/sTUMatch_logo.png';
 import { defaultTimeagoFormatter } from '../../utils/reactTimeagoFormatter';
+import { generatePermalinkForCurrentPage } from '../../utils/permalink';
 
 interface RouteParams {
   postId: string;
@@ -126,7 +127,7 @@ export default function PostPage() {
                   <Text>{data.result.comments.length}</Text>
                 </HStack>
                 <HStack>
-                  <SharePopOver permalink={window.location.href} />
+                  <SharePopOver permalink={generatePermalinkForCurrentPage()} />
                   <Text>Share</Text>
                 </HStack>
               </HStack>

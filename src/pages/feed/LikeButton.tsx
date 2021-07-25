@@ -31,22 +31,36 @@ export default function LikeButton({ post }: LikeButtonProps) {
   };
 
   useEffect(() => {
-    const userLikes = post.likes.filter((e) => e.userId === user.id);
-    const id = userLikes.length === 0 ? undefined : userLikes[0].id;
+    const userLike = post.likes.find((e) => e.userId === user.id);
+    const id = userLike?.id;
     setUserLikeId(id);
     setLikes(post.likes.length);
-    setLiked(userLikes.length !== 0);
+    setLiked(!!userLike);
   }, [post]);
 
   return (
     <>
       {liked ? (
         <Tooltip hasArrow label="Unlike">
-          <IconButton onClick={handleDislike} size="sm" aria-label="Dislike" icon={<FcLike />} fontSize="16" />
+          <IconButton
+            isLoading={mutationDelete.isLoading || mutationPost.isLoading}
+            onClick={handleDislike}
+            size="sm"
+            aria-label="Dislike"
+            icon={<FcLike />}
+            fontSize="16"
+          />
         </Tooltip>
       ) : (
         <Tooltip hasArrow label="Like">
-          <IconButton onClick={handleLike} size="sm" aria-label="Like" icon={<FcLikePlaceholder />} fontSize="16" />
+          <IconButton
+            isLoading={mutationDelete.isLoading || mutationPost.isLoading}
+            onClick={handleLike}
+            size="sm"
+            aria-label="Like"
+            icon={<FcLikePlaceholder />}
+            fontSize="16"
+          />
         </Tooltip>
       )}
       <Text>{likes}</Text>

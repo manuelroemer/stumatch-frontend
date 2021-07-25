@@ -14,6 +14,7 @@ import { tryGetBlobUrl } from '../../api/blob';
 import PlaceHodlerPostPicture from '../../assets/sTUMatch_logo.png';
 import { Dispatch } from 'react';
 import { defaultTimeagoFormatter } from '../../utils/reactTimeagoFormatter';
+import { generatePermalinkForCurrentPage } from '../../utils/permalink';
 
 export interface PostContainerProps {
   post: Post;
@@ -88,7 +89,7 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
       </GridItem>
       <GridItem colStart={13}>
         <HStack h="100%">
-          <SharePopOver permalink={window.location.href + '/' + post.id} />
+          <SharePopOver permalink={generatePermalinkForCurrentPage('/' + post.id)} />
           <Text>Share</Text>
         </HStack>
       </GridItem>

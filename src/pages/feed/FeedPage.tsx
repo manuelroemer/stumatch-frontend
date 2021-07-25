@@ -38,6 +38,7 @@ import AdvertisementContainer from '../advertising/AdvertisementContainer';
 import debounce from 'lodash-es/debounce';
 import { debounceDuration } from '../../constants';
 import SharePopOver from './SharePopOver';
+import { generatePermalinkForCurrentPage } from '../../utils/permalink';
 
 export default function FeedPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -162,7 +163,7 @@ function ShareButton({ advertisement, ...props }: HTMLChakraProps<'button'> & { 
   return (
     <>
       <HStack>
-        <SharePopOver permalink={window.location.href + '/' + advertisement.id} {...props} />
+        <SharePopOver permalink={generatePermalinkForCurrentPage('/' + advertisement.id)} {...props} />
         <Text>Share</Text>
       </HStack>
     </>
