@@ -86,7 +86,7 @@ export default function CommentContainer({ comment }: CommentContainerProps) {
         <HStack w="100%">
           <Icon aria-label="Author" as={CgProfile} />
           <Text>
-            <b>{user ? getFullName(user) : ''}</b>
+            <b>{user ? getFullName(user.result) : ''}</b>
           </Text>
         </HStack>
         {allowEdit() ? (
