@@ -60,12 +60,14 @@ export default function FeedPage() {
   const colorBg = useColorModeValue('blue.50', 'blue.900');
 
   return (
-    <RequireRoles roles={['student', 'admin']} fallback={<AccessDeniedEmptyState />}>
+    <RequireRoles
+      roles={['student', 'admin', 'advertiser', 'globalContentManager']}
+      fallback={<AccessDeniedEmptyState />}>
       <DefaultPageLayout
         header="Feed"
         subHeader="What happened at your university?"
         actions={
-          <RequireRoles roles={['globalContentManager', 'admin', 'advertiser', 'globalContentManager']}>
+          <RequireRoles roles={['globalContentManager', 'admin']}>
             <Button onClick={onOpen} colorScheme="primary" leftIcon={<BiPlus />} size="md">
               Create New
             </Button>
