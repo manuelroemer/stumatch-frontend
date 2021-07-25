@@ -45,7 +45,7 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
         </Flex>
       </GridItem>
       <GridItem colSpan={3}>
-        <HStack>
+        <HStack h="100%">
           <Icon aria-label="Author" as={CgProfile} />
           <Text>
             {post.author.lastName}, {post.author.firstName}
@@ -53,30 +53,30 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
         </HStack>
       </GridItem>
       <GridItem colSpan={2}>
-        <HStack>
+        <HStack h="100%">
           <Icon aria-label="Ago" as={AiOutlineClockCircle} />
           <ReactTimeago date={post.createdOn} component={(props) => <Text {...props} />} />
         </HStack>
       </GridItem>
       <GridItem colSpan={3}>
-        <HStack>
+        <HStack h="100%">
           <Icon aria-label="Category" as={HiHashtag} />
           <Link onClick={() => setPageFilter(post.category)}>{post.category}</Link>
         </HStack>
       </GridItem>
       <GridItem>
-        <HStack>
+        <HStack h="100%">
           <LikeButton post={post}></LikeButton>
         </HStack>
       </GridItem>
       <GridItem>
-        <HStack>
+        <HStack h="100%">
           <Icon w={4} h={4} aria-label="Comment" as={BiCommentDetail} />
           <Text>{post.comments.length}</Text>
         </HStack>
       </GridItem>
       <GridItem colStart={13}>
-        <HStack>
+        <HStack h="100%">
           <SharePopOver permalink={window.location.href + '/' + post.id} />
           <Text>Share</Text>
         </HStack>

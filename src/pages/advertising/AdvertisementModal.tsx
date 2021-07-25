@@ -55,7 +55,8 @@ export default function AdvertisementModal({
   isUpdate,
   advertisement,
 }: AdvertisementModalProps): JSX.Element {
-  const form = !isUpdate ? useForm<PostAdvertisement>() : useForm<PutAdvertisement>();
+  // const form = !isUpdate ? useForm<PostAdvertisement>() : useForm<PutAdvertisement>();
+  const form = useForm<PostAdvertisement | PutAdvertisement>();
   const postMutation = usePostAdvertisementMutation();
   const putMutation = usePutAdvertisementMutation();
   const { isLoading, data } = useGetAllFacultiesQuery();
