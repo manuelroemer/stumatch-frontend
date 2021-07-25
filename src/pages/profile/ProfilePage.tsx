@@ -61,7 +61,6 @@ export default function ProfilePage() {
     });
   });
 
-  console.info(user);
   return (
     <DefaultPageLayout header="Your Profile">
       <form onSubmit={onSubmit}>

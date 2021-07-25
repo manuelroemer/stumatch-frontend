@@ -71,7 +71,6 @@ export default function ProfileModal({ isOpen, onClose }: ProfilProps) {
       isClosable: true,
     });
   });
-  console.info(user)
 
   return (
     <Modal isOpen={isOpen} size="4xl" onClose={onClose}>
