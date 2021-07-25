@@ -41,7 +41,7 @@ export interface PutAdvertisement {
   startDate?: Date;
   endDate?: Date;
   status?: string;
-  advertisementImageBlob: string;
+  advertisementImageBlob?: string;
 }
 
 export function getAllAdvertisements(options?: QueryOptions, init?: StumatchFetchInit) {
