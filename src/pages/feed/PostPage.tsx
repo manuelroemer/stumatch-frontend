@@ -31,6 +31,7 @@ import Pagination from '../../components/Pagination';
 import { NoCommentsEmptyState } from '../../components/EmptyStates';
 import { tryGetBlobUrl } from '../../api/blob';
 import PlaceHodlerPostPicture from '../../assets/sTUMatch_logo.png';
+import { defaultTimeagoFormatter } from '../../utils/reactTimeagoFormatter';
 
 interface RouteParams {
   postId: string;
@@ -108,6 +109,7 @@ export default function PostPage() {
                 <HStack>
                   <Icon aria-label="Ago" as={AiOutlineClockCircle} />
                   <ReactTimeago
+                    formatter={defaultTimeagoFormatter}
                     date={!data.result.createdOn ? '' : data.result.createdOn}
                     component={(props) => <Text {...props} />}
                   />

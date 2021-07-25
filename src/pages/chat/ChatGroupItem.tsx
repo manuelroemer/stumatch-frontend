@@ -5,6 +5,7 @@ import ReactTimeago from 'react-timeago';
 import { ChatGroup } from '../../api/chatGroups';
 import { routes } from '../../constants';
 import { useCurrentUser } from '../../stores/userStore';
+import { defaultTimeagoFormatter } from '../../utils/reactTimeagoFormatter';
 import ChatGroupAvatarGroup from './ChatGroupAvatarGroup';
 import { getChatGroupTitle } from './utils';
 
@@ -45,6 +46,7 @@ export default function ChatGroupItem({ chatGroup, isSelected }: ChatGroupItemPr
       </Flex>
       <Flex gridRow="1" gridColumn="3" align="center">
         <ReactTimeago
+          formatter={defaultTimeagoFormatter}
           minPeriod={10}
           date={timeAgo}
           component={(props) => <Text layerStyle="timeAgoHint" {...props} />}

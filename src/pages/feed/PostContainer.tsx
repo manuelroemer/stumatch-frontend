@@ -13,6 +13,7 @@ import LikeButton from './LikeButton';
 import { tryGetBlobUrl } from '../../api/blob';
 import PlaceHodlerPostPicture from '../../assets/sTUMatch_logo.png';
 import { Dispatch } from 'react';
+import { defaultTimeagoFormatter } from '../../utils/reactTimeagoFormatter';
 
 export interface PostContainerProps {
   post: Post;
@@ -55,7 +56,11 @@ export default function PostContainer({ post, setPageFilter }: PostContainerProp
       <GridItem colSpan={2}>
         <HStack h="100%">
           <Icon aria-label="Ago" as={AiOutlineClockCircle} />
-          <ReactTimeago date={post.createdOn} component={(props) => <Text {...props} />} />
+          <ReactTimeago
+            formatter={defaultTimeagoFormatter}
+            date={post.createdOn}
+            component={(props) => <Text {...props} />}
+          />
         </HStack>
       </GridItem>
       <GridItem colSpan={3}>

@@ -7,6 +7,7 @@ import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
 import { useDeleteChatMessageMutation } from '../../queries/chatMessages';
 import { ChatGroup } from '../../api/chatGroups';
 import { getFullName } from '../../utils/userUtils';
+import { defaultTimeagoFormatter } from '../../utils/reactTimeagoFormatter';
 
 export interface ChatMessageSelectorProps {
   chatMessage: ChatMessage;
@@ -77,7 +78,7 @@ export default function ChatMessageSelector({ chatMessage, chatGroup, onChatMess
               </Text>
             )}
             <ReactTimeago
-              minPeriod={1}
+              formatter={defaultTimeagoFormatter}
               date={chatMessage.modifiedOn}
               component={(props) => (
                 <Text

@@ -8,13 +8,13 @@ import { useGetAdvertisementByIDQuery } from '../../queries/advertisements';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { MdSubject } from 'react-icons/md';
 import { getTargetGroup } from '../../utils/advertisementUtils';
+import { defaultTimeagoFormatter } from '../../utils/reactTimeagoFormatter';
 
 interface RouteParams {
   advertisementId: string;
 }
 
 function getTimeSpan(startDate: string, endDate: string) {
-  const options = { day: 'numeric', month: 'numeric', year: 'numeric' } as const;
   return new Date(startDate).toLocaleDateString() + ' - ' + new Date(endDate).toLocaleDateString();
 }
 
@@ -49,6 +49,7 @@ export default function AdvertisementDetailPage() {
                 <HStack>
                   <Icon aria-label="Ago" as={AiOutlineClockCircle} />
                   <ReactTimeago
+                    formatter={defaultTimeagoFormatter}
                     date={!data.result.createdOn ? '' : data.result.createdOn}
                     component={(props) => <Text {...props} />}
                   />

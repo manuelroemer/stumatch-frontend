@@ -10,6 +10,7 @@ import { useGetUserQuery } from '../../queries/users';
 import { useState } from 'react';
 import { useCurrentUser } from '../../stores/userStore';
 import { useDeleteCommentMutation, usePutCommentMutation } from '../../queries/comments';
+import { defaultTimeagoFormatter } from '../../utils/reactTimeagoFormatter';
 
 export interface CommentContainerProps {
   comment: Comment;
@@ -50,12 +51,20 @@ export default function CommentContainer({ comment }: CommentContainerProps) {
           <HStack spacing="5">
             <HStack>
               <Icon aria-label="Ago" as={AiOutlineClockCircle} />
-              <ReactTimeago date={comment.createdOn} component={(props) => <Text {...props} />} />
+              <ReactTimeago
+                formatter={defaultTimeagoFormatter}
+                date={comment.createdOn}
+                component={(props) => <Text {...props} />}
+              />
             </HStack>
             {comment.createdOn != comment.modifiedOn ? (
               <HStack>
                 <Icon aria-label="EditAgo" as={BsPencil} />
-                <ReactTimeago date={comment.modifiedOn} component={(props) => <Text {...props} />} />
+                <ReactTimeago
+                  formatter={defaultTimeagoFormatter}
+                  date={comment.modifiedOn}
+                  component={(props) => <Text {...props} />}
+                />
               </HStack>
             ) : (
               <></>

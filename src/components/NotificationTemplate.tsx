@@ -15,6 +15,7 @@ import ReactTimeago from 'react-timeago';
 import { IoMailOutline, IoMailOpenOutline } from 'react-icons/io5';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { SyntheticEvent } from 'react';
+import { defaultTimeagoFormatter } from '../utils/reactTimeagoFormatter';
 
 export interface NotificationTemplateProps extends HTMLChakraProps<'div'> {
   title: string;
@@ -100,7 +101,11 @@ export default function NotificationTemplate({
         <Heading as="h3" size="xs" isTruncated>
           {title}
         </Heading>
-        <ReactTimeago date={date} component={(props) => <Text layerStyle="timeAgoHint" {...props} />} />
+        <ReactTimeago
+          formatter={defaultTimeagoFormatter}
+          date={date}
+          component={(props) => <Text layerStyle="timeAgoHint" {...props} />}
+        />
       </Flex>
 
       <Text gridRow="2" gridColumn="3" mb="4" mr="4" fontSize="sm" noOfLines={2}>
