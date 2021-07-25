@@ -10,27 +10,21 @@ import {
   VStack,
   FormControl,
   FormLabel,
-  HStack,
   Textarea,
-  Icon,
-  WrapItem,
-  Tooltip,
   Input,
   IconButton,
   Image,
+  FormErrorMessage,
+  HStack,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { FcCancel } from 'react-icons/fc';
-import { HiHashtag } from 'react-icons/hi';
 import { RiImageAddLine } from 'react-icons/ri';
 import { Advertisement, PostAdvertisement, PutAdvertisement } from '../../api/advertisement';
-import { MatchRequestPut } from '../../api/matching';
-import { getUser } from '../../api/users';
 import FacultyDropdown from '../../components/FacultyDropdown';
 import { usePostAdvertisementMutation, usePutAdvertisementMutation } from '../../queries/advertisements';
 import { useGetAllFacultiesQuery } from '../../queries/faculties';
-import { usePostMutation } from '../../queries/posts';
 import { useCurrentUser } from '../../stores/userStore';
 import { useImagePicker } from '../../utils/useImagePicker';
 
@@ -40,10 +34,6 @@ export interface AdvertisementModalProps {
   isUpdate: boolean;
   advertisement?: Advertisement;
 }
-
-/* function removeTimeFromDate(dateString: string) {
-  return new Date(new Date(dateString).toDateString());
-} */
 
 function getDefaultDateValue(dateString?: string) {
   if (!dateString) {
@@ -60,8 +50,7 @@ export default function AdvertisementModal({
   isUpdate,
   advertisement,
 }: AdvertisementModalProps): JSX.Element {
-  // const form = !isUpdate ? useForm<PostAdvertisement>() : useForm<PutAdvertisement>();
-  const form = useForm<PostAdvertisement>();
+  const form = useForm<PostAdvertisement | PutAdvertisement>();
   const postMutation = usePostAdvertisementMutation();
   const putMutation = usePutAdvertisementMutation();
   const { isLoading, data } = useGetAllFacultiesQuery();
@@ -99,12 +88,10 @@ export default function AdvertisementModal({
           <ModalCloseButton />
           <ModalBody>
             <VStack align="flex-start" spacing="10">
-              <FormControl isRequired>
+              <FormControl isRequired isInvalid={!!form.formState.errors.title}>
                 <FormLabel>Title</FormLabel>
                 <Textarea
-                  onChange={(e: any) => {
-                    form.setValue('title', e.target.value);
-                  }}
+                  {...form.register('title', { required: true, minLength: 1, maxLength: 100 })}
                   minH="unset"
                   overflow="hidden"
                   w="100%"
@@ -112,13 +99,12 @@ export default function AdvertisementModal({
                   placeholder="Please enter the advertisements' title here"
                   defaultValue={advertisement?.title}
                 />
+                <FormErrorMessage>The Title must be between 1-100 characters. Please try again.</FormErrorMessage>
               </FormControl>
-              <FormControl isRequired>
+              <FormControl isRequired isInvalid={!!form.formState.errors.shortDescription}>
                 <FormLabel>Short Description</FormLabel>
                 <Textarea
-                  onChange={(e: any) => {
-                    form.setValue('shortDescription', e.target.value);
-                  }}
+                  {...form.register('shortDescription', { required: true, minLength: 1, maxLength: 100 })}
                   minH="unset"
                   overflow="hidden"
                   w="100%"
@@ -126,16 +112,18 @@ export default function AdvertisementModal({
                   placeholder="Enter a short description"
                   defaultValue={advertisement?.shortDescription}
                 />
+                <FormErrorMessage>
+                  The short description must be between 1-100 characters. Please try again.
+                </FormErrorMessage>
               </FormControl>
-              <FormControl isRequired>
+              <FormControl isRequired isInvalid={!!form.formState.errors.content}>
                 <FormLabel>Content</FormLabel>
                 <Textarea
                   placeholder="Enter the advertisements' content here"
-                  onChange={(e: any) => {
-                    form.setValue('content', e.target.value);
-                  }}
+                  {...form.register('content', { required: true, minLength: 10 })}
                   defaultValue={advertisement?.content}
                 />
+                <FormErrorMessage>The content must contain at least 10 characters. Please try again.</FormErrorMessage>
               </FormControl>
               <FacultyDropdown
                 facultyData={data?.result ?? []}
@@ -146,26 +134,27 @@ export default function AdvertisementModal({
                 initialFacultyId={advertisement?.facultyId}
                 initialStudyProgramId={advertisement?.studyProgramId}
               />
-              <FormControl isRequired>
+              <FormControl isRequired isInvalid={!!form.formState.errors.startDate}>
                 <FormLabel>Start Date</FormLabel>
                 <Input
                   type="date"
-                  onChange={(e: any) => {
-                    form.setValue('startDate', e.target.value);
-                    console.log(e.target.value);
-                  }}
                   defaultValue={getDefaultDateValue(advertisement?.startDate)}
+                  {...form.register('startDate', {
+                    required: true,
+                  })}
                 />
               </FormControl>
-              <FormControl isRequired>
+              <FormControl isRequired isInvalid={!!form.formState.errors.endDate}>
                 <FormLabel>End Date</FormLabel>
                 <Input
                   type="date"
-                  onChange={(e: any) => {
-                    form.setValue('endDate', e.target.value);
-                  }}
+                  {...form.register('endDate', {
+                    required: true,
+                    validate: (value) => value! >= form.getValues('startDate')!,
+                  })}
                   defaultValue={getDefaultDateValue(advertisement?.endDate)}
                 />
+                <FormErrorMessage>The end date must be greater than the start date.</FormErrorMessage>
               </FormControl>
               <FormControl>
                 {!advertisementImagePicker.src ? (
@@ -198,12 +187,7 @@ export default function AdvertisementModal({
             </VStack>
           </ModalBody>
           <ModalFooter>
-            <Button
-              onClick={onClose}
-              colorScheme="blue"
-              mr={3}
-              type="submit"
-              isLoading={postMutation.isLoading || putMutation.isLoading}>
+            <Button colorScheme="blue" mr={3} type="submit" isLoading={postMutation.isLoading || putMutation.isLoading}>
               {!isUpdate ? 'Create' : 'Save'}
             </Button>
             <Button onClick={onClose}>Cancel</Button>

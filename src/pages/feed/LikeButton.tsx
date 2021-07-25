@@ -1,4 +1,4 @@
-import { IconButton, Text } from '@chakra-ui/react';
+import { IconButton, Text, Tooltip } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
 import { Post } from '../../api/post';
@@ -41,9 +41,13 @@ export default function LikeButton({ post }: LikeButtonProps) {
   return (
     <>
       {liked ? (
-        <IconButton onClick={handleDislike} size="sm" aria-label="Dislike" icon={<FcLike />} />
+        <Tooltip hasArrow label="Unlike">
+          <IconButton onClick={handleDislike} size="sm" aria-label="Dislike" icon={<FcLike />} fontSize="16" />
+        </Tooltip>
       ) : (
-        <IconButton onClick={handleLike} size="sm" aria-label="Like" icon={<FcLikePlaceholder />} />
+        <Tooltip hasArrow label="Like">
+          <IconButton onClick={handleLike} size="sm" aria-label="Like" icon={<FcLikePlaceholder />} fontSize="16" />
+        </Tooltip>
       )}
       <Text>{likes}</Text>
     </>

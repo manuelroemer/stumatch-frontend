@@ -13,6 +13,16 @@ export interface FacultyDropdownProps {
   onStudyProgramChanged(studyProgram?: StudyProgram): void;
 }
 
+/**
+ * A component which manages the logic for picking a faculty and an associated study program.
+ * It renders two `select`s inside of a {@link FormControl} for picking the options.
+ *
+ * The component handles the tricky part of the selection:
+ * * It only allows selecting study programs belonging to the selected faculty.
+ * * It resets the study program when the faculty changes.
+ * * It auto-selects the associated faculty when a study program is selected (while no faculty is selected).
+ * * etc.
+ */
 export default function FacultyDropdown({
   facultyData,
   facultyDescription,

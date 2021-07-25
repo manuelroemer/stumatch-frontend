@@ -4,6 +4,13 @@ import logo from '../assets/logo.svg';
 import { routes } from '../constants';
 import { useUserStore } from '../stores/userStore';
 
+/**
+ * The application's footer.
+ * Can be integrated into pages.
+ *
+ * Is not present in the app shell by default because some pages do not
+ * look good with a footer.
+ */
 export default function Footer() {
   const isLoggedIn = useUserStore((state) => !!state.userInfo);
   const colorBg = useColorModeValue('gray.100', 'gray.700');

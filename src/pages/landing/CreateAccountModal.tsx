@@ -140,7 +140,7 @@ export default function CreateAccountModal({ isOpen, onClose }: CreateAccountMod
                 </HStack>
                 <FormControl>
                   <FormLabel>Are you currently looking for a job?</FormLabel>
-                  <RadioGroup  {...register('searchForJobs')} defaultValue={jobValue} onChange={setJobValue}>
+                  <RadioGroup {...register('searchForJobs')} defaultValue={jobValue} onChange={setJobValue}>
                     <HStack>
                       <Radio value="Yes">Yes</Radio>
                       <Radio value="No">No</Radio>

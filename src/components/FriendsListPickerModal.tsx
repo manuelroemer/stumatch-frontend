@@ -32,6 +32,10 @@ export interface FriendsListPickerModalProps {
   onSubmit(selectedUsers: Array<User>): Promise<void>;
 }
 
+/**
+ * A modal window which allows the signed-in user to pick multiple users
+ * from his/her/their/* friends list.
+ */
 export default function FriendsListPickerModal({
   title,
   acceptText,
@@ -64,6 +68,8 @@ export default function FriendsListPickerModal({
     }
   };
 
+  // The selected users must be reset whenever the modal is opened/closed
+  // because it may not be unmounted in between (and hence keep the state).
   useEffect(() => setSelectedUsers([]), [isOpen]);
 
   return (

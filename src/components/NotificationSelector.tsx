@@ -22,7 +22,7 @@ export default function NotificationSelector({ notification, ...rest }: Notifica
   const markAsReadMutation = usePutNotificationMutation(notification.id, { seen: true });
   const markAsUnreadMutation = usePutNotificationMutation(notification.id, { seen: false });
   const deleteMutation = useDeleteNotificationMutation(notification.id);
-  const { show, confetti, isVisible } = useConfetti();
+  const { show, confetti } = useConfetti();
   const baseNotificationTemplateProps = {
     date: notification.createdOn,
     seen: notification.seen ?? false,
@@ -85,7 +85,8 @@ export default function NotificationSelector({ notification, ...rest }: Notifica
 
   return (
     <>
-      <NotificationTemplate {...getNotificationTemplateProps()} /> {confetti}
+      <NotificationTemplate {...getNotificationTemplateProps()} />
+      {confetti}
     </>
   );
 }

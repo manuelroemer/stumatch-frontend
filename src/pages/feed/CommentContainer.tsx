@@ -1,4 +1,4 @@
-import { Box, ButtonGroup, Flex, HStack, Icon, IconButton, Text, VStack, Textarea } from '@chakra-ui/react';
+import { Box, ButtonGroup, Flex, HStack, Icon, IconButton, Text, VStack, Textarea, useToast } from '@chakra-ui/react';
 import { AiOutlineClockCircle, AiOutlineDelete } from 'react-icons/ai';
 import { BsPencil } from 'react-icons/bs';
 import { FcCheckmark, FcCancel } from 'react-icons/fc';
@@ -22,9 +22,17 @@ export default function CommentContainer({ comment }: CommentContainerProps) {
   const [currentContent, setCurrentContent] = useState('');
   const mutationDelete = useDeleteCommentMutation(comment.id);
   const mutationPut = usePutCommentMutation(comment.id);
+  const toast = useToast();
   const handleCheck = () => {
     mutationPut.mutate({ content: currentContent });
     setEditable(false);
+    toast({
+      title: 'Comment was successfully edited.',
+      description: 'Your comment was refreshed.',
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+    });
   };
   const handleEdit = () => {
     setCurrentContent(comment.content);
@@ -101,7 +109,16 @@ export default function CommentContainer({ comment }: CommentContainerProps) {
                     <IconButton onClick={handleEdit} size="sm" aria-label="Edit" icon={<RiEditBoxLine />} />
                     <IconButton
                       size="sm"
-                      onClick={() => mutationDelete.mutate()}
+                      onClick={() => {
+                        mutationDelete.mutate();
+                        toast({
+                          title: 'Comment was successfully deleted.',
+                          description: 'Your comment was deleted.',
+                          status: 'success',
+                          duration: 9000,
+                          isClosable: true,
+                        });
+                      }}
                       aria-label="Delete"
                       icon={<AiOutlineDelete />}
                     />
@@ -117,7 +134,6 @@ export default function CommentContainer({ comment }: CommentContainerProps) {
                 <p style={{ whiteSpace: 'pre-wrap' }}>{comment.content}</p>
               </HStack>
             </Flex>
-
             {generalInfo()}
           </>
         )}

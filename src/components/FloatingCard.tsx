@@ -5,6 +5,12 @@ export interface FloatingCardProps extends HTMLChakraProps<'div'> {
   children?: ReactNode;
 }
 
+/**
+ * The floating card is a simple container for arbitrary, grouped content.
+ * It appears as a card with a shadow beneath it.
+ *
+ * Used accross the board for self-contained elements.
+ */
 export default function FloatingCard({ children, ...rest }: FloatingCardProps) {
   const colorBg = useColorModeValue('white', 'gray.700');
   const colorBd = useColorModeValue('gray.50', 'gray.600');

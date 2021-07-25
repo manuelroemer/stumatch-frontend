@@ -11,6 +11,8 @@ import {
   Input,
   InputLeftElement,
   InputGroup,
+  useColorModeValue,
+  HTMLChakraProps,
 } from '@chakra-ui/react';
 import { AccessDeniedEmptyState, NoPostsEmptyState } from '../../components/EmptyStates';
 import RequireRoles from '../../components/RequireRoles';
@@ -30,11 +32,12 @@ import PostContainer from './PostContainer';
 import { BiPlus } from 'react-icons/bi';
 import PostModal from './PostModal';
 import { useGetAllCategoriesQuery } from '../../queries/categories';
-import {} from '../../api/advertisement';
-import { useGetAllAdvertisementsQuery, useGetRandomAdvertisementQuery } from '../../queries/advertisements';
+import { useGetRandomAdvertisementQuery } from '../../queries/advertisements';
+import { Advertisement } from '../../api/advertisement';
 import AdvertisementContainer from '../advertising/AdvertisementContainer';
 import debounce from 'lodash-es/debounce';
 import { debounceDuration } from '../../constants';
+import SharePopOver from './SharePopOver';
 
 export default function FeedPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -55,9 +58,12 @@ export default function FeedPage() {
   const { data: adData2 } = useGetRandomAdvertisementQuery();
   const debouncedSetPageSearch = debounce(setPageSearch, debounceDuration);
   const showAd = (data?.result.length ?? 0) > 0;
+  const colorBg = useColorModeValue('blue.50', 'blue.900');
 
   return (
-    <RequireRoles roles={['student', 'admin']} fallback={<AccessDeniedEmptyState />}>
+    <RequireRoles
+      roles={['student', 'admin', 'advertiser', 'globalContentManager']}
+      fallback={<AccessDeniedEmptyState />}>
       <DefaultPageLayout
         header="Feed"
         subHeader="What happened at your university?"
@@ -114,18 +120,26 @@ export default function FeedPage() {
           ) : (
             <>
               {showAd && (
-                <FloatingCard>
-                  <AdvertisementContainer advertisement={adData1!.result} isFeed={true}></AdvertisementContainer>
+                <FloatingCard padding="3" bgColor={colorBg}>
+                  <AdvertisementContainer
+                    advertisement={adData1!.result}
+                    showAuthor={true}
+                    secondButton={<ShareButton advertisement={adData1!.result} />}
+                  />
                 </FloatingCard>
               )}
               {data?.result.map((post) => (
-                <FloatingCard key={post.id}>
-                  <PostContainer setPageFilter={setPageFilter} post={post} />
+                <FloatingCard key={post.id} padding="3">
+                  <PostContainer post={post} setPageFilter={setPageFilter} />
                 </FloatingCard>
               ))}
               {showAd && (
-                <FloatingCard>
-                  <AdvertisementContainer advertisement={adData2!.result} isFeed={true}></AdvertisementContainer>
+                <FloatingCard padding="3" bgColor={colorBg}>
+                  <AdvertisementContainer
+                    advertisement={adData2!.result}
+                    showAuthor={true}
+                    secondButton={<ShareButton advertisement={adData2!.result} />}
+                  />
                 </FloatingCard>
               )}
             </>
@@ -140,5 +154,16 @@ export default function FeedPage() {
       </DefaultPageLayout>
       <PostModal isOpen={isOpen} onClose={onClose} />
     </RequireRoles>
+  );
+}
+
+function ShareButton({ advertisement, ...props }: HTMLChakraProps<'button'> & { advertisement: Advertisement }) {
+  return (
+    <>
+      <HStack>
+        <SharePopOver permalink={window.location.href + '/' + advertisement.id} {...props} />
+        <Text>Share</Text>
+      </HStack>
+    </>
   );
 }

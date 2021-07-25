@@ -1,6 +1,20 @@
-import { Button, Center, HStack, Select, Spacer, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import {
+  Button,
+  Center,
+  HStack,
+  HTMLChakraProps,
+  IconButton,
+  Select,
+  Spacer,
+  Text,
+  Tooltip,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react';
 import { range } from 'lodash-es';
 import { BiPlus } from 'react-icons/bi';
+import { FaRegEdit } from 'react-icons/fa';
+import { Advertisement } from '../../api/advertisement';
 import { me } from '../../api/conventions';
 import DefaultPageLayout from '../../components/DefaultPageLayout';
 import { AccessDeniedEmptyState, NoAdvertisementsEmptyState } from '../../components/EmptyStates';
@@ -22,12 +36,10 @@ export default function AdvertisementOverviewPage() {
   const [page, setPage] = usePageQueryParameter();
   const [pageSize, setPageSize] = usePageSizeQueryParameter();
   const [pageSort, setPageSort] = useStringQueryParameter('sort', 'desc');
-  //const [pageFilter, setPageFilter] = useStringQueryParameter('filter', '');
   const { isLoading, data } = useGetAdvertisementsByUserQuery(me, {
     page,
     pageSize,
     sort: 'createdOn:' + pageSort,
-    //filter: pageFilter,
   });
   return (
     <RequireRoles roles={['admin', 'advertiser']} fallback={<AccessDeniedEmptyState />}>
@@ -64,7 +76,11 @@ export default function AdvertisementOverviewPage() {
             <>
               {data?.result.map((advertisement) => (
                 <FloatingCard key={advertisement.id}>
-                  <AdvertisementContainer advertisement={advertisement} isFeed={false} />
+                  <AdvertisementContainer
+                    advertisement={advertisement}
+                    showAuthor={false}
+                    secondButton={<EditButton advertisement={advertisement} />}
+                  />
                 </FloatingCard>
               ))}
             </>
@@ -79,5 +95,20 @@ export default function AdvertisementOverviewPage() {
       </DefaultPageLayout>
       <AdvertisementModal isUpdate={false} isOpen={isOpen} onClose={onClose} />
     </RequireRoles>
+  );
+}
+
+function EditButton({ advertisement, ...props }: HTMLChakraProps<'button'> & { advertisement: Advertisement }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  return (
+    <>
+      <HStack>
+        <Tooltip label={'Edit Ad'}>
+          <IconButton size="sm" aria-label="Edit" fontSize="17" icon={<FaRegEdit />} onClick={onOpen} {...props} />
+        </Tooltip>
+        <Text>Edit </Text>
+      </HStack>
+      <AdvertisementModal isUpdate={true} isOpen={isOpen} onClose={onClose} advertisement={advertisement} />
+    </>
   );
 }

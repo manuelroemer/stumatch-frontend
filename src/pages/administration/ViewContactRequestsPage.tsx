@@ -29,6 +29,7 @@ import {
 } from '../../utils/useQueryParameter';
 import { ContactRequest } from '../../api/contactRequest';
 import { NoContactRequestsEmptyState } from '../../components/EmptyStates';
+import NameMailComponent from '../../components/NameMailComponent';
 
 export function ViewContactRequestsPage() {
   const [page, setPage] = usePageQueryParameter();
@@ -84,8 +85,7 @@ export function ViewContactRequestsPage() {
                               {getDisplayDataForType(contactRequest.type).emoji} [
                               {getDisplayDataForType(contactRequest.type).displayType}]{' '}
                             </chakra.span>
-                            by {contactRequest.name}{' '}
-                            <Link href={`mailto:${contactRequest.email}`}>({contactRequest.email})</Link>{' '}
+                            by <NameMailComponent name={contactRequest.name} email={contactRequest.email} />
                             <Badge
                               ml="2"
                               variant="solid"
