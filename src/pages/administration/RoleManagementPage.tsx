@@ -3,7 +3,6 @@ import {
   Center,
   HStack,
   Flex,
-  Link,
   Spacer,
   Checkbox,
   CheckboxGroup,
@@ -35,9 +34,9 @@ import { User } from '../../api/users';
 import NameMailComponent from '../../components/NameMailComponent';
 
 export function RoleManagementPage() {
-  const [page, setPage] = usePageQueryParameter();
-  const [pageSize] = usePageSizeQueryParameter();
-  const [pageFilter, setPageFilter] = useStringQueryParameter('filter', '');
+  const [page, setPage] = usePageQueryParameter('rolePage');
+  const [pageSize] = usePageSizeQueryParameter('rolePageSize');
+  const [pageFilter, setPageFilter] = useStringQueryParameter('userFilter', '');
   const { isLoading, data } = useGetAllUsersQuery({
     page,
     pageSize,

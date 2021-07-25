@@ -27,10 +27,10 @@ import {
 import AdvertisementContainer from '../advertising/AdvertisementContainer';
 
 export function VerifyAdvertisementsPage() {
-  const [page, setPage] = usePageQueryParameter();
-  const [pageSize, setPageSize] = usePageSizeQueryParameter();
+  const [page, setPage] = usePageQueryParameter('adPage');
+  const [pageSize, setPageSize] = usePageSizeQueryParameter('adPageSize');
   const [pageSort, setPageSort] = useStringQueryParameter('sort', 'desc');
-  const [pageFilter, setPageFilter] = useStringQueryParameter('filter', 'unverified');
+  const [pageFilter, setPageFilter] = useStringQueryParameter('advertisementFilter', 'unverified');
   const { isLoading, data } = useGetAllAdvertisementsQuery(me, {
     page,
     pageSize,

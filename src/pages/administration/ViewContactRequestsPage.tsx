@@ -31,10 +31,10 @@ import { NoContactRequestsEmptyState } from '../../components/EmptyStates';
 import NameMailComponent from '../../components/NameMailComponent';
 
 export function ViewContactRequestsPage() {
-  const [page, setPage] = usePageQueryParameter();
-  const [pageSize] = usePageSizeQueryParameter();
+  const [page, setPage] = usePageQueryParameter('contactPage');
+  const [pageSize] = usePageSizeQueryParameter('contactPageSize');
   const [pageSort, setPageSort] = useStringQueryParameter('sort', 'desc');
-  const [pageFilter, setPageFilter] = useStringQueryParameter('filter', '');
+  const [pageFilter, setPageFilter] = useStringQueryParameter('status', '');
   const { isLoading, data } = useGetAllContactRequestsQuery({
     page,
     pageSize,
