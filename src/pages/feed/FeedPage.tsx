@@ -65,7 +65,7 @@ export default function FeedPage() {
         header="Feed"
         subHeader="What happened at your university?"
         actions={
-          <RequireRoles roles={['globalContentManager', 'admin']}>
+          <RequireRoles roles={['globalContentManager', 'admin', 'advertiser', 'globalContentManager']}>
             <Button onClick={onOpen} colorScheme="primary" leftIcon={<BiPlus />} size="md">
               Create New
             </Button>
