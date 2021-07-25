@@ -61,8 +61,7 @@ export function TermsOfUsePage() {
         <Heading as="h2" size="md" mt="10" mb="4">
           Subscriptions
         </Heading>
-        Some parts of the Service are billed on a subscription basis. You will be billed in advance on a recurring ...
-        TODO
+        Some parts of the Service are billed on a subscription basis.
       </Text>
 
       <Text>
@@ -80,7 +79,7 @@ export function TermsOfUsePage() {
         <Heading as="h2" size="md" mt="10" mb="4">
           Contact Us
         </Heading>
-        If you have any questions about these Terms, please{' '}
+        If you have any questions about these Terms, please
         <Link to={routes.contact}>
           {' '}
           <Button variant="link" colorScheme="primary">

@@ -12,6 +12,7 @@ import {
   InputLeftElement,
   InputGroup,
   useColorModeValue,
+  HTMLChakraProps,
 } from '@chakra-ui/react';
 import { AccessDeniedEmptyState, NoPostsEmptyState } from '../../components/EmptyStates';
 import RequireRoles from '../../components/RequireRoles';
@@ -31,11 +32,12 @@ import PostContainer from './PostContainer';
 import { BiPlus } from 'react-icons/bi';
 import PostModal from './PostModal';
 import { useGetAllCategoriesQuery } from '../../queries/categories';
-import {} from '../../api/advertisement';
+import { Advertisement } from '../../api/advertisement';
 import { useGetAllAdvertisementsQuery } from '../../queries/advertisements';
 import AdvertisementContainer from '../advertising/AdvertisementContainer';
 import debounce from 'lodash-es/debounce';
 import { debounceDuration } from '../../constants';
+import SharePopOver from './SharePopOver';
 
 export default function FeedPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -116,7 +118,11 @@ export default function FeedPage() {
             <>
               {showAd && (
                 <FloatingCard padding="3" bgColor={colorBg}>
-                  <AdvertisementContainer advertisement={adData!.result[0]}></AdvertisementContainer>
+                  <AdvertisementContainer
+                    advertisement={adData!.result[0]}
+                    showAuthor={true}
+                    secondButton={<ShareButton advertisement={adData!.result[0]} />}
+                  />
                 </FloatingCard>
               )}
               {data?.result.map((post) => (
@@ -126,7 +132,11 @@ export default function FeedPage() {
               ))}
               {showAd && (
                 <FloatingCard padding="3" bgColor={colorBg}>
-                  <AdvertisementContainer advertisement={adData!.result[0]}></AdvertisementContainer>
+                  <AdvertisementContainer
+                    advertisement={adData!.result[0]}
+                    showAuthor={true}
+                    secondButton={<ShareButton advertisement={adData!.result[0]} />}
+                  />
                 </FloatingCard>
               )}
             </>
@@ -141,5 +151,16 @@ export default function FeedPage() {
       </DefaultPageLayout>
       <PostModal isOpen={isOpen} onClose={onClose} />
     </RequireRoles>
+  );
+}
+
+function ShareButton({ advertisement, ...props }: HTMLChakraProps<'button'> & { advertisement: Advertisement }) {
+  return (
+    <>
+      <HStack>
+        <SharePopOver permalink={window.location.href + '/' + advertisement.id} {...props} />
+        <Text>Share</Text>
+      </HStack>
+    </>
   );
 }

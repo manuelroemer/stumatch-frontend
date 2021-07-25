@@ -1,43 +1,24 @@
 import {
-  Button,
   Center,
-  Flex,
-  Grid,
-  GridItem,
-  Heading,
   HStack,
-  Icon,
+  HTMLChakraProps,
   IconButton,
-  Link,
   Select,
   Spacer,
   Text,
-  useDisclosure,
+  Tooltip,
   useToast,
   VStack,
 } from '@chakra-ui/react';
 import { range } from 'lodash-es';
-import { AiOutlineCheck, AiOutlineClockCircle, AiOutlineClose, AiOutlinePicture } from 'react-icons/ai';
-import { BiPlus } from 'react-icons/bi';
-import { CgProfile } from 'react-icons/cg';
-import { MdSubject } from 'react-icons/md';
-import { useHistory } from 'react-router';
-import ReactTimeago from 'react-timeago';
+import { IoMdCheckmark, IoMdClose } from 'react-icons/io';
 import { Advertisement } from '../../api/advertisement';
 import { me } from '../../api/conventions';
-import DefaultPageLayout from '../../components/DefaultPageLayout';
-import { AccessDeniedEmptyState, NoAdvertisementsEmptyState, NoPostsEmptyState } from '../../components/EmptyStates';
+import { NoAdvertisementsEmptyState } from '../../components/EmptyStates';
 import FloatingCard from '../../components/FloatingCard';
 import ImageTitleDescriptionSkeleton from '../../components/ImageTitleDescriptionSkeleton';
 import Pagination from '../../components/Pagination';
-import RequireRoles from '../../components/RequireRoles';
-import { routes } from '../../constants';
-import {
-  useGetAdvertisementsByUserQuery,
-  useGetAllAdvertisementsQuery,
-  usePutAdvertisementMutation,
-} from '../../queries/advertisements';
-import { getTargetGroup } from '../../utils/advertisementUtils';
+import { useGetAllAdvertisementsQuery, usePutAdvertisementMutation } from '../../queries/advertisements';
 import {
   usePageQueryParameter,
   usePageSizeQueryParameter,
@@ -46,7 +27,6 @@ import {
 import AdvertisementContainer from '../advertising/AdvertisementContainer';
 
 export function VerifyAdvertisementsPage() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = usePageQueryParameter();
   const [pageSize, setPageSize] = usePageSizeQueryParameter();
   const [pageSort, setPageSort] = useStringQueryParameter('sort', 'desc');
@@ -93,8 +73,13 @@ export function VerifyAdvertisementsPage() {
         ) : (
           <>
             {data?.result.map((advertisement) => (
-              <FloatingCard key={advertisement.id}>
-                <AdContainer advertisement={advertisement} />
+              <FloatingCard padding="3" key={advertisement.id}>
+                <AdvertisementContainer
+                  advertisement={advertisement}
+                  showAuthor={false}
+                  firstButton={<VerifyButton advertisement={advertisement} />}
+                  secondButton={<DenyButton advertisement={advertisement} />}
+                />
               </FloatingCard>
             ))}
           </>
@@ -110,82 +95,57 @@ export function VerifyAdvertisementsPage() {
   );
 }
 
-interface adContainerProps {
-  advertisement: Advertisement;
-}
-
-export function AdContainer({ advertisement }: adContainerProps) {
-  const history = useHistory();
-  const handleClick = () => history.push(`${routes.advertising}/${advertisement.id}`);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+function VerifyButton({ advertisement, ...props }: HTMLChakraProps<'button'> & { advertisement: Advertisement }) {
   const mutation = usePutAdvertisementMutation();
   const toast = useToast();
-
   return (
-    <Grid templateRows="repeat(3, 1fr)" templateColumns="repeat(14, 1fr)" gap={2}>
-      <GridItem rowSpan={3} colSpan={2}>
-        <Center h="100%" align="center">
-          <Icon aria-label="Picture" as={AiOutlinePicture} w="80%" h="80%" />
-        </Center>
-      </GridItem>
-      <GridItem rowSpan={1} colSpan={7}>
-        <HStack h="100%" align="flex-end">
-          <Heading onClick={handleClick} as="h1" lineHeight="1.4" fontSize="20" isTruncated textAlign="left">
-            <Link>{advertisement.title}</Link>
-          </Heading>
-        </HStack>
-      </GridItem>
-      <GridItem rowSpan={2} colSpan={1} colStart={12}>
-        <Center h="100%">
+    <>
+      <HStack>
+        <Tooltip label={'Verify'} hasArrow>
           <IconButton
             aria-label="Accept"
-            as={AiOutlineCheck}
+            color="green.400"
+            fontSize="25"
+            icon={<IoMdCheckmark />}
             onClick={() => {
               mutation.mutate({ id: advertisement.id, body: { status: 'verified' } });
               toast({
                 description: 'Ad verified!',
               });
             }}
+            {...props}
           />
-        </Center>
-      </GridItem>
-      <GridItem rowSpan={2} colSpan={1} colStart={13}>
-        <Center h="100%">
+        </Tooltip>
+
+        <Text>Verify</Text>
+      </HStack>
+    </>
+  );
+}
+
+function DenyButton({ advertisement, ...props }: HTMLChakraProps<'button'> & { advertisement: Advertisement }) {
+  const mutation = usePutAdvertisementMutation();
+  const toast = useToast();
+  return (
+    <>
+      <HStack>
+        <Tooltip label={'Deny'} hasArrow>
           <IconButton
-            aria-label="Decline"
-            as={AiOutlineClose}
+            aria-label="Deny"
+            color="red"
+            fontSize="25"
+            icon={<IoMdClose />}
             onClick={() => {
               mutation.mutate({ id: advertisement.id, body: { status: 'denied' } });
               toast({
-                description: 'Ad verified!',
+                description: 'Ad denied.',
               });
             }}
+            {...props}
           />
-        </Center>
-      </GridItem>
-      <GridItem rowSpan={1} colSpan={7}>
-        <Flex h="100%" align="center">
-          <Text>{advertisement.shortDescription}</Text>
-        </Flex>
-      </GridItem>
-      <GridItem rowSpan={1} colSpan={11}>
-        <HStack h="100%" justifyContent="space-between">
-          <HStack>
-            <Icon aria-label="Author" as={CgProfile} />
-            <Text>
-              {advertisement.author.lastName}, {advertisement.author.firstName}
-            </Text>
-          </HStack>
-          <HStack>
-            <Icon aria-label="Ago" as={AiOutlineClockCircle} />
-            <ReactTimeago date={advertisement.createdOn} component={(props) => <Text {...props} />} />
-          </HStack>
-          <HStack>
-            <Icon aria-label="Category" as={MdSubject} />
-            <Text>{getTargetGroup(advertisement)}</Text>
-          </HStack>
-        </HStack>
-      </GridItem>
-    </Grid>
+        </Tooltip>
+        <Text>Deny</Text>
+      </HStack>
+    </>
   );
 }

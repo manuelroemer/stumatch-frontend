@@ -14,7 +14,6 @@ import {
   useClipboard,
   VStack,
   HStack,
-  Tooltip,
 } from '@chakra-ui/react';
 import {
   EmailShareButton,
@@ -46,9 +45,7 @@ export default function SharePopOver({ permalink }: SharePopOverProps) {
     <>
       <Popover>
         <PopoverTrigger>
-          <Tooltip hasArrow label="Share">
-            <IconButton size="sm" aria-label="Share" icon={<AiOutlineShareAlt />} fontSize="17" />
-          </Tooltip>
+          <IconButton size="sm" aria-label="Share" icon={<AiOutlineShareAlt />} fontSize="17" />
         </PopoverTrigger>
         <Portal>
           <PopoverContent>

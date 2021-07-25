@@ -36,7 +36,8 @@ export default function ProfilePage() {
   } = useForm<UserPut>();
   const mutation = usePutUserMutation();
   const user = useCurrentUser();
-  const [jobValue, setJobValue] = useState('');
+  const initialSearchJobValue = user.searchForJobs ? 'Yes' : user.searchForJobs === false ? 'No' : 'Undefined';
+  const [jobValue, setJobValue] = useState(initialSearchJobValue);
   const validateImmatriculatedOn = () => {
     const startingYear = getValues('immatriculatedOn.startingYear');
     const startingSemester = getValues('immatriculatedOn.startingSemester');
