@@ -2,6 +2,18 @@
 
 This repository contains the source code of the sTUMatch frontend.
 
+**Context about the project:**<br/>
+sTUMatch is a social platform where students of a specific university can connect to others via
+comments on university news, a dedicated matching system and a chat. sTUMatch allows university
+employees to post about interesting events and advertisers to create and host advertisements
+target specifically at students of the respective university.
+
+The prototype was written as part of the SEBA Master course in a team of 4 students (Nhu, Manu, Khang, Jonas).
+Prior experience with the technologies at hand was close to zero for most team members and the given time
+frame for completion was about ~2 months only.
+The code reflects this situation in parts, so **don't expect best practices accross the board** -
+nontheless, the final prototype overall works well and can certainly be looked at!
+
 
 ## Getting Started
 
