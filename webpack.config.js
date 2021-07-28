@@ -43,9 +43,8 @@ module.exports = (env, argv = {}) => {
     plugins: [
       new CleanWebpackPlugin(),
       new DefinePlugin({
-        // TODO: We don't actually have a production URL. Update as required.
-        API_BASE_URL: JSON.stringify(mode === 'production' ? 'http://localhost:4040' : 'http://localhost:4040'),
-        WS_BASE_URL:  JSON.stringify(mode === 'production' ? 'ws://localhost:4040' : 'ws://localhost:4040'),
+        API_BASE_URL: JSON.stringify(mode === 'production' ? process.env.API_BASE_URL : 'http://localhost:4040'),
+        WS_BASE_URL:  JSON.stringify(mode === 'production' ? process.env.WS_BASE_URL : 'ws://localhost:4040'),
       }),
       new HtmlWebpackPlugin({
         template: resolve(__dirname, 'src', 'index.html'),
