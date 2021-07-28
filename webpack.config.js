@@ -17,7 +17,7 @@ module.exports = (env, argv = {}) => {
     output: {
       filename: '[name].js',
       path: resolve(__dirname, 'dist'),
-      publicPath: '/',
+      publicPath: 'auto',
     },
     devServer: {
       contentBase: resolve(__dirname, 'src'),
@@ -48,6 +48,7 @@ module.exports = (env, argv = {}) => {
       }),
       new HtmlWebpackPlugin({
         template: resolve(__dirname, 'src', 'index.html'),
+
       }),
     ],
   };
