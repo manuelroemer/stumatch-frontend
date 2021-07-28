@@ -46,7 +46,7 @@ module.exports = (env, argv = {}) => {
       new DefinePlugin({
         API_BASE_URL: JSON.stringify(mode === 'production' ? process.env.API_BASE_URL : 'http://localhost:4040'),
         WS_BASE_URL:  JSON.stringify(mode === 'production' ? process.env.WS_BASE_URL : 'ws://localhost:4040'),
-        PUBLIC_PATH: publicPath,
+        PUBLIC_PATH: JSON.stringify(publicPath),
       }),
       new HtmlWebpackPlugin({
         template: resolve(__dirname, 'src', 'index.html'),
