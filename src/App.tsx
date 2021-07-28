@@ -31,7 +31,7 @@ export default function App() {
         <SocketContext.Provider value={{ socket }}>
           <NotConnectedOverlay>
             <LoadingOverlay show={isLoading}>
-              <BrowserRouter>
+              <BrowserRouter basename={PUBLIC_PATH}>
                 <Switch>
                   <Route
                     exact

@@ -5,6 +5,7 @@ const { resolve } = require('path');
 
 module.exports = (env, argv = {}) => {
   const mode = argv.mode || process.env.NODE_ENV || 'production';
+  const publicPath = process.env.PUBLIC_PATH || '/';
 
   return {
     entry: resolve(__dirname, 'src', 'index.tsx'),
@@ -17,7 +18,7 @@ module.exports = (env, argv = {}) => {
     output: {
       filename: '[name].js',
       path: resolve(__dirname, 'dist'),
-      publicPath: 'auto',
+      publicPath,
     },
     devServer: {
       contentBase: resolve(__dirname, 'src'),
@@ -45,10 +46,10 @@ module.exports = (env, argv = {}) => {
       new DefinePlugin({
         API_BASE_URL: JSON.stringify(mode === 'production' ? process.env.API_BASE_URL : 'http://localhost:4040'),
         WS_BASE_URL:  JSON.stringify(mode === 'production' ? process.env.WS_BASE_URL : 'ws://localhost:4040'),
+        PUBLIC_PATH: publicPath,
       }),
       new HtmlWebpackPlugin({
         template: resolve(__dirname, 'src', 'index.html'),
-
       }),
     ],
   };

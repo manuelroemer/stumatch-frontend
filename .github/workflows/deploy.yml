@@ -10,11 +10,12 @@ jobs:
     env:
       API_BASE_URL: https://stumatch-backend.herokuapp.com
       WS_BASE_URL: wss://stumatch-backend.herokuapp.com
+      PUBLIC_PATH: /stumatch-frontend/
 
     strategy:
       matrix:
         node-version: [14.x]
-    
+
     steps:
     - uses: actions/checkout@v2
 
@@ -27,7 +28,7 @@ jobs:
       run: |
         npm i
         npm run build
-        
+
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@4.1.4
       with:
