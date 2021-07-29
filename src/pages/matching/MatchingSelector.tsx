@@ -9,7 +9,6 @@ import {
   Text,
   useDisclosure,
   Tooltip,
-  Link,
 } from '@chakra-ui/react';
 import { IoChatbubblesOutline } from 'react-icons/io5';
 import { IoMdCheckmark, IoMdClose } from 'react-icons/io';
@@ -19,7 +18,7 @@ import { FaRegEdit } from 'react-icons/fa';
 import { MatchRequest } from '../../api/matching';
 import MatchingTemplate, { MatchingTemplateProps } from './MatchingTemplate';
 import { useDeleteMatchRequestMutation, usePostAcceptDeclineMatchRequestMutation } from '../../queries/matchRequests';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import UserAvatar from '../../components/UserAvatar';
 import { useDeleteConfirmationModal } from '../../components/DeleteConfirmationModal';
 import { useConfetti } from '../../utils/useConfetti';
