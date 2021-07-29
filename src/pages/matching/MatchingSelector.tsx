@@ -57,7 +57,7 @@ export default function MatchingSelector({ matchRequest }: MatchingSelectorProps
           description: descriptions[matchRequest.status],
           actions: (
             <>
-              <ChatButton chatGroupId={matchRequest.chatGroupId ?? ''} />
+              <ChatButton chatGroupId="matchRequest.chatGroupId ?? ''" />
               <AcceptButton matchRequestId={matchRequest.id} disabled={matchRequest.status === 'acceptedByMe'} />
               <DeclineButton matchRequestId={matchRequest.id} disabled={matchRequest.status === 'acceptedByMe'} />
             </>
